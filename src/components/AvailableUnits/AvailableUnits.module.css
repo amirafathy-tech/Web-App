@@ -1,0 +1,19 @@
+.headtable{
+    background-color: green !important;
+}
+.maincolor{
+    color: #00ADB5;
+}
+.imageButton{
+    background-color:#00ADB5 ;
+    border-radius: 7px;
+    color: white;
+    border-color: rgb(10, 207, 241);
+    border-width: 3px;
+    padding: 10px;
+}
+.imageButton:hover{
+    transform: translateY(0.3rem);
+    background-color: white;
+    color:#00ADB5 ;
+}

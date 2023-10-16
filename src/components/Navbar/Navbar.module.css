@@ -1,0 +1,23 @@
+.maincolor{
+    color: #00ADB5;
+}
+.logo{
+    color: #00ADB5;
+    font-size: larger;
+    font-family: cursive;
+}
+
+.homeIcon{
+    color:red
+}
+
+.searchIcon{
+    color:red
+}
+.link{
+    color: white;
+    text-decoration: none;
+}
+.link:hover{
+    color: #00ADB5 !important;
+}

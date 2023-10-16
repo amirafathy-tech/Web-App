@@ -1,0 +1,22 @@
+
+
+.title{
+    color: #00ADB5;
+    text-align: center;
+}
+.maincolor{
+    color: #00ADB5;
+}
+.details{
+    background-color: #00ADB5;
+    color: white;
+    padding: 20px;
+    border-radius: 30px;
+    font-style: italic;
+    text-align: center;
+}
+.details:hover{
+    background-color: white;
+    color: #00ADB5;
+    border-radius: 70px;
+}

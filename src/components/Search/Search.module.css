@@ -1,0 +1,16 @@
+
+.formtitle{
+    color: green;
+}
+
+.inputtitle{
+    color: blue;
+  
+}
+.searchbutton{
+    color: white;
+    background-color: green;
+    text-align: center;
+    width: inherit;
+    border-color: white;
+}

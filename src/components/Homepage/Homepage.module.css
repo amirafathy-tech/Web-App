@@ -1,0 +1,49 @@
+
+
+.header{
+    background-color: #00ADB5;
+    color: white;
+    font-size: 25px;
+    font-weight: bold;
+}
+.viewer{
+    position: absolute; 
+    left: 10%;
+    right: 10%;
+    top: 20%;
+    bottom: 10%; 
+     
+}
+
+/* .slide1{
+    background:url('../../images/compound1.jpg');
+    background-size: cover;
+    background-position: center center;
+}
+.slide2{
+    background:url('../../images/compound2.jpg');
+    background-size: cover;
+    background-position: center center;
+}
+.slide3{
+    background:url('../../images/compound3.jpg');
+    background-size: cover;
+    background-position: center center;
+} */
+
+video{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100vh;
+    object-fit: cover;
+    z-index: -1;
+    
+}
+.span{
+    background-color: gray;
+    border-radius: 3px;
+    width: 7px;
+    height:max-content
+} 
