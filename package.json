@@ -5,25 +5,43 @@
   "dependencies": {
     "@react-three/drei": "^9.80.9",
     "@react-three/fiber": "^8.13.7",
+    "@sap/xsenv": "^4.0.0",
+    "@sap/xssec": "^3.3.5",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/three": "^0.155.1",
+    "assert": "^2.1.0",
     "axios": "^1.5.1",
     "bootstrap": "^5.3.2",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
+    "fs": "^0.0.1-security",
+    "https-browserify": "^1.0.0",
+    "joi": "^17.11.0",
+    "jwt-decode": "^3.1.2",
+    "os-browserify": "^0.3.0",
+    "path": "^0.12.7",
+    "path-browserify": "^1.0.1",
+    "process": "^0.11.10",
     "react": "^18.2.0",
+    "react-app-rewired": "^2.2.1",
     "react-dom": "^18.2.0",
     "react-icons": "^4.11.0",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.1",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
     "three": "^0.155.0",
-    "web-vitals": "^2.1.4"
+    "url": "^0.11.0",
+    "web-vitals": "^2.1.4",
+    "webpack": "^5.89.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-app-rewired eject"
   },
   "eslintConfig": {
     "extends": [

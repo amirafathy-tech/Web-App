@@ -9,7 +9,7 @@ export default function AvailableUnits() {
 
     let [unit, setUnit] = useState([]);
     async function getUnit() {
-        let { data } = await axios.get("https://recipe.c-96e5b5d.kyma.ondemand.com/units");
+        let { data } = await axios.get("https://recipe.c-910f80f.kyma.ondemand.com/units");
         console.log(data);
         setUnit(data);
     }

@@ -16,8 +16,8 @@ export default function Details(/*{ unit }*/) {
     const { unitNumber } = useParams();
     console.log(unitNumber);
     async function getUnit() {
-        let { data } = await axios.get(`https://recipe.c-96e5b5d.kyma.ondemand.com/units/${unitNumber}`);
-        console.log(data);
+        let { data } = await axios.get(`https://recipe.c-910f80f.kyma.ondemand.com/units/${unitNumber}`);
+        console.log(data.layoutImage);
         setUnit(data);
     }
     useEffect(() => {

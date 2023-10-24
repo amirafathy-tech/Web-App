@@ -8,7 +8,7 @@ export default function Building() {
     let [building, setBuilding] = useState([]);
 
     async function getBuilding() {
-        let { data } = await axios.get("https://recipe.c-96e5b5d.kyma.ondemand.com/buildings");
+        let { data } = await axios.get("https://recipe.c-910f80f.kyma.ondemand.com/buildings");
         setBuilding(data);
     }
 

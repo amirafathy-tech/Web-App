@@ -37,6 +37,9 @@ export default function Navbar() {
                         <Link className="nav-link nav-btn bg-main-color text-white rounded-5 px-4 py-2 ms-md-3 text-sm-center" to="#"
                             data-bs-target="#exampleModal"> Register</Link>
 
+                        <Link className="nav-link nav-btn bg-main-color text-white rounded-5 px-4 py-2 ms-md-3 text-sm-center" to="login"
+                            data-bs-target="#exampleModal"> Login</Link>
+
                     </div>
                     {/* <a className="navbar-brand" href="#">Navbar</a> */}
                     {/* <div>
