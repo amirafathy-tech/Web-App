@@ -87,12 +87,15 @@ export default function Login({ setUserData }) {
                 //'H@g@rN117!'
             });
 
+               const clientid = clientID
+              const auth = "Basic " + Buffer.from(clientid + ':' + clientSecret).toString("base64");
             let config = {
                 method: 'post',
                 maxBodyLength: Infinity,
                 url: 'https://cors-anywhere.herokuapp.com/https://aey0y39na.trial-accounts.ondemand.com/oauth2/token',
                 headers: {
-                    'Authorization': 'Basic NzdjZTc5ZjctZWIyZC00MjFjLWFiMDMtNzk0ODExYmJkYmUzOl9IN01YMllSajZVRS5zZUJJeFg4ekVuREdNWVRHLURZU2ha',
+                    'Authorization': auth,
+                    //'Basic NzdjZTc5ZjctZWIyZC00MjFjLWFiMDMtNzk0ODExYmJkYmUzOl9IN01YMllSajZVRS5zZUJJeFg4ekVuREdNWVRHLURZU2ha',
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 data: data
