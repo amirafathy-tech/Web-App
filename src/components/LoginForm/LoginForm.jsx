@@ -81,8 +81,10 @@ export default function Login({ setUserData }) {
             const qs = require('qs');
             let data = qs.stringify({
                 'grant_type': 'password',
-                'username': 'hagarnabil7@gmail.com',
-                'password': 'H@g@rN117!'
+                'username': user.email,
+                //'hagarnabil7@gmail.com',
+                'password': user.password
+                //'H@g@rN117!'
             });
 
             let config = {
@@ -96,28 +98,31 @@ export default function Login({ setUserData }) {
                 data: data
             };
 
-            axios.request(config)
-                .then((response) => {
-                    console.log(JSON.stringify(response.data));
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+            //const response=axios.request(config)
+            const response = await axios(config);
+            console.log(response);
+            console.log("response");
+                // .then((response) => {
+                //     console.log(JSON.stringify(response.data));
+                // })
+                // .catch((error) => {
+                //     console.log(error);
+                // });
 
 
+            //if (response.statusText == "OK") {
+                if (response) {
+                //console.log("okkkk");
+                //localStorage.setItem('token', response.data.access_token); /// Step 1
 
-
-
-
-            // if (response.statusText == "OK") {
-            //     //console.log("okkkk");
-            //     localStorage.setItem('token', response.data.access_token); /// Step 1
-            //     setUserData();//// here call setUserData function 
-            //     goToHome();
-            // }
-            // else {
-            //     setErrorMsg(response.data);
-            // }
+                localStorage.setItem('token', response.data.id_token); /// Step 1
+            
+                setUserData();//// here call setUserData function 
+                goToHome();
+            }
+            else {
+                setErrorMsg(response.data);
+            }
             setLoading(false);
         }
 

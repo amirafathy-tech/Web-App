@@ -25,7 +25,7 @@ export default function Details(/*{ unit }*/) {
         //console.log(data.layoutImage);
         //let { data } = await axios.get(`https://newrecipe.c-910f80f.kyma.ondemand.com/units/${unitNumber}`,{ headers: {"Authorization" : `Bearer ${token} } })
 
-        // let { data } = await axios.get(`https://newrecipe.c-910f80f.kyma.ondemand.com/units/${unitNumber}`,{ headers: {"Authorization" : `Bearer ${token}`} })
+         let { data } = await axios.get(`https://newrecipe.c-910f80f.kyma.ondemand.com/units/${unitNumber}`,{ headers: {"Authorization" : `Bearer ${token}`} })
         // .then(res => {
         //     console.log(res);
         //  })
@@ -38,35 +38,35 @@ export default function Details(/*{ unit }*/) {
         //         'Authorization': 'bearer ' + token
         //     }
         // }
-        // const response = await axios(options)
+        // const data = await axios(options)
         // console.log(response);
 
         // code snippet
         
 
-        let config = {
-            method: 'get',
-            maxBodyLength: Infinity,
-            url: 'https://cors-anywhere.herokuapp.com/https://newrecipe.c-910f80f.kyma.ondemand.com/units/1',
-            headers: {
-                'Authorization': 'Bearer '+ token
-            }
-        };
+        // let config = {
+        //     method: 'get',
+        //     maxBodyLength: Infinity,
+        //     url: 'https://cors-anywhere.herokuapp.com/https://newrecipe.c-910f80f.kyma.ondemand.com/units/1',
+        //     headers: {
+        //         'Authorization': 'Bearer '+ token
+        //     }
+        // };
 
-        axios.request(config)
-            .then((response) => {
-                console.log(JSON.stringify(response.data));
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        // axios.request(config)
+        //     .then((response) => {
+        //         console.log(JSON.stringify(response.data));
+        //     })
+        //     .catch((error) => {
+        //         console.log(error);
+        //     });
 
 
 
 
 
         //let { data } = await axios.get(`https://newrecipe.c-910f80f.kyma.ondemand.com/units/${unitNumber}`,{ headers: {"Authorization" : `Bearer ${token} }})
-        // setUnit(data);
+        setUnit(data);
         console.log(token);
     }
     useEffect(() => {

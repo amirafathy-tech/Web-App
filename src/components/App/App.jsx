@@ -63,14 +63,14 @@ function App() {
 
         {/* Protected Routes  */}
 
-        {/* <Route element={<ProtectedRoute loginData={loginData} />}> */}
+        <Route element={<ProtectedRoute loginData={loginData} />}>
 
           <Route path='building' element={<Building />}></Route>
           <Route path='project' element={<Project/>}></Route>
           <Route path="/building/:buildingCode/units" element={<AvailableUnits />} />
           <Route path="/unit/:unitNumber/details" element={<Details />} />
 
-        {/* </Route> */}
+        </Route>
 
 
         <Route path='details' element={<Details />}></Route>
