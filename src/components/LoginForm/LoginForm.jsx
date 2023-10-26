@@ -51,54 +51,73 @@ export default function Login({ setUserData }) {
             setLoading(false);
         }
         else {
-            // async function _fetchJwtToken (){
-            const clientid = clientID
-            const auth = "Basic " + Buffer.from(clientid + ':' + clientSecret).toString("base64");
 
-            const options = {
-                method: 'POST',
-                //mode: "cors", 
+            //     const clientid = clientID
+            //    const auth = "Basic " + Buffer.from(clientid + ':' + clientSecret).toString("base64");
+            //     const options = {
+            //         method: 'POST',
+            //         //mode: "cors", 
+            //         url: `https://cors-anywhere.herokuapp.com/${url}/oauth2/token?grant_type=client_credentials&client_id=${clientid}`,
+            //         headers: {
+            //             'Content-Type': 'application/x-www-form-urlencoded',
+            //             // 'Accept': 'application/json, text/plain',
+            //             // 'Content-Type': 'application/json;charset=utf8',
+            //             'Authorization': auth,
+            //             // 'Access-Control-Allow-Origin':window.location.origin,'
+            //             // 'Access-Control-Allow-Credentials':true
+            //         },
+            //         data: {
+            //             'email': user.email,
+            //             'password': user.password
+            //         }
+            //     }
+            //     const response = await axios(options);
+            //     console.log("hereee");
+            //     //console.log(response);
+            //     console.log(response.data.access_token);
 
-                url: `https://cors-anywhere.herokuapp.com/${url}/oauth2/token?grant_type=client_credentials&client_id=${clientid}`,
+            // curl command
+           
+            const qs = require('qs');
+            let data = qs.stringify({
+                'grant_type': 'password',
+                'username': 'hagarnabil7@gmail.com',
+                'password': 'H@g@rN117!'
+            });
+
+            let config = {
+                method: 'post',
+                maxBodyLength: Infinity,
+                url: 'https://cors-anywhere.herokuapp.com/https://aey0y39na.trial-accounts.ondemand.com/oauth2/token',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    // 'Accept': 'application/json, text/plain',
-                    // 'Content-Type': 'application/json;charset=utf8',
-                    'Authorization': auth,
-                    // 'Access-Control-Allow-Origin':window.location.origin,'
-                    // 'Access-Control-Allow-Credentials':true
+                    'Authorization': 'Basic NzdjZTc5ZjctZWIyZC00MjFjLWFiMDMtNzk0ODExYmJkYmUzOl9IN01YMllSajZVRS5zZUJJeFg4ekVuREdNWVRHLURZU2ha',
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 },
-                data: {
-                    'email': user.email,
-                    'password': user.password
-                }
+                data: data
+            };
 
-                // headers.append('Access-Control-Allow-Origin', 'http://localhost:3000');
-                // headers.append('Access-Control-Allow-Credentials', 'true');
-                // body:{
-                //     'email':${},
-                //     'password':${vb},
-                // }
-            }
-            const response = await axios(options);
-            console.log("hereee");
-            console.log(response);
-            console.log(response.data.access_token);
+            axios.request(config)
+                .then((response) => {
+                    console.log(JSON.stringify(response.data));
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
 
 
 
 
 
 
-            if (response.statusText == "OK") {
-                //console.log("okkkk");
-                localStorage.setItem('token', response.data.access_token); /// Step 1
-                setUserData();//// here call setUserData function 
-                goToHome();
-            }
-            else {
-                setErrorMsg(response.data);
-            }
+            // if (response.statusText == "OK") {
+            //     //console.log("okkkk");
+            //     localStorage.setItem('token', response.data.access_token); /// Step 1
+            //     setUserData();//// here call setUserData function 
+            //     goToHome();
+            // }
+            // else {
+            //     setErrorMsg(response.data);
+            // }
             setLoading(false);
         }
 
@@ -107,7 +126,7 @@ export default function Login({ setUserData }) {
     //     let path = '/forgetPassword';
     //     navigate(path);
     // }
-    
+
     function getFormValue(e) {
         let myUser = { ...user }
         myUser[e.target.name] = e.target.value
@@ -131,11 +150,11 @@ export default function Login({ setUserData }) {
                         {errorList.map((error, index) => <div className="alert alert-danger p-2">{error.message}</div>)}
                         <form onSubmit={submitFormData}>
                             <div className="input-gp my-3">
-                                <label className="form-label" for="form3Example3">Email address</label>
+                                <label className="form-label" htmlFor="form3Example3">Email address</label>
                                 <input onChange={getFormValue} type='email' className="form-control my-2" name='email' placeholder='email' />
                             </div>
                             <div className="input-gp my-3">
-                                <label className="form-label" for="form3Example4">Password</label>
+                                <label className="form-label" htmlFor="form3Example4">Password</label>
 
                                 <input onChange={getFormValue} type='password' className='form-control my-2' name='password' placeholder='password' />
                             </div>

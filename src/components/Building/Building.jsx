@@ -7,9 +7,16 @@ import { Link } from 'react-router-dom';
 export default function Building() {
     let [building, setBuilding] = useState([]);
 
+
+    const token=localStorage.getItem('token')
+    
+    const authAPI="https://newrecipe.c-910f80f.kyma.ondemand.com/buildings"
     async function getBuilding() {
-        let { data } = await axios.get("https://recipe.c-910f80f.kyma.ondemand.com/buildings");
+        // let { data } = await axios.get("https://recipe.c-910f80f.kyma.ondemand.com/buildings");
+        let { data } = await axios.get("https://newrecipe.c-910f80f.kyma.ondemand.com/buildings",{ headers: {"Authorization" : `Bearer ${token}`} });
+        console.log("AuthAPIResponse:  "+authAPI+"-->"+data); 
         setBuilding(data);
+        console.log(token);
     }
 
     useEffect(() => {
@@ -43,7 +50,7 @@ export default function Building() {
                                     <td>{item.zone}</td>
                                     <td>{item.cCode}</td>
                                     <td >
-                                        <Link className={ `${style.maincolor} text-decoration-none`} to={`/building/${item.buildingCode}/units`}>Available Units</Link>
+                                        <Link className={`${style.maincolor} text-decoration-none`} to={`/building/${item.buildingCode}/units`}>Available Units</Link>
                                     </td>
                                 </tr>
                             ))}

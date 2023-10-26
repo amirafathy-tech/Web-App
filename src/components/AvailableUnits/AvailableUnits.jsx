@@ -7,11 +7,14 @@ import Details from '../Details/Details';
 
 export default function AvailableUnits() {
 
+    const token=localStorage.getItem('token')
+
     let [unit, setUnit] = useState([]);
     async function getUnit() {
-        let { data } = await axios.get("https://recipe.c-910f80f.kyma.ondemand.com/units");
+        let { data } = await axios.get("https://newrecipe.c-910f80f.kyma.ondemand.com/units",{ headers: {"Authorization" : `Bearer ${token}`} });
         console.log(data);
         setUnit(data);
+        console.log(token);
     }
     useEffect(() => {
         getUnit();
@@ -48,6 +51,12 @@ export default function AvailableUnits() {
                                     <th>Description</th>
                                     <th>Status</th>
                                     <th>Floor</th>
+                                    <th>View</th>
+                                    <th>Blocking-Reason</th>
+                                    <th>Blocking-Date</th>
+                                    <th>Fixture</th>
+                                    <th>Measurements</th>
+                                    <th>Sales</th>
                                     <th>Price</th>
                                     <th>Price-Currency</th>
                                     <th>Measurement-Unit</th>

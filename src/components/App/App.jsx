@@ -20,6 +20,7 @@ import LoginForm from '../LoginForm/LoginForm'
 
 
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import Project from '../Project/Project';
 
 function App() {
   let [listener, setListener] = useState(false)
@@ -33,7 +34,7 @@ function App() {
     console.log("loginData:::"+loginData);
   }
   let navigateLogin = useNavigate();
-  
+
   function logOut() {
     localStorage.removeItem('token');
     setLoginData(null);
@@ -62,13 +63,14 @@ function App() {
 
         {/* Protected Routes  */}
 
-        <Route element={<ProtectedRoute loginData={loginData} />}>
+        {/* <Route element={<ProtectedRoute loginData={loginData} />}> */}
 
           <Route path='building' element={<Building />}></Route>
+          <Route path='project' element={<Project/>}></Route>
           <Route path="/building/:buildingCode/units" element={<AvailableUnits />} />
           <Route path="/unit/:unitNumber/details" element={<Details />} />
 
-        </Route>
+        {/* </Route> */}
 
 
         <Route path='details' element={<Details />}></Route>
