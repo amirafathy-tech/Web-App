@@ -7,14 +7,18 @@ export default function Project() {
 
     let [Project, setProject] = useState([]);
 
-    // async function getProject() {
-    //     let { data } = await axios.get("https://recipe.c-910f80f.kyma.ondemand.com/Projects");
-    //     setProject(data);
-    // }
+    async function getProject() {
+        let { data } = await axios.get("https://bcbf775e-2518-44b8-a2eb-3ff6c0f1b2b1.mock.pstmn.io/project");
+        console.log(data);
+        console.log("project");
+        
+        setProject(data);
+        console.log(Project);
+    }
 
-    // useEffect(() => {
-    //     getProject();
-    // }, []);
+    useEffect(() => {
+        getProject();
+    }, []);
 
     return (
         <>
@@ -29,25 +33,26 @@ export default function Project() {
                         <thead>
                             <tr className={``}>
                                 <th>ID</th>
+                                <th>CompanyCode</th>
+                                <th>CompanyDescription</th>
                                 <th>Description</th>
                                 <th>ValidFrom</th>
                                 <th>Regional Location</th>
                             </tr>
                         </thead>
-                        {/* <tbody>
+                        <tbody>
                             {Project.map((item, id) => (
                                 <tr key={id}>
-                                    <td>{item.buildingCode}</td>
-                                    <td>{item.description}</td>
-                                    <td>{item.type}</td>
-                                    <td>{item.zone}</td>
-                                    <td>{item.cCode}</td>
-                                    <td >
-                                        <Link className={ `${style.maincolor} text-decoration-none`} to={`/building/${item.buildingCode}/units`}>Available Units</Link>
-                                    </td>
+                                    <td>{item.ID}</td>
+                                    <td>{item.companyCode}</td>
+                                    <td>{item.companyDescription}</td>
+                                    <td>{item.Description}</td>
+                                    <td>{item.ValidFrom}</td>
+                                    <td>{item.RegionalLocation}</td>
+                                    
                                 </tr>
                             ))}
-                        </tbody> */}
+                        </tbody>
                     </table>
                 </div>
             </div>

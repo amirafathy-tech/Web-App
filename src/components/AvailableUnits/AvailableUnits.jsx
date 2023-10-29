@@ -3,18 +3,25 @@ import React, { useState, useEffect } from 'react'
 import style from './AvailableUnits.module.css'
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-import Details from '../Details/Details';
+//import Details from '../Details/Details';
 
 export default function AvailableUnits() {
 
-    const token=localStorage.getItem('token')
+    const token = localStorage.getItem('token')
 
     let [unit, setUnit] = useState([]);
+
     async function getUnit() {
-        let { data } = await axios.get("https://newrecipe.c-910f80f.kyma.ondemand.com/units",{ headers: {"Authorization" : `Bearer ${token}`} });
+        // worked authenticated API
+        //let { data } = await axios.get("https://newrecipe.c-910f80f.kyma.ondemand.com/units",{ headers: {"Authorization" : `Bearer ${token}`} });
+
+        let { data } = await axios.get("https://bcbf775e-2518-44b8-a2eb-3ff6c0f1b2b1.mock.pstmn.io/unit");
+
         console.log(data);
         setUnit(data);
-        console.log(token);
+        console.log(unit);
+        //console.log(token);
+
     }
     useEffect(() => {
         getUnit();
@@ -30,8 +37,8 @@ export default function AvailableUnits() {
     //     });
     // };
 
-      // Define a function to handle the click event on the image
-      const handleImageClick = (unitNumber) => {
+    // Define a function to handle the click event on the image
+    const handleImageClick = (unitNumber) => {
         // Navigate to the Details component with the unitNumber as a URL parameter
         navigate(`/unit/${unitNumber}/details`);
     };
@@ -56,52 +63,90 @@ export default function AvailableUnits() {
                                     <th>Blocking-Date</th>
                                     <th>Fixture</th>
                                     <th>Measurements</th>
-                                    <th>Sales</th>
-                                    <th>Price</th>
-                                    <th>Price-Currency</th>
                                     <th>Measurement-Unit</th>
-                                    <th>Size</th>
+                                    <th>measurementValue</th>
+                                    <th>measurementsID</th>
+                                    <th>measurementDescription</th>
+
+                                    <th>Sales</th>
+
+                                    <th>ConstructionDate</th>
+                                    <th>Destination</th>
+                                    <th>Orientation</th>
+                                    <th>builtUpArea</th>
+                                    <th>gardenArea</th>
+                                    <th>NumberRooms</th>
+                                    
+                                    <th>PriceTab</th>
+                                    <th>PricePlan</th>
+                                    <th>Price</th>
+                                    <th>additionalPayment</th>
+                                    <th>conditionCode</th>
+                                    <th>conditionDescription</th>
+                                    
+                                    <th>Amount</th>
                                     <th>Image</th>
                                 </tr>
                             </tbody>
                             <tbody >
-                                {unit.map((item, id) => (
-                                    <tr key={id}>
-                                        <td>{item.unitNumber}</td>
-                                        <td>{item.description}</td>
-                                        <td>{item.status}</td>
-                                        <td>{item.floor}</td>
-                                        <td>{item.priceAmount}</td>
-                                        <td>{item.priceCurr}</td>
-                                        <td>{item.unitOfMeasurement}</td>
-                                        <td>{item.size}</td>
-                                        {/* <td><Details unit={item} /></td> */}
-                                        {/* <td className='text-decoration-none'>
-                                            <Link className='text-decoration-none' to={`/unit/${item.unitNumber}/details`}>Check The Details</Link>
-                                        </td> */}
+                                {unit.length > 0 ? (
+                                    
+                                        unit.map((item, id) => (
 
-                                        <td>
-                                            <button
-                                                className={style.imageButton}
-                                                onClick={() => handleImageClick(item.unitNumber)}
-                                            >
-                                               Check Unit Details
-                                            </button>
-                                        </td>
+                                            <tr key={id}>
+                                                <td>{item.unitNumber}</td>
+                                                <td>{item.description}</td>
+                                                <td>{item.status}</td>
+                                                <td>{item.floor}</td>
+                                                <td>{item.view}</td>
+                                                <td>{item.blockingReason}</td>
+                                                <td>{item.blockingDate}</td>
+                                                <td>{item.fixture}</td>
+                                                <td>{item.measurements}</td>
+                                                <td>{item.unitOfMeasurement}</td>
+
+                                                <td>{item.measurementValue}</td>
+                                                <td>{item.measurementsID}</td>
+                                                <td>{item.measurementsDescription}</td>
+
+                                                <td>{item.sales}</td>
+
+                                                <td>{item.constructionDate}</td>
+                                                <td>{item.destination}</td>
+                                                <td>{item.orientation}</td>
+                                                <td>{item.builtUpArea}</td>
+                                                <td>{item.gardenArea}</td>
+                                                <td>{item.numberOfRooms}</td>
+                                                <td>{item.pricingTab}</td>
+                                                <td>{item.pricePlan}</td>
+                                                <td>{item.price}</td>
+                                                <td>{item.unitAdditionalPayment}</td>
+                                                <td>{item.conditionCode}</td>
+                                                <td>{item.conditionDescription}</td>
+                                                <td>{item.Amount}</td>
 
 
-                                        {/* <td> 
-                                            <button
-                                                className={style.imageButton}
-                                                onClick={() => handleImageClick(item)}
-                                            >
-                                                Check Unit Details
-                                                <img className={style.unitImage} src={item.layoutImage} alt='image' /> 
-                                            </button>
-                                        </td> */}
-                                    </tr>
-                                ))}
+
+
+                                                <td>
+                                                    <button
+                                                        className={style.imageButton}
+                                                        onClick={() => handleImageClick(item.unitNumber)}
+                                                    >
+                                                        Check Unit Details
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    )
+                                    : (
+                                        <tr>
+                                            <td colSpan="15">Loading...</td>
+                                        </tr>
+                                    )}
                             </tbody>
+
+                          
                         </table>
                     </div>
                 </div>
