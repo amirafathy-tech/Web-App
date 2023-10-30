@@ -67,6 +67,8 @@ function App() {
 
           <Route path='building' element={<Building />}></Route>
           <Route path='project' element={<Project/>}></Route>
+
+          <Route path="unit" element={<AvailableUnits />} />
           <Route path="/building/:buildingCode/units" element={<AvailableUnits />} />
           <Route path="/unit/:unitNumber/details" element={<Details />} />
 

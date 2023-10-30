@@ -8,11 +8,16 @@ import { Link, useNavigate } from 'react-router-dom'
 
 
 export default function Login({ setUserData }) {
-
-    const clientID = "77ce79f7-eb2d-421c-ab03-794811bbdbe3"
-    //"9f50a6eb-f310-4cc7-be6b-cbfffb49b623"
-    const clientSecret = "_H7MX2YRj6UE.seBIxX8zEnDGMYTG-DYShZ"
+   
+    // Authenticated variables
+    // const clientID = "77ce79f7-eb2d-421c-ab03-794811bbdbe3"
+    // //"9f50a6eb-f310-4cc7-be6b-cbfffb49b623"
+    // const clientSecret = "_H7MX2YRj6UE.seBIxX8zEnDGMYTG-DYShZ"
     //"]b[dtj5pNc5@R5GndwGMvn0fLkkb?jG"
+
+    // demo authenticated variables
+    const clientID="fc74a36a-d194-4401-ab00-c0c83d2c806f"
+    const clientSecret="2p_H[tazCkYQIt3:=oFZIK4?AkYb4O"
     const url = "https://aey0y39na.trial-accounts.ondemand.com"
 
 

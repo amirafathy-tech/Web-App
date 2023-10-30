@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@mui/icons-material": "^5.14.15",
     "@react-three/drei": "^9.80.9",
     "@react-three/fiber": "^8.13.7",
     "@sap/xsenv": "^4.0.0",
@@ -26,6 +27,7 @@
     "process": "^0.11.10",
     "react": "^18.2.0",
     "react-app-rewired": "^2.2.1",
+    "react-bootstrap": "^2.9.1",
     "react-dom": "^18.2.0",
     "react-icons": "^4.11.0",
     "react-router-dom": "^6.2.1",

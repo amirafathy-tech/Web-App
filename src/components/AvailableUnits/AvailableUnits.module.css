@@ -17,3 +17,13 @@
     background-color: white;
     color:#00ADB5 ;
 }
+.iconButton{
+    background-color:white;
+    border-radius: 7px;
+    border-color: rgb(10, 207, 241);
+    border-width: 3px;
+    padding: 10px;
+}
+.formGroup{
+    margin: 12px;
+}

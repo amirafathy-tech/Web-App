@@ -116,6 +116,17 @@ export default function Navbar() {
                   Building
                 </Link>
               </li>
+
+              <li className="nav-item">
+                <Link
+                  className={`nav-link ${style.link}`}
+                  to="unit"
+                  onClick={handleNavbarToggle}
+                >
+                  Unit
+                </Link>
+              </li>
+
               <li className="nav-item">
                 <Link
                   className={`nav-link ${style.link}`}
