@@ -2,29 +2,46 @@
 import React, { useState, useEffect } from 'react'
 import style from './AvailableUnits.module.css'
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button, Modal } from 'react-bootstrap';
-//import { Delete, Edit } from '@mui/icons-material';
 import { RiDeleteBinLine, RiEditLine } from 'react-icons/ri';
-//import Details from '../Details/Details';
 
 export default function AvailableUnits() {
-
-    const token = localStorage.getItem('token')
-
     let [unit, setUnit] = useState([]);
+    const token = localStorage.getItem('token')
+    const [addMsg, setAddMsg] = useState('');
+    const [updateMsg, setUpdateMsg] = useState('');
+    const [deleteMsg, setDeleteMsg] = useState('');
+    const [selectedUnit, setSelectedUnit] = useState(null);
+
+    // to handle modal for add
+    const [addShow, setaddShow] = useState(false);
+    const handleAddClose = () => setaddShow(false);
+    const handleAddShow = () => setaddShow(true);
+
+    // handle modal for edit
+    const [editshow, seteditShow] = useState(false);
+    const handleEditClose = () => {
+        setSelectedUnit(null);
+        seteditShow(false);
+    };
+    const handleEditShow = () => seteditShow(true);
+    const handleEdit = (unit) => {
+        setSelectedUnit(unit);
+        handleEditShow();
+    };
 
     let [newUnit, setNewUnit] = useState({
-        unitKey: 0,
-        sapUnitID: 0,
-        oldNumber: 0,
+        unitKey: Number,
+        sapUnitID: Number,
+        oldNumber: Number,
         description: '',
         unitType: '',
         usageTypeDescription: '',
         unitStatus: '',
         view: '',
-        floor: 0,
-        toFloor: 0,
+        floor: Number,
+        toFloor: Number,
         blockingReason: '',
         blockingDate: Date,
         fixture: '',
@@ -34,76 +51,192 @@ export default function AvailableUnits() {
         orientation: '',
         builtUpArea: '',
         gardenArea: '',
-        numberOfRooms: 0,
-        measurementValue: 0,
-        measurements: 0,
-        measurementsID: 0,
+        numberOfRooms: Number,
+        measurementValue: Number,
+        measurements: Number,
+        measurementsID: Number,
         measurementsDescription: '',
         unitOfMeasurement: '',
-        pricingTab: 0,
+        pricingTab: Number,
         pricePlan: '',
-        price: 0,
-        unitAdditionalPayment: 0,
+        price: Number,
+        unitAdditionalPayment: Number,
         conditionCode: '',
         conditionDescription: '',
-        amount: 0
+        amount: Number,
     })
 
+    function getFormValue(e) {
+        let myUnit = { ...newUnit }
+        myUnit[e.target.name] = e.target.value
+        setNewUnit(myUnit);// update unit data
+        console.log(myUnit)
+    }
+    // call add Unit API
+    async function submitFormData(e) {
+        e.preventDefault();
+        const options = {
+            method: 'POST',
+            url: "https://demo.c-910f80f.kyma.ondemand.com/units",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            },
+            data: {
+                unitKey: Number(newUnit.unitKey),
+                sapUnitID: Number(newUnit.sapUnitID),
+                oldNumber: Number(newUnit.oldNumber),
+                description: newUnit.description,
+                unitType: newUnit.unitType,
+                usageTypeDescription: newUnit.usageTypeDescription,
+                unitStatus: newUnit.unitStatus,
+                view: newUnit.view,
+                floor: Number(newUnit.floor),
+                toFloor: Number(newUnit.toFloor),
+                blockingReason: newUnit.blockingReason,
+                blockingDate: newUnit.blockingDate,
+                fixture: newUnit.fixture,
+                salesPhase: newUnit.salesPhase,
+                constructionDate: newUnit.constructionDate,
+                destination: newUnit.destination,
+                orientation: newUnit.orientation,
+                builtUpArea: newUnit.builtUpArea,
+                gardenArea: newUnit.gardenArea,
+                numberOfRooms: Number(newUnit.numberOfRooms),
+                measurementValue: Number(newUnit.measurementValue),
+                measurements: Number(newUnit.measurements),
+                measurementsID: Number(newUnit.measurementsID),
+                measurementsDescription: Number(newUnit.measurementsDescription), // number
+                unitOfMeasurement: newUnit.unitOfMeasurement,
+                pricingTab: Number(newUnit.pricingTab),
+                pricePlan: newUnit.pricePlan,
+                price: Number(newUnit.price),
+                unitAdditionalPayment: Number(newUnit.unitAdditionalPayment),
+                conditionCode: newUnit.conditionCode,
+                conditionDescription: newUnit.conditionDescription,
+                amount: Number(newUnit.amount),
+            }
+        };
 
+        const response = await axios(options);
+        console.log(response);
+        if (response.status == 200) {
+            console.log("200")
+            setAddMsg("Your Unit has been added successfully")
+            getUnit()
+        }
+    }
+
+    // call get Unit API
     async function getUnit() {
         // worked authenticated API
-           // let { data } = await axios.get("https://newrecipe.c-910f80f.kyma.ondemand.com/units",{ headers: {"Authorization" : `Bearer ${token}`} });
+        // let { data } = await axios.get("https://newrecipe.c-910f80f.kyma.ondemand.com/units",{ headers: {"Authorization" : `Bearer ${token}`} });
         //worked mock API
-           // let { data } = await axios.get("https://bcbf775e-2518-44b8-a2eb-3ff6c0f1b2b1.mock.pstmn.io/unit");
+        // let { data } = await axios.get("https://bcbf775e-2518-44b8-a2eb-3ff6c0f1b2b1.mock.pstmn.io/unit");
 
-       // demo authentication 
-
-       let { data } = await axios.get("https://demo.c-910f80f.kyma.ondemand.com/units",{ headers: {"Authorization" : `Bearer ${token}`} });
-
+        // demo authentication with new fields
+        let { data } = await axios.get("https://demo.c-910f80f.kyma.ondemand.com/units", { headers: { "Authorization": `Bearer ${token}` } });
         console.log(data);
         setUnit(data);
         console.log(unit);
-        //console.log(token);
-
     }
-    const [show, setShow] = useState(false);
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+
+    // call update API
+    const handleUpdate = async (updatedUnit) => {
+        try {
+            const options = {
+                method: 'PUT',
+                url: `https://demo.c-910f80f.kyma.ondemand.com/units/${updatedUnit.unitKey}`,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+
+                // will change to unit data
+                data: {
+                    unitKey: Number(updatedUnit.unitKey),
+                    sapUnitID: Number(updatedUnit.sapUnitID),
+                    oldNumber: Number(updatedUnit.oldNumber),
+                    description: updatedUnit.description,
+                    unitType: updatedUnit.unitType,
+                    usageTypeDescription: updatedUnit.usageTypeDescription,
+                    unitStatus: updatedUnit.unitStatus,
+                    view: updatedUnit.view,
+                    floor: Number(updatedUnit.floor),
+                    toFloor: Number(updatedUnit.toFloor),
+                    blockingReason: updatedUnit.blockingReason,
+                    blockingDate: updatedUnit.blockingDate,
+                    fixture: updatedUnit.fixture,
+                    salesPhase: updatedUnit.salesPhase,
+                    constructionDate: updatedUnit.constructionDate,
+                    destination: updatedUnit.destination,
+                    orientation: updatedUnit.orientation,
+                    builtUpArea: updatedUnit.builtUpArea,
+                    gardenArea: updatedUnit.gardenArea,
+                    numberOfRooms: Number(updatedUnit.numberOfRooms),
+                    measurementValue: Number(updatedUnit.measurementValue),
+                    measurements: Number(updatedUnit.measurements),
+                    measurementsID: Number(updatedUnit.measurementsID),
+                    measurementsDescription: Number(updatedUnit.measurementsDescription), // number
+                    unitOfMeasurement: updatedUnit.unitOfMeasurement,
+                    pricingTab: Number(updatedUnit.pricingTab),
+                    pricePlan: updatedUnit.pricePlan,
+                    price: Number(updatedUnit.price),
+                    unitAdditionalPayment: Number(updatedUnit.unitAdditionalPayment),
+                    conditionCode: updatedUnit.conditionCode,
+                    conditionDescription: updatedUnit.conditionDescription,
+                    amount: Number(updatedUnit.amount),
+                }
+            };
+
+            const response = await axios(options);
+            console.log(response);
+
+            if (response.status === 200) {
+                console.log('200');
+                setUpdateMsg('Your Unit has been updated successfully');
+                getUnit();
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+
+    // call delete API
+    const handleDelete = async (unitKey) => {
+        try {
+            const options = {
+                method: 'DELETE',
+                url: `https://demo.c-910f80f.kyma.ondemand.com/units/${unitKey}`,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            };
+
+            const response = await axios(options);
+            console.log(response);
+
+            if (response.status === 200) {
+                console.log('200');
+                setDeleteMsg('Your Unit has been Deleted successfully');
+                getUnit();
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
 
     useEffect(() => {
         getUnit();
     }, []);
 
-    // Use the useNavigate hook to programmatically navigate to the Details component
     const navigate = useNavigate();
-
-    // let handleImageClick = (unit) => {
-    //     navigate({
-    //         pathname: `/unit/${unit.unitNumber}/details`,
-    //         state: { unit }
-    //     });
-    // };
-
     // Define a function to handle the click event on the image
     const handleImageClick = (unitNumber) => {
         // Navigate to the Details component with the unitNumber as a URL parameter
         navigate(`/unit/${unitNumber}/details`);
     };
-
-
-    const handleDelete = () => {
-
-        console.log("call api delete");
-    };
-    const handleEdit = () => {
-
-        console.log("call api edit");
-    };
-
-
-
-
 
     return (
         <>
@@ -111,8 +244,6 @@ export default function AvailableUnits() {
 
             <div className={` container m-5`}>
                 <div className={`row`}>
-                  
-
 
                     {/* <div class="col-sm-3 mt-5 mb-4 text-gred">
                         <div className="search">
@@ -128,14 +259,17 @@ export default function AvailableUnits() {
 
 
                     <div className="col-sm-3 offset-sm-1  mt-5 mb-4 text-gred">
-                        <button className={`w-100 ${style.imageButton}`} variant="primary" onClick={handleShow}>
+                        <button className={`w-100 ${style.imageButton}`} variant="primary" onClick={handleAddShow}>
                             Add New Unit
                         </button>
                     </div>
 
                 </div>
-            {/* </div>  */}
-            <div className={`row`}>
+
+
+
+                {deleteMsg ? <div className="alert alert-danger m-3 p-2">{deleteMsg}</div> : ''}
+                <div className={`row`}>
                     <div className='table-responsive m-auto'>
                         <table className={`table table-striped table-hover table-head text-center`}>
                             <tbody>
@@ -171,7 +305,7 @@ export default function AvailableUnits() {
                                     <th>conditionDescription</th> */}
 
                                     <th>Amount</th>
-                                    <th>Image</th>
+                                    {/* <th>Image</th> */}
                                     <th>Actions</th>
                                 </tr>
                             </tbody>
@@ -181,9 +315,9 @@ export default function AvailableUnits() {
                                     unit.map((item, id) => (
 
                                         <tr key={id}>
-                                            <td>{item.unitNumber}</td>
+                                            <td>{item.unitKey}</td>
                                             <td>{item.description}</td>
-                                            <td>{item.status}</td>
+                                            <td>{item.unitStatus}</td>
                                             <td>{item.floor}</td>
                                             <td>{item.view}</td>
                                             <td>{item.blockingReason}</td>
@@ -196,7 +330,7 @@ export default function AvailableUnits() {
                                             <td>{item.measurementsID}</td>
                                             <td>{item.measurementsDescription}</td>
 
-                                            <td>{item.salesPhase}</td> 
+                                            <td>{item.salesPhase}</td>
 
                                             {/* <td>{item.sales}</td> */}
 
@@ -217,28 +351,25 @@ export default function AvailableUnits() {
 
                                             <td>{item.amount}</td>
 
-                                            <td>
+                                            {/* <td>
                                                 <button
                                                     className={style.imageButton}
                                                     onClick={() => handleImageClick(item.unitNumber)}
                                                 >
                                                     Check Unit Details
                                                 </button>
-                                            </td>
+                                            </td> */}
 
 
 
                                             <td>
-                                               {/* <div className='w-50 h-50'> */}
-                                                <button className={style.iconButton} onClick={handleDelete} title="Delete">
+                                                <button className={style.iconButton} onClick={() => handleDelete(item.unitKey)} title="Delete">
                                                     <RiDeleteBinLine style={{ color: 'red' }} />
                                                 </button>
-                                                {/* </div> */}
-                                                {/* <div className='w-50 h-50'> */}
-                                                <button className={style.iconButton} onClick={handleEdit}  title="Edit">
+                                                <button className={style.iconButton} onClick={() => handleEdit(item)} title="Edit">
                                                     <RiEditLine style={{ color: '#10ab80' }} />
                                                 </button>
-                                                {/* </div> */}
+
                                             </td>
                                         </tr>
                                     ))
@@ -254,60 +385,16 @@ export default function AvailableUnits() {
                         </table>
                     </div>
                 </div>
-                {/* </div> */}
+
             </div>
 
 
-            {/* <h2>Search By</h2>
-            <div className="input-gp mb-3">
-                <label htmlFor='value'>Unit View:</label>
-                <input type='text' className='form-control my-2' name='value' placeholder='value...' />
-            </div>
 
-
-            <table class="table table-striped">
-                <thead >  
-                    <tr className={` ${style.headtable} `}>
-                        <th scope="col">Unit</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">View</th>
-                        <th scope="col">Floor</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>1</td>
-                        <td>10000 $</td>
-                        <td>unit 1</td>
-                        <td>1</td>
-                    </tr>
-                    <tr>
-                    <th scope="row">2</th>
-                        <td>2</td>
-                        <td>10000 $</td>
-                        <td>unit 2</td>
-                        <td>2</td>
-                    </tr>
-                    <tr>
-                    <th scope="row">3</th>
-                        <td>3</td>
-                        <td>10000 $</td>
-                        <td>unit 3</td>
-                        <td>3</td>
-                    </tr>
-                 
-                </tbody>
-            </table> */}
-
-
-
-            {/* <!--- Model Box ---> */}
+            {/* <!--- add Model Box ---> */}
             <div className="model_box" style={{ width: 100 }}>
                 <Modal
-                    show={show}
-                    onHide={handleClose}
+                    show={addShow}
+                    onHide={handleAddClose}
                     backdrop="static"
                     keyboard={false}
                 >
@@ -315,119 +402,571 @@ export default function AvailableUnits() {
                         <Modal.Title>Add Unit</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <form>
+                        <form onSubmit={submitFormData}>
                             <div className={`form-group  ${style.formGroup}`}>
-                                <input type="number" name='unitKey' className="form-control" id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter UnitKey" />
+                                <input type="number" name='unitKey' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter UnitKey" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
-                                <input type="number" name='sapUnitID' className="form-control" id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter SAPUnitID" />
+                                <input type="number" name='sapUnitID' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter SAPUnitID" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
-                                <input type="number" name='oldNumber' className="form-control" id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter OldNumber" />
+                                <input type="number" name='oldNumber' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter OldNumber" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
-                                <input type="text" name='description' className="form-control" id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter Unit Description" />
+                                <input type="text" name='description' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter Unit Description" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
-                                <input type="text" name='unitType' className="form-control" id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter Unit Type" />
+                                <input type="text" name='unitType' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter Unit Type" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
-                                <input type="text" name='usageTypeDescription' className="form-control" id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter UsageTypeDescription" />
+                                <input type="text" name='usageTypeDescription' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter UsageTypeDescription" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
-                                <input type="text" name='unitStatus' className="form-control" id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter Unit Status" />
+                                <input type="text" name='unitStatus' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter Unit Status" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
-                                <input type="text" name='view' className="form-control" id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter  View" />
+                                <input type="text" name='view' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter  View" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
-                                <input type="number" name='floor' className="form-control" id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter Floor" />
+                                <input type="number" name='floor' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter Floor" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
-                                <input type="number" name='toFloor' className="form-control" id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter ToFloor" />
+                                <input type="number" name='toFloor' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter ToFloor" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
-                                <input type="text" name='blockingReason' className="form-control" id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter  BlockingReason" />
+                                <input type="text" name='blockingReason' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter  BlockingReason" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
-                                <input type="datetime-local" name='blockingDate' className="form-control" id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter  BlockingDate" />
+
+                                <label htmlFor="exampleInputDate1" className={`${style.datelable}`} >Blocking Date : </label>
+                                <input type="date" name='blockingDate' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter  BlockingDate" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
-                                <input type="text" name='fixture' className="form-control" id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter Fixture" />
+                                <input type="text" name='fixture' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter Fixture" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
-                                <input type="text" name='salesPhase' className="form-control" id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter SalesPhase" />
+                                <input type="text" name='salesPhase' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter SalesPhase" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
-                                <input type="datetime-local" name='constructionDate' className="form-control" id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter  ConstructionDate" />
+
+                                <label htmlFor="exampleInputDate1" className={`${style.datelable}`} >Construction Date : </label>
+                                <input type="date" name='constructionDate' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter  ConstructionDate" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
-                                <input type="text" name='destination' className="form-control" id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter Destination" />
+                                <input type="text" name='destination' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter Destination" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
-                                <input type="text" name='orientation' className="form-control" id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter Orientation" />
+                                <input type="text" name='orientation' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter Orientation" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
-                                <input type="text" name='builtUpArea' className="form-control" id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter BuiltUpArea" />
+                                <input type="text" name='builtUpArea' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter BuiltUpArea" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
-                                <input type="text" name='gardenArea' className="form-control" id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter GardenArea" />
+                                <input type="text" name='gardenArea' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter GardenArea" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
-                                <input type="number" name='numberOfRooms' className="form-control" id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter NumberOfRooms " />
+                                <input type="number" name='numberOfRooms' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter NumberOfRooms " />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
-                                <input type="number" name='measurementValue' className="form-control" id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter MeasurementValue" />
+                                <input type="number" name='measurementValue' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter MeasurementValue" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
-                                <input type="number" name='measurements' className="form-control" id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter Measurements" />
+                                <input type="number" name='measurements' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter Measurements" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
-                                <input type="number" name='measurementsID' className="form-control" id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter MeasurementsID" />
+                                <input type="number" name='measurementsID' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter MeasurementsID" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
-                                <input type="text" name='measurementsDescription' className="form-control" id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter MeasurementsDescription" />
+                                <input type="number" name='measurementsDescription' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter MeasurementsDescription" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
-                                <input type="text" name='unitOfMeasurement' className="form-control" id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter MeasurementUnit" />
+                                <input type="text" name='unitOfMeasurement' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter MeasurementUnit" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
-                                <input type="number" name='pricingTab' className="form-control" id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter PricingTab" />
+                                <input type="number" name='pricingTab' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter PricingTab" />
                             </div>
 
 
                             <div className={`form-group  ${style.formGroup}`}>
-                                <input type="number" name='price' className="form-control" id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter Price" />
+                                <input type="number" name='price' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter Price" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
-                                <input type="number" name='unitAdditionalPayment' className="form-control" id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter UnitAdditionalPayment" />
+                                <input type="number" name='unitAdditionalPayment' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter UnitAdditionalPayment" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
-                                <input type="text" name='conditionCode' className="form-control" id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter ConditionCode" />
+                                <input type="text" name='conditionCode' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter ConditionCode" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
-                                <input type="text" name='conditionDescription' className="form-control" id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter ConditionDescription" />
+                                <input type="text" name='conditionDescription' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter ConditionDescription" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
-                                <input type="number" name='amount' className="form-control" id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter Amount" />
+                                <input type="number" name='amount' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter Amount" />
                             </div>
-
-
 
 
 
                             <button type="submit" className="btn btn-success mt-4">Add Unit</button>
                         </form>
+
+                        {addMsg ? <div className="alert alert-danger m-3 p-2">{addMsg}</div> : ''}
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>
+                        <Button variant="secondary" onClick={handleAddClose}>
                             Close
                         </Button>
 
                     </Modal.Footer>
                 </Modal>
             </div>
+
+
+
+            {/* Render the edit modal */}
+            {selectedUnit && (
+                <Modal show={editshow} onHide={handleEditClose}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Edit Unit</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <form>
+                            <input
+                                type="number"
+                                name="unitKey"
+                                className="form-control m-3"
+                                value={selectedUnit.unitKey}
+                                onChange={(e) =>
+                                    setSelectedUnit({
+                                        ...selectedUnit,
+                                        unitKey: e.target.value,
+                                    })
+                                }
+                                placeholder="Enter UnitKey"
+                            />
+                            <input
+                                type="number"
+                                name="sapUnitID"
+                                className="form-control m-3"
+                                value={selectedUnit.sapUnitID}
+                                onChange={(e) =>
+                                    setSelectedUnit({
+                                        ...selectedUnit,
+                                        sapUnitID: e.target.value,
+                                    })
+                                }
+                                placeholder="Enter SapUnitID"
+                            />
+                            <input
+                                type="number"
+                                name="oldNumber"
+                                className="form-control m-3"
+                                value={selectedUnit.oldNumber}
+                                onChange={(e) =>
+                                    setSelectedUnit({
+                                        ...selectedUnit,
+                                        oldNumber: e.target.value,
+                                    })
+                                }
+                                placeholder="Enter oldNumber"
+                            />
+                            <input
+                                type="text"
+                                name="description"
+                                className="form-control m-3"
+                                value={selectedUnit.description}
+                                onChange={(e) =>
+                                    setSelectedUnit({
+                                        ...selectedUnit,
+                                        description: e.target.value,
+                                    })
+                                }
+                                placeholder="Enter description"
+                            />
+                            <input
+                                type="text"
+                                name="unitType"
+                                className="form-control m-3"
+                                value={selectedUnit.unitType}
+                                onChange={(e) =>
+                                    setSelectedUnit({
+                                        ...selectedUnit,
+                                        unitType: e.target.value,
+                                    })
+                                }
+                                placeholder="Enter unitType"
+                            />
+                            <input
+                                type="text"
+                                name="usageTypeDescription"
+                                className="form-control m-3"
+                                value={selectedUnit.usageTypeDescription}
+                                onChange={(e) =>
+                                    setSelectedUnit({
+                                        ...selectedUnit,
+                                        usageTypeDescription: e.target.value,
+                                    })
+                                }
+                                placeholder="Enter usageTypeDescription"
+                            />
+                            <input
+                                type="text"
+                                name="unitStatus"
+                                className="form-control m-3"
+                                value={selectedUnit.unitStatus}
+                                onChange={(e) =>
+                                    setSelectedUnit({
+                                        ...selectedUnit,
+                                        unitStatus: e.target.value,
+                                    })
+                                }
+                                placeholder="Enter unitStatus"
+                            />
+                            <input
+                                type="text"
+                                name="view"
+                                className="form-control m-3"
+                                value={selectedUnit.view}
+                                onChange={(e) =>
+                                    setSelectedUnit({
+                                        ...selectedUnit,
+                                        view: e.target.value,
+                                    })
+                                }
+                                placeholder="Enter view"
+                            />
+                            <input
+                                type="number"
+                                name="floor"
+                                className="form-control m-3"
+                                value={selectedUnit.floor}
+                                onChange={(e) =>
+                                    setSelectedUnit({
+                                        ...selectedUnit,
+                                        floor: e.target.value,
+                                    })
+                                }
+                                placeholder="Enter floor"
+                            />
+                            <input
+                                type="number"
+                                name="toFloor"
+                                className="form-control m-3"
+                                value={selectedUnit.toFloor}
+                                onChange={(e) =>
+                                    setSelectedUnit({
+                                        ...selectedUnit,
+                                        toFloor: e.target.value,
+                                    })
+                                }
+                                placeholder="Enter toFloor"
+                            />
+                            <input
+                                type="text"
+                                name="blockingReason"
+                                className="form-control m-3"
+                                value={selectedUnit.blockingReason}
+                                onChange={(e) =>
+                                    setSelectedUnit({
+                                        ...selectedUnit,
+                                        blockingReason: e.target.value,
+                                    })
+                                }
+                                placeholder="Enter blockingReason"
+                            />
+
+                            <label htmlFor="exampleInputDate1" className={`${style.datelable}`} >Blocking Date : </label>
+                            <input
+                                type="date"
+                                name="blockingDate"
+                                className="form-control m-3"
+                                value={selectedUnit.blockingDate}
+                                onChange={(e) =>
+                                    setSelectedUnit({
+                                        ...selectedUnit,
+                                        blockingDate: e.target.value,
+                                    })
+                                }
+                                placeholder="Enter blockingDate"
+                            />
+                            <input
+                                type="text"
+                                name="fixture"
+                                className="form-control m-3"
+                                value={selectedUnit.fixture}
+                                onChange={(e) =>
+                                    setSelectedUnit({
+                                        ...selectedUnit,
+                                        fixture: e.target.value,
+                                    })
+                                }
+                                placeholder="Enter fixture"
+                            />
+                            <input
+                                type="text"
+                                name="salesPhase"
+                                className="form-control m-3"
+                                value={selectedUnit.salesPhase}
+                                onChange={(e) =>
+                                    setSelectedUnit({
+                                        ...selectedUnit,
+                                        salesPhase: e.target.value,
+                                    })
+                                }
+                                placeholder="Enter salesPhase"
+                            />
+
+
+                            <label htmlFor="exampleInputDate1" className={`${style.datelable}`} >Construction Date : </label>
+                            <input
+                                type="date"
+                                name="constructionDate"
+                                className="form-control m-3"
+                                value={selectedUnit.constructionDate}
+                                onChange={(e) =>
+                                    setSelectedUnit({
+                                        ...selectedUnit,
+                                        constructionDate: e.target.value,
+                                    })
+                                }
+                                placeholder="Enter constructionDate"
+                            />
+                            <input
+                                type="text"
+                                name="destination"
+                                className="form-control m-3"
+                                value={selectedUnit.destination}
+                                onChange={(e) =>
+                                    setSelectedUnit({
+                                        ...selectedUnit,
+                                        destination: e.target.value,
+                                    })
+                                }
+                                placeholder="Enter destination"
+                            />
+                            <input
+                                type="text"
+                                name="orientation"
+                                className="form-control m-3"
+                                value={selectedUnit.orientation}
+                                onChange={(e) =>
+                                    setSelectedUnit({
+                                        ...selectedUnit,
+                                        orientation: e.target.value,
+                                    })
+                                }
+                                placeholder="Enter orientation"
+                            />
+                            <input
+                                type="text"
+                                name="builtUpArea"
+                                className="form-control m-3"
+                                value={selectedUnit.builtUpArea}
+                                onChange={(e) =>
+                                    setSelectedUnit({
+                                        ...selectedUnit,
+                                        builtUpArea: e.target.value,
+                                    })
+                                }
+                                placeholder="Enter builtUpArea"
+                            />
+                            <input
+                                type="text"
+                                name="gardenArea"
+                                className="form-control m-3"
+                                value={selectedUnit.gardenArea}
+                                onChange={(e) =>
+                                    setSelectedUnit({
+                                        ...selectedUnit,
+                                        gardenArea: e.target.value,
+                                    })
+                                }
+                                placeholder="Enter gardenArea"
+                            />
+                            <input
+                                type="number"
+                                name="numberOfRooms"
+                                className="form-control m-3"
+                                value={selectedUnit.numberOfRooms}
+                                onChange={(e) =>
+                                    setSelectedUnit({
+                                        ...selectedUnit,
+                                        numberOfRooms: e.target.value,
+                                    })
+                                }
+                                placeholder="Enter numberOfRooms"
+                            />
+                            <input
+                                type="number"
+                                name="measurementValue"
+                                className="form-control m-3"
+                                value={selectedUnit.measurementValue}
+                                onChange={(e) =>
+                                    setSelectedUnit({
+                                        ...selectedUnit,
+                                        measurementValue: e.target.value,
+                                    })
+                                }
+                                placeholder="Enter measurementValue"
+                            />
+                            <input
+                                type="number"
+                                name="measurements"
+                                className="form-control m-3"
+                                value={selectedUnit.measurements}
+                                onChange={(e) =>
+                                    setSelectedUnit({
+                                        ...selectedUnit,
+                                        measurements: e.target.value,
+                                    })
+                                }
+                                placeholder="Enter measurements"
+                            />
+                            <input
+                                type="number"
+                                name="measurementsID"
+                                className="form-control m-3"
+                                value={selectedUnit.measurementsID}
+                                onChange={(e) =>
+                                    setSelectedUnit({
+                                        ...selectedUnit,
+                                        measurementsID: e.target.value,
+                                    })
+                                }
+                                placeholder="Enter measurementsID"
+                            />
+                            <input
+                                type="number"
+                                name="measurementsDescription"
+                                className="form-control m-3"
+                                value={selectedUnit.measurementsDescription}
+                                onChange={(e) =>
+                                    setSelectedUnit({
+                                        ...selectedUnit,
+                                        measurementsDescription: e.target.value,
+                                    })
+                                }
+                                placeholder="Enter measurementsDescription"
+                            />
+                            <input
+                                type="text"
+                                name="unitOfMeasurement"
+                                className="form-control m-3"
+                                value={selectedUnit.unitOfMeasurement}
+                                onChange={(e) =>
+                                    setSelectedUnit({
+                                        ...selectedUnit,
+                                        unitOfMeasurement: e.target.value,
+                                    })
+                                }
+                                placeholder="Enter unitOfMeasurement"
+                            />
+                            <input
+                                type="number"
+                                name="pricingTab"
+                                className="form-control m-3"
+                                value={selectedUnit.pricingTab}
+                                onChange={(e) =>
+                                    setSelectedUnit({
+                                        ...selectedUnit,
+                                        pricingTab: e.target.value,
+                                    })
+                                }
+                                placeholder="Enter pricingTab"
+                            />
+                            <input
+                                type="text"
+                                name="pricePlan"
+                                className="form-control m-3"
+                                value={selectedUnit.pricePlan}
+                                onChange={(e) =>
+                                    setSelectedUnit({
+                                        ...selectedUnit,
+                                        pricePlan: e.target.value,
+                                    })
+                                }
+                                placeholder="Enter pricePlan"
+                            />
+                            <input
+                                type="number"
+                                name="price"
+                                className="form-control m-3"
+                                value={selectedUnit.price}
+                                onChange={(e) =>
+                                    setSelectedUnit({
+                                        ...selectedUnit,
+                                        price: e.target.value,
+                                    })
+                                }
+                                placeholder="Enter price"
+                            />
+                            <input
+                                type="number"
+                                name="unitAdditionalPayment"
+                                className="form-control m-3"
+                                value={selectedUnit.unitAdditionalPayment}
+                                onChange={(e) =>
+                                    setSelectedUnit({
+                                        ...selectedUnit,
+                                        unitAdditionalPayment: e.target.value,
+                                    })
+                                }
+                                placeholder="Enter unitAdditionalPayment"
+                            />
+                            <input
+                                type="text"
+                                name="conditionCode"
+                                className="form-control m-3"
+                                value={selectedUnit.conditionCode}
+                                onChange={(e) =>
+                                    setSelectedUnit({
+                                        ...selectedUnit,
+                                        conditionCode: e.target.value,
+                                    })
+                                }
+                                placeholder="Enter conditionCode"
+                            />
+                            <input
+                                type="text"
+                                name="conditionDescription"
+                                className="form-control m-3"
+                                value={selectedUnit.conditionDescription}
+                                onChange={(e) =>
+                                    setSelectedUnit({
+                                        ...selectedUnit,
+                                        conditionDescription: e.target.value,
+                                    })
+                                }
+                                placeholder="Enter conditionDescription"
+                            />
+
+                            <input
+                                type="number"
+                                name="amount"
+                                className="form-control m-3"
+                                value={selectedUnit.amount}
+                                onChange={(e) =>
+                                    setSelectedUnit({
+                                        ...selectedUnit,
+                                        amount: e.target.value,
+                                    })
+                                }
+                                placeholder="Enter Amount"
+                            />
+
+                        </form>
+
+                        {updateMsg ? <div className="alert alert-danger m-3 p-2">{updateMsg}</div> : ''}
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleEditClose}>
+                            Close
+                        </Button>
+                        <Button variant="primary" onClick={() => handleUpdate(selectedUnit)}>
+                            Update
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+            )}
 
         </>
     )

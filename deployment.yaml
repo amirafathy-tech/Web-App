@@ -6,7 +6,7 @@ metadata:
   labels:
     app: react
     kyma-grafana: enabled
-  name: react-deployment
+  name: app-deployment
 spec:
   replicas: 3
   selector:
@@ -21,8 +21,8 @@ spec:
         kyma-grafana: enabled
     spec:
       containers:
-        - image: amirafathy/app
-          name: new-container
+        - image: amirafathy/image4
+          name: container4
           ports:
             - containerPort: 3000
           envFrom:
@@ -37,7 +37,7 @@ metadata:
   creationTimestamp: null
   labels:
     app: react
-  name: react-service
+  name: service4
 spec:
   ports:
     - port: 3000

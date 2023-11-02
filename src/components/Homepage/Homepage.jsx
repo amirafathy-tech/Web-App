@@ -6,11 +6,11 @@ export default function Homepage(props) {
 
     return (
         <>
-            <div className={`text-center ${style.header} `}>
-                Use the + or the - keys to zoom and the arrow keys to move
+            <div className={` row text-center ${style.header} `}>
+               <h2 className='text-center'>Use the + or the - keys to zoom and the arrow keys to move</h2>
             </div>
 
-            <div className={`${style.viewer}`}>
+            <div className={`row ${style.viewer}`}>
                 {
                     <BoxScene />
                 }

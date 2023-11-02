@@ -27,3 +27,8 @@
 .formGroup{
     margin: 12px;
 }
+.datelable{
+    font-size: large;
+  color: green;
+  margin: 4px;
+}

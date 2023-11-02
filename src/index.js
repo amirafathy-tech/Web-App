@@ -1,16 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-//import '../config-overrides.js'
 import App from './components/App/App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import axios from 'axios';
-//import xsenv from '@sap/xsenv'; // Import xsenv
-// require.resolve("path-browserify") 
-// require.resolve("stream-browserify") 
-// require.resolve("buffer/")
+
 
 import {BrowserRouter} from 'react-router-dom'
 

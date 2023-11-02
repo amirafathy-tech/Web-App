@@ -12,15 +12,18 @@ import About from '../About/About';
 import Building from '../Building/Building';
 import jwtDecode from 'jwt-decode';
 
-import video from '../../images/bg-video.mp4'
-import backgroundImg from '../../images/imageback.jpeg'
-import background from '../../images/background.jpg'
-import Login from '../Login/Login';
+// import video from '../../images/bg-video.mp4'
+// import backgroundImg from '../../images/imageback.jpeg'
+// import background from '../../images/background.jpg'
+// import Login from '../Login/Login';
 import LoginForm from '../LoginForm/LoginForm'
 
 
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import Project from '../Project/Project';
+import Payment from '../Payment/Payment';
+
+import Test from '../Project/Test';
 
 function App() {
   let [listener, setListener] = useState(false)
@@ -66,7 +69,9 @@ function App() {
         <Route element={<ProtectedRoute loginData={loginData} />}>
 
           <Route path='building' element={<Building />}></Route>
-          <Route path='project' element={<Project/>}></Route>
+          {/* <Route path='project' element={<Project/>}></Route> */}
+          <Route path='project' element={<Test/>}></Route>
+          <Route path='payment' element={<Payment/>}></Route>
 
           <Route path="unit" element={<AvailableUnits />} />
           <Route path="/building/:buildingCode/units" element={<AvailableUnits />} />

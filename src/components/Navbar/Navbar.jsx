@@ -127,13 +127,22 @@ export default function Navbar() {
                 </Link>
               </li>
 
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <Link
                   className={`nav-link ${style.link}`}
                   to="newdevelopment"
                   onClick={handleNavbarToggle}
                 >
                   New Development
+                </Link>
+              </li> */}
+               <li className="nav-item">
+                <Link
+                  className={`nav-link ${style.link}`}
+                  to="payment"
+                  onClick={handleNavbarToggle}
+                >
+                  Payment
                 </Link>
               </li>
             </ul>

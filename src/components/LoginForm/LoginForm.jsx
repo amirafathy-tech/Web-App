@@ -5,7 +5,7 @@ import Joi from 'joi'
 import React, { useState } from 'react'
 import style from './LoginForm.module.css';
 import { Link, useNavigate } from 'react-router-dom'
-
+import {encode} from 'base-64';
 
 export default function Login({ setUserData }) {
    
@@ -15,9 +15,18 @@ export default function Login({ setUserData }) {
     // const clientSecret = "_H7MX2YRj6UE.seBIxX8zEnDGMYTG-DYShZ"
     //"]b[dtj5pNc5@R5GndwGMvn0fLkkb?jG"
 
-    // demo authenticated variables
-    const clientID="fc74a36a-d194-4401-ab00-c0c83d2c806f"
-    const clientSecret="2p_H[tazCkYQIt3:=oFZIK4?AkYb4O"
+    // // demo authenticated variables
+    // const clientID="fc74a36a-d194-4401-ab00-c0c83d2c806f"
+    // const clientSecret="2p_H[tazCkYQIt3:=oFZIK4?AkYb4O"
+    // const url = "https://aey0y39na.trial-accounts.ondemand.com"
+
+
+
+
+
+    // demoo with search authenticated variables
+    const clientID="5188fd8d-dfeb-488d-aa4e-feeecd76e39e"
+    const clientSecret="z7gYrr9X/BGfr67aa4K1ujXZP9r_lAp"
     const url = "https://aey0y39na.trial-accounts.ondemand.com"
 
 
@@ -93,29 +102,25 @@ export default function Login({ setUserData }) {
             });
 
                const clientid = clientID
-              const auth = "Basic " + Buffer.from(clientid + ':' + clientSecret).toString("base64");
+               
+              //const auth = "Basic " + Buffer.from(clientid + ':' + clientSecret).toString("base64");
+
+              const auth = "Basic " + encode(clientid + ':' + clientSecret);;
             let config = {
                 method: 'post',
                 maxBodyLength: Infinity,
                 url: 'https://cors-anywhere.herokuapp.com/https://aey0y39na.trial-accounts.ondemand.com/oauth2/token',
                 headers: {
                     'Authorization': auth,
-                    //'Basic NzdjZTc5ZjctZWIyZC00MjFjLWFiMDMtNzk0ODExYmJkYmUzOl9IN01YMllSajZVRS5zZUJJeFg4ekVuREdNWVRHLURZU2ha',
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 data: data
             };
 
-            //const response=axios.request(config)
             const response = await axios(config);
             console.log(response);
             console.log("response");
-                // .then((response) => {
-                //     console.log(JSON.stringify(response.data));
-                // })
-                // .catch((error) => {
-                //     console.log(error);
-                // });
+          
 
 
             //if (response.statusText == "OK") {

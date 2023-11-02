@@ -17,12 +17,6 @@ function Load() {
   </div>
 }
 
-
-
-
-
-
-
 function Scene1() {
   const gltf = useLoader(GLTFLoader, '/master.glb', loader => {
     loader.manager.onLoad = () => { global.setDisplay(true) }
@@ -73,8 +67,10 @@ function BoxScene(props) {
     <>
 
       <Load />
+      {/* <div className='main text-center' style={{ height: "100vh" }}> */}
       <div className='main text-center' style={{ height: "100vh" }}>
-        <Canvas shadows flat dpr={[1, 2]} camera={{ zoom: 1, fov: 25, position: object.position }}>
+        {/* <Canvas shadows flat dpr={[1, 2]} camera={{ zoom: 1, fov: 25, position: object.position }}> */}
+        <Canvas shadows flat dpr={[1, 2]} camera={{ zoom: 1, fov: 25, position: object.position }} style={{ height: "100%" }}>
           <ambientLight intensity={0.8} />
           <color attach="background" args={['#00ADB5']} />
           <directionalLight position={[64.19672, 11.82403, 11.82403]} intensity={3} color="yellow" />
@@ -95,7 +91,5 @@ function BoxScene(props) {
     </>
   )
 }
-
-
 
 export default BoxScene
