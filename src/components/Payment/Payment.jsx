@@ -58,7 +58,7 @@ export default function Payment() {
 
         const options = {
             method: 'POST',
-            url: "https://demo.c-910f80f.kyma.ondemand.com/paymentplans",
+            url: "https://demoo.c-910f80f.kyma.ondemand.com/paymentplans",
             headers: {
                 "Authorization": `Bearer ${token}`
             },
@@ -117,7 +117,7 @@ export default function Payment() {
         // let { data } = await axios.get("https://bcbf775e-2518-44b8-a2eb-3ff6c0f1b2b1.mock.pstmn.io/Payment");
 
         // demo authentication with new fields
-        let { data } = await axios.get("https://demo.c-910f80f.kyma.ondemand.com/paymentplans", { headers: { "Authorization": `Bearer ${token}` } });
+        let { data } = await axios.get("https://demoo.c-910f80f.kyma.ondemand.com/paymentplans", { headers: { "Authorization": `Bearer ${token}` } });
         console.log(data);
         console.log("Payment");
         setPayment(data);
@@ -134,7 +134,7 @@ export default function Payment() {
         try {
             const options = {
                 method: 'PUT',
-                url: `https://demo.c-910f80f.kyma.ondemand.com/paymentplans/${updatedPayment.paymentPlanCode}`,
+                url: `https://demoo.c-910f80f.kyma.ondemand.com/paymentplans/${updatedPayment.paymentPlanCode}`,
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
@@ -182,7 +182,7 @@ export default function Payment() {
         try {
             const options = {
                 method: 'DELETE',
-                url: `https://demo.c-910f80f.kyma.ondemand.com/paymentplans/${paymentPlanCode}`,
+                url: `https://demoo.c-910f80f.kyma.ondemand.com/paymentplans/${paymentPlanCode}`,
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },

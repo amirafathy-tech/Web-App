@@ -13,7 +13,7 @@ export default function AvailableUnits() {
     const [updateMsg, setUpdateMsg] = useState('');
     const [deleteMsg, setDeleteMsg] = useState('');
     const [selectedUnit, setSelectedUnit] = useState(null);
-
+    const [searchTerm, setSearchTerm] = useState('');
     // to handle modal for add
     const [addShow, setaddShow] = useState(false);
     const handleAddClose = () => setaddShow(false);
@@ -77,7 +77,7 @@ export default function AvailableUnits() {
         e.preventDefault();
         const options = {
             method: 'POST',
-            url: "https://demo.c-910f80f.kyma.ondemand.com/units",
+            url: "https://demoo.c-910f80f.kyma.ondemand.com/units",
             headers: {
                 "Authorization": `Bearer ${token}`
             },
@@ -134,7 +134,8 @@ export default function AvailableUnits() {
         // let { data } = await axios.get("https://bcbf775e-2518-44b8-a2eb-3ff6c0f1b2b1.mock.pstmn.io/unit");
 
         // demo authentication with new fields
-        let { data } = await axios.get("https://demo.c-910f80f.kyma.ondemand.com/units", { headers: { "Authorization": `Bearer ${token}` } });
+
+        let { data } = await axios.get("https://demoo.c-910f80f.kyma.ondemand.com/units", { headers: { "Authorization": `Bearer ${token}` } });
         console.log(data);
         setUnit(data);
         console.log(unit);
@@ -146,7 +147,7 @@ export default function AvailableUnits() {
         try {
             const options = {
                 method: 'PUT',
-                url: `https://demo.c-910f80f.kyma.ondemand.com/units/${updatedUnit.unitKey}`,
+                url: `https://demoo.c-910f80f.kyma.ondemand.com/units/${updatedUnit.unitKey}`,
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
@@ -207,7 +208,7 @@ export default function AvailableUnits() {
         try {
             const options = {
                 method: 'DELETE',
-                url: `https://demo.c-910f80f.kyma.ondemand.com/units/${unitKey}`,
+                url: `https://demoo.c-910f80f.kyma.ondemand.com/units/${unitKey}`,
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
@@ -245,14 +246,16 @@ export default function AvailableUnits() {
             <div className={` container m-5`}>
                 <div className={`row`}>
 
-                    {/* <div class="col-sm-3 mt-5 mb-4 text-gred">
-                        <div className="search">
-                            <form className="form-inline">
-                                <input className="form-control mr-sm-2" type="search" placeholder="Search Unit" aria-label="Search" />
-
-                            </form>
-                        </div>
-                    </div> */}
+                {/* Search Bar */}
+            {/* <div className="col-sm-12 col-md-4 mt-5 mb-4 text-gred">
+              <input
+                className={`${style.searchInput}`}
+                type="search"
+                placeholder="Search for a project "
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div> */}
 
 
                     <div className={`col-sm-3 offset-sm-2 mt-5 mb-4 text-gred ${style.maincolor}`}><h2><b>Unit Details</b></h2></div>
