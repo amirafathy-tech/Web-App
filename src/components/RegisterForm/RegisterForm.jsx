@@ -8,8 +8,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { encode } from 'base-64';
 
 export default function Register() {
-    const clientID = "2ed00dd1-8ea0-4a79-b94d-a55ddf8d5e3c"
-    const clientSecret = "j]U:-L76L-rN_k1YxQ2S7uBNAD4[:?yM"
+    // const clientID = "2ed00dd1-8ea0-4a79-b94d-a55ddf8d5e3c"
+    // const clientSecret = "j]U:-L76L-rN_k1YxQ2S7uBNAD4[:?yM"
     let [user, setUser] = useState({
         value: '',
         familyName: '',
@@ -51,7 +51,16 @@ export default function Register() {
 
             // curl command
             const qs = require('qs');
-            let data = qs.stringify({
+            // let data = qs.stringify({
+            //     //'grant_type': 'password',
+            //     'value': user.value,
+            //     'familyName': user.familyName,
+            //     'givenName': user.givenName,
+            //     'userName': user.userName
+
+
+            // });
+            let data = {
                 //'grant_type': 'password',
                 'value': user.value,
                 'familyName': user.familyName,
@@ -59,24 +68,23 @@ export default function Register() {
                 'userName': user.userName
 
 
-            });
+            };
 
-            const clientid = clientID
-            const username = 'c75aa7fe-9869-4e24-9144-531b6eb59974'
-            const password = '@kzymnQBmJKfpHLxwr35QqSHkYRttBmoKp'
-            const auth = "Basic " + encode(clientid + ':' + clientSecret);
+            // const clientid = clientID
+            // const username = 'c75aa7fe-9869-4e24-9144-531b6eb59974'
+            // const password = '@kzymnQBmJKfpHLxwr35QqSHkYRttBmoKp'
+            // const auth = "Basic " + encode(clientid + ':' + clientSecret);
             // const auth = "Basic " + encode(username + ':' + password);
 
 
             let config = {
                 method: 'POST',
                 maxBodyLength: Infinity,
-                url: 'https://demoo.c-78984ef.kyma.ondemand.com/iasUsers',
-                //'https://cors-anywhere.herokuapp.com/https://aey0y39na.trial-accounts.ondemand.com/service/scim/Users',
-                // headers: {
-                //     'Authorization': auth,
-                //     'Content-Type': 'application/scim+json'
-                // },
+                url: 'https://demooo.c-78984ef.kyma.ondemand.com/iasUsers',
+                headers: {
+                   // 'Authorization': auth,
+                    'Content-Type': 'application/json'
+                },
                 data: data
             };
 
@@ -86,7 +94,7 @@ export default function Register() {
 
             //if (response.statusText == "OK") {
             if (response) {
-                //console.log("okkkk");
+                 console.log("okkkk here");
                 //localStorage.setItem('token', response.data.access_token); /// Step 1
                 console.log(response.data)
                 // localStorage.setItem('token', response.data.id_token); /// Step 1

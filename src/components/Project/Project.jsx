@@ -506,28 +506,38 @@ export default function Project() {
                                 <Modal.Body>
                                     <form onSubmit={submitFormData}>
                                         <div className={`form-group  ${style.formGroup}`}>
+
+                                        <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Project ID: </label>
                                             <input type="number" name='projectID' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter ProjectID" />
                                         </div>
                                         <div className={`form-group  ${style.formGroup}`}>
+                                            
+                                        <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Company Code: </label>
                                             <input type="number" name='companyCodeID' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter CompanyCodeID" />
                                         </div>
 
                                         <div className={`form-group  ${style.formGroup}`}>
+
+                                        <label htmlFor="exampleInputText1" className={`${style.lable}`} >Company Description: </label>
                                             <input type="text" name='companyCodeDescription' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter CompanyCodeDescription" />
                                         </div>
                                         <div className={`form-group  ${style.formGroup}`}>
+
+                                        <label htmlFor="exampleInputText1" className={`${style.lable}`} >Project Description: </label>
                                             <input type="text" name='projectDescription' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter ProjectDescription" />
                                         </div>
 
                                         <div className={`form-group  ${style.formGroup}`}>
 
-                                        <label htmlFor="exampleInputDate1" className={`${style.datelable}`} >ValidFrom Date : </label>
+                                        <label htmlFor="exampleInputDate1" className={`${style.lable}`} >ValidFrom Date : </label>
                                             <input type="date" name='validFrom' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter ValidFromDate" />
                                         </div>
                                         <div className={`form-group  ${style.formGroup}`}>
+
+                                        <label htmlFor="exampleInputText1" className={`${style.lable}`} >Regional Location: </label>
                                             <input type="text" name='regionalLocation' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter RegionalLocation" />
                                         </div>
-                                        <button type="submit" className="btn btn-success mt-4">Add Project</button>
+                                        <button type="submit" className={`w-100 ${style.imageButton}`}>Add Project</button>
                                     </form>
 
                                     {addMsg ? <div className="alert alert-danger m-3 p-2">{addMsg}</div> : ''}

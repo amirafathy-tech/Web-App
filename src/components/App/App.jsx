@@ -5,7 +5,7 @@ import Details from '../Details/Details';
 import Home from '../Homepage/Homepage'
 import style from './App.module.css';
 import React from 'react';
-import { useState ,useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom'
 import AvailableUnits from '../AvailableUnits/AvailableUnits';
 import About from '../About/About';
@@ -27,14 +27,14 @@ import Test from '../Project/Test';
 
 function App() {
   let [listener, setListener] = useState(false)
-
   let [loginData, setLoginData] = useState(null);/// Step 2
 
   function setUserData() {  /// Step 3
     let token = localStorage.getItem('token');
     let decodedToken = jwtDecode(token);//hold object that returned from token after decoding
     setLoginData(decodedToken);
-    console.log("loginData:::"+loginData);
+    console.log("loginData:::");
+    console.log(loginData);
   }
   let navigateLogin = useNavigate();
 
@@ -52,17 +52,20 @@ function App() {
 
     <div className={style.App}>
 
-      <Navbar />
-      <Routes>
+      {/* <Navbar /> */}
 
-        <Route path='/' element={<Home setListener={setListener} listener={listener} />}></Route>
+      <Navbar loginData={loginData} logOut={logOut} />
+      <Routes>
+        {/* 
+        <Route path='/' element={<Home setListener={setListener} listener={listener} />}></Route> */}
+
+        <Route path='/' element={<LoginForm />}></Route>
 
         <Route path='register' element={<RegisterForm />}></Route>
-        <Route path='login' element={<LoginForm setUserData={setUserData}/>}></Route>
-
-        <Route path='home' element={<Home setListener={setListener} listener={listener} />}></Route>
+        <Route path='login' element={<LoginForm setUserData={setUserData} />}></Route>
+{/* 
+        <Route path='home' element={<Home setListener={setListener} listener={listener} />}></Route> */}
         <Route path='about' element={<About />}></Route>
-
 
         {/* Protected Routes  */}
 
@@ -70,9 +73,10 @@ function App() {
 
           <Route path='building' element={<Building />}></Route>
           {/* <Route path='project' element={<Project/>}></Route> */}
-          <Route path='project' element={<Test/>}></Route>
-          <Route path='payment' element={<Payment/>}></Route>
+          <Route path='project' element={<Test />}></Route>
+          <Route path='payment' element={<Payment />}></Route>
 
+          <Route path='home' element={<Home setListener={setListener} listener={listener} />}></Route>
           <Route path="unit" element={<AvailableUnits />} />
           <Route path="/building/:buildingCode/units" element={<AvailableUnits />} />
           <Route path="/unit/:unitNumber/details" element={<Details />} />

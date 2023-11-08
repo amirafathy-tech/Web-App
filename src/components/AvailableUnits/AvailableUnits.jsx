@@ -7,9 +7,10 @@ import { Button, Modal } from 'react-bootstrap';
 import { RiDeleteBinLine, RiEditLine } from 'react-icons/ri';
 
 export default function AvailableUnits() {
-    const BasicURL='https://demo.c-78984ef.kyma.ondemand.com'
+    const BasicURL = 'https://demooo.c-78984ef.kyma.ondemand.com'
     let [unit, setUnit] = useState([]);
     const token = localStorage.getItem('token')
+    let [errorMsg, setErrorMsg] = useState('');
     const [addMsg, setAddMsg] = useState('');
     const [updateMsg, setUpdateMsg] = useState('');
     const [deleteMsg, setDeleteMsg] = useState('');
@@ -125,6 +126,10 @@ export default function AvailableUnits() {
             console.log("200")
             setAddMsg("Your Unit has been added successfully")
             getUnit()
+        }
+        else{
+            console.log("error");
+            setErrorMsg(response);
         }
     }
 
@@ -410,12 +415,9 @@ export default function AvailableUnits() {
                                     )}
 
                             </tbody>
-
-
                         </table>
                     </div>
                 </div>
-
             </div>
 
 
@@ -431,111 +433,175 @@ export default function AvailableUnits() {
                     <Modal.Header closeButton>
                         <Modal.Title>Add Unit</Modal.Title>
                     </Modal.Header>
+
+                    {errorMsg ? <div className="alert alert-danger p-2">{errorMsg}</div> : ''}
                     <Modal.Body>
                         <form onSubmit={submitFormData}>
-                            <div className={`form-group  ${style.formGroup}`}>
-                                <input type="number" name='unitKey' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter UnitKey" />
-                            </div>
-                            <div className={`form-group  ${style.formGroup}`}>
-                                <input type="number" name='sapUnitID' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter SAPUnitID" />
-                            </div>
-                            <div className={`form-group  ${style.formGroup}`}>
-                                <input type="number" name='oldNumber' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter OldNumber" />
-                            </div>
-                            <div className={`form-group  ${style.formGroup}`}>
-                                <input type="text" name='description' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter Unit Description" />
-                            </div>
-                            <div className={`form-group  ${style.formGroup}`}>
-                                <input type="text" name='unitType' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter Unit Type" />
-                            </div>
-                            <div className={`form-group  ${style.formGroup}`}>
-                                <input type="text" name='usageTypeDescription' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter UsageTypeDescription" />
-                            </div>
-                            <div className={`form-group  ${style.formGroup}`}>
-                                <input type="text" name='unitStatus' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter Unit Status" />
-                            </div>
-                            <div className={`form-group  ${style.formGroup}`}>
-                                <input type="text" name='view' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter  View" />
-                            </div>
-                            <div className={`form-group  ${style.formGroup}`}>
-                                <input type="number" name='floor' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter Floor" />
-                            </div>
-                            <div className={`form-group  ${style.formGroup}`}>
-                                <input type="number" name='toFloor' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter ToFloor" />
-                            </div>
-                            <div className={`form-group  ${style.formGroup}`}>
-                                <input type="text" name='blockingReason' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter  BlockingReason" />
+                            {/* <div class="form-floating mb-3">
+                                <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" />
+                                <label className={style.label} for="floatingInput">Email address</label>
+                            </div> */}
+                            <div className={`form-group ${style.formGroup}`}>
+
+                                <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Unit Key: </label>
+                                <input type="number" name='unitKey' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" />
+                                {/* <label className={style.label} htmlFor="floatingInput">Unit Key</label> */}
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
 
-                                <label htmlFor="exampleInputDate1" className={`${style.datelable}`} >Blocking Date : </label>
+                                <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Unit SAPID: </label>
+                                <input type="number" name='sapUnitID' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter SAPUnitID" />
+                            </div>
+                            <div className={`form-group  ${style.formGroup}`}>
+
+                                <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Old Number: </label>
+                                <input type="number" name='oldNumber' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter OldNumber" />
+                            </div>
+                            <div className={`form-group  ${style.formGroup}`}>
+
+                                <label htmlFor="exampleInputText1" className={`${style.lable}`} >Description: </label>
+                                <input type="text" name='description' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter Unit Description" />
+                            </div>
+                            <div className={`form-group  ${style.formGroup}`}>
+
+                                <label htmlFor="exampleInputText1" className={`${style.lable}`} >Unit Type: </label>
+                                <input type="text" name='unitType' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter Unit Type" />
+                            </div>
+                            <div className={`form-group  ${style.formGroup}`}>
+
+                                <label htmlFor="exampleInputText1" className={`${style.lable}`} >Usage Type Description: </label>
+                                <input type="text" name='usageTypeDescription' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter UsageTypeDescription" />
+                            </div>
+                            <div className={`form-group  ${style.formGroup}`}>
+
+                                <label htmlFor="exampleInputText1" className={`${style.lable}`} >Unit Status: </label>
+                                <input type="text" name='unitStatus' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter Unit Status" />
+                            </div>
+                            <div className={`form-group  ${style.formGroup}`}>
+
+                                <label htmlFor="exampleInputText1" className={`${style.lable}`} >View: </label>
+                                <input type="text" name='view' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter  View" />
+                            </div>
+                            <div className={`form-group  ${style.formGroup}`}>
+
+                                <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Floor: </label>
+                                <input type="number" name='floor' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter Floor" />
+                            </div>
+                            <div className={`form-group  ${style.formGroup}`}>
+
+                                <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >To Floor: </label>
+                                <input type="number" name='toFloor' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter ToFloor" />
+                            </div>
+                            <div className={`form-group  ${style.formGroup}`}>
+
+                                <label htmlFor="exampleInputDate1" className={`${style.lable}`} >Blocking Date : </label>
                                 <input type="date" name='blockingDate' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter  BlockingDate" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
+
+                                <label htmlFor="exampleInputText1" className={`${style.lable}`} >Blocking Reason: </label>
+                                <input type="text" name='blockingReason' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter  BlockingReason" />
+                            </div>
+
+                            <div className={`form-group  ${style.formGroup}`}>
+
+                            <label htmlFor="exampleInputText1" className={`${style.lable}`} >Fixture: </label>
                                 <input type="text" name='fixture' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter Fixture" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
+
+                            <label htmlFor="exampleInputText1" className={`${style.lable}`} >Sales Phase: </label>
                                 <input type="text" name='salesPhase' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter SalesPhase" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
 
-                                <label htmlFor="exampleInputDate1" className={`${style.datelable}`} >Construction Date : </label>
+                                <label htmlFor="exampleInputDate1" className={`${style.lable}`} >Construction Date : </label>
                                 <input type="date" name='constructionDate' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter  ConstructionDate" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
+
+                            <label htmlFor="exampleInputText1" className={`${style.lable}`} >Destination: </label>
                                 <input type="text" name='destination' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter Destination" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
+
+                            <label htmlFor="exampleInputText1" className={`${style.lable}`} >Orientation: </label>
                                 <input type="text" name='orientation' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter Orientation" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
+
+                            <label htmlFor="exampleInputText1" className={`${style.lable}`} >Built UP Area: </label>
                                 <input type="text" name='builtUpArea' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter BuiltUpArea" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
+
+                            <label htmlFor="exampleInputText1" className={`${style.lable}`} >Garden Area: </label>
                                 <input type="text" name='gardenArea' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter GardenArea" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
+                                
+                            <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Number of Rooms: </label>
                                 <input type="number" name='numberOfRooms' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter NumberOfRooms " />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
+
+                            <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Measurement Value: </label>
                                 <input type="number" name='measurementValue' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter MeasurementValue" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
+
+                            <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Measurements: </label>
                                 <input type="number" name='measurements' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter Measurements" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
+
+                            <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Measurements ID: </label>
                                 <input type="number" name='measurementsID' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter MeasurementsID" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
+
+                            <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Measurements Description: </label>
                                 <input type="number" name='measurementsDescription' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter MeasurementsDescription" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
+
+                            <label htmlFor="exampleInputText1" className={`${style.lable}`} >Measurement Unit: </label>
                                 <input type="text" name='unitOfMeasurement' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter MeasurementUnit" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
+
+                            <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Pricing Tab: </label>
                                 <input type="number" name='pricingTab' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter PricingTab" />
                             </div>
 
 
                             <div className={`form-group  ${style.formGroup}`}>
+
+                            <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Price: </label>
                                 <input type="number" name='price' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter Price" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
+
+                            <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Unit Additional Payment: </label>
                                 <input type="number" name='unitAdditionalPayment' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter UnitAdditionalPayment" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
+
+                            <label htmlFor="exampleInputText1" className={`${style.lable}`} >Condition Code: </label>
                                 <input type="text" name='conditionCode' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter ConditionCode" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
+
+                            <label htmlFor="exampleInputText1" className={`${style.lable}`} >Condition Description: </label>
                                 <input type="text" name='conditionDescription' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter ConditionDescription" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
+
+                            <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Amount: </label>
                                 <input type="number" name='amount' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter Amount" />
                             </div>
 
-
-
-                            <button type="submit" className="btn btn-success mt-4">Add Unit</button>
+                            <button type="submit" className={` w-100 ${style.imageButton}`}>Add Unit</button>
                         </form>
 
                         {addMsg ? <div className="alert alert-danger m-3 p-2">{addMsg}</div> : ''}
@@ -988,10 +1054,12 @@ export default function AvailableUnits() {
                         {updateMsg ? <div className="alert alert-danger m-3 p-2">{updateMsg}</div> : ''}
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={handleEditClose}>
+                        <Button className={` ${style.imageButton}`}  onClick={handleEditClose}>
                             Close
                         </Button>
-                        <Button variant="primary" onClick={() => handleUpdate(selectedUnit)}>
+{/* 
+                        <button type="submit" className={`btn mt-4 w-100 ${style.imageButton}`}>Add Unit</button> */}
+                        <Button className={` ${style.imageButton}`} onClick={() => handleUpdate(selectedUnit)}>
                             Update
                         </Button>
                     </Modal.Footer>

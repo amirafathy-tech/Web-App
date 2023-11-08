@@ -37,8 +37,8 @@
 .formGroup{
     margin: 12px;
 }
-.datelable{
+.lable{
     font-size: large;
-  color: green;
+  color: #00ADB5;
   margin: 4px;
 }

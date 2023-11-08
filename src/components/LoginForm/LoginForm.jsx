@@ -27,8 +27,8 @@ export default function Login({ setUserData }) {
     // demoo with search authenticated variables
     // const clientID="5188fd8d-dfeb-488d-aa4e-feeecd76e39e"
     // const clientSecret="z7gYrr9X/BGfr67aa4K1ujXZP9r_lAp"
-    const clientID = "3992cd17-fd1f-4236-9caf-e34cb5328341"
-    const clientSecret = "D9lW_73FBJC9O-G=F/:0U]cK_IPoc86V7"
+    const clientID = "65f6010e-ab29-4afa-8e2d-1cbd72b0fdcd"
+    const clientSecret = "2TL0nSJHbAR5xoGzxv[rgcrb_qM7i@V"
     const url = "https://aey0y39na.trial-accounts.ondemand.com"
 
 

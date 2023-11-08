@@ -6,7 +6,9 @@ import style from './Payment.module.css';
 import { RiDeleteBinLine, RiEditLine } from 'react-icons/ri';
 
 export default function Payment() {
-    const BasicURL='https://demo.c-78984ef.kyma.ondemand.com'
+   // const BasicURL='https://demo.c-78984ef.kyma.ondemand.com'
+
+   const BasicURL = 'https://demooo.c-78984ef.kyma.ondemand.com'
     const [Payment, setPayment] = useState([]);
     const [addMsg, setAddMsg] = useState('');
     const [updateMsg, setUpdateMsg] = useState('');
@@ -624,10 +626,10 @@ export default function Payment() {
                                     {updateMsg ? <div className="alert alert-danger m-3 p-2">{updateMsg}</div> : ''}
                                 </Modal.Body>
                                 <Modal.Footer>
-                                    <Button variant="secondary" onClick={handleClose}>
+                                    <Button className={`${style.imageButton}`} onClick={handleClose}>
                                         Close
                                     </Button>
-                                    <Button variant="primary" onClick={() => handleUpdate(selectedPayment)}>
+                                    <Button className={`${style.imageButton}`} onClick={() => handleUpdate(selectedPayment)}>
                                         Update
                                     </Button>
                                 </Modal.Footer>
@@ -650,6 +652,8 @@ export default function Payment() {
                                 <Modal.Body>
                                     <form onSubmit={submitFormData}>
                                         <div className={`form-group  ${style.formGroup}`}>
+
+                                <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Payment PLan Code: </label>
                                             <input
                                                 type="number"
                                                 name="paymentPlanCode"
@@ -661,6 +665,8 @@ export default function Payment() {
                                             />
                                         </div>
                                         <div className={`form-group  ${style.formGroup}`}>
+
+                                <label htmlFor="exampleInputText1" className={`${style.lable}`} >Payment PLan Description: </label>
                                             <input
                                                 type="text"
                                                 name="paymentPlanDescription"
@@ -672,6 +678,8 @@ export default function Payment() {
                                             />
                                         </div>
                                         <div className={`form-group  ${style.formGroup}`}>
+
+                                <label htmlFor="exampleInputText1" className={`${style.lable}`} >Condition Group: </label>
                                             <input
                                                 type="text"
                                                 name="conditionGroup"
@@ -683,6 +691,8 @@ export default function Payment() {
                                             />
                                         </div>
                                         <div className={`form-group  ${style.formGroup}`}>
+
+                                <label htmlFor="exampleInputText1" className={`${style.lable}`} > Price Plan: </label>
                                             <input
                                                 type="text"
                                                 name="assignedPricePlan"
@@ -694,6 +704,8 @@ export default function Payment() {
                                             />
                                         </div>
                                         <div className={`form-group  ${style.formGroup}`}>
+
+                                <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Number of Years: </label>
                                             <input
                                                 type="number"
                                                 name="noOfYears"
@@ -706,7 +718,7 @@ export default function Payment() {
                                         </div>
                                         <div className={`form-group  ${style.formGroup}`}>
 
-                                            <label htmlFor="exampleInputDate1" className={`${style.datelable}`} >ValidFrom  Date : </label>
+                                            <label htmlFor="exampleInputDate1" className={`${style.lable}`} >ValidFrom  Date : </label>
                                             <input
                                                 type="date"
                                                 name="validFrom"
@@ -719,7 +731,7 @@ export default function Payment() {
                                         </div>
                                         <div className={`form-group  ${style.formGroup}`}>
 
-                                            <label htmlFor="exampleInputDate1" className={`${style.datelable}`} >ValidTo  Date : </label>
+                                            <label htmlFor="exampleInputDate1" className={`${style.lable}`} >ValidTo  Date : </label>
                                             <input
                                                 type="date"
                                                 name="validTo"
@@ -731,6 +743,8 @@ export default function Payment() {
                                             />
                                         </div>
                                         <div className={`form-group  ${style.formGroup}`}>
+
+                                <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Maintenance Number Of Month: </label>
                                             <input
                                                 type="number"
                                                 name="maintenanceNumberOfMonth"
@@ -742,6 +756,9 @@ export default function Payment() {
                                             />
                                         </div>
                                         <div className={`form-group  ${style.formGroup}`}>
+                                            
+
+                                <label htmlFor="exampleInputText1" className={`${style.lable}`} >Installment Calculation Method: </label>
                                             <input
                                                 type="text"
                                                 name="installmentCalculationMethod"
@@ -753,6 +770,7 @@ export default function Payment() {
                                             />
                                         </div>
                                         <div className={`form-group  ${style.formGroup}`}>
+                                        <label htmlFor="exampleInputText1" className={`${style.lable}`} >Phase: </label>
                                             <input
                                                 type="text"
                                                 name="Phase"
@@ -764,6 +782,7 @@ export default function Payment() {
                                             />
                                         </div>
                                         <div className={`form-group  ${style.formGroup}`}>
+                                        <label htmlFor="exampleInputText1" className={`${style.lable}`} >Plan Status: </label>
                                             <input
                                                 type="text"
                                                 name="planStatus"
@@ -775,6 +794,7 @@ export default function Payment() {
                                             />
                                         </div>
                                         <div className={`form-group  ${style.formGroup}`}>
+                                        <label htmlFor="exampleInputText1" className={`${style.lable}`} >Approval Status: </label>
                                             <input
                                                 type="text"
                                                 name="approvalStatus"
@@ -786,6 +806,7 @@ export default function Payment() {
                                             />
                                         </div>
                                         <div className={`form-group  ${style.formGroup}`}>
+                                        <label htmlFor="exampleInputText1" className={`${style.lable}`} >Projects Tab: </label>
                                             <input
                                                 type="text"
                                                 name="assignedProjectsTab"
@@ -797,6 +818,7 @@ export default function Payment() {
                                             />
                                         </div>
                                         <div className={`form-group  ${style.formGroup}`}>
+                                        <label htmlFor="exampleInputText1" className={`${style.lable}`} >Paayment Plan Details: </label>
                                             <input
                                                 type="text"
                                                 name="paymentPlanDetails"
@@ -808,6 +830,7 @@ export default function Payment() {
                                             />
                                         </div>
                                         <div className={`form-group  ${style.formGroup}`}>
+                                        <label htmlFor="exampleInputText1" className={`${style.lable}`} >Condition Type: </label>
                                             <input
                                                 type="text"
                                                 name="conditionType"
@@ -819,6 +842,7 @@ export default function Payment() {
                                             />
                                         </div>
                                         <div className={`form-group  ${style.formGroup}`}>
+                                        <label htmlFor="exampleInputText1" className={`${style.lable}`} >Condition Percentage: </label>
                                             <input
                                                 type="text"
                                                 name="conditionPercentage"
@@ -830,6 +854,7 @@ export default function Payment() {
                                             />
                                         </div>
                                         <div className={`form-group  ${style.formGroup}`}>
+                                        <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Condition Base Price: </label>
                                             <input
                                                 type="number"
                                                 name="conditionBasePrice"
@@ -841,6 +866,8 @@ export default function Payment() {
                                             />
                                         </div>
                                         <div className={`form-group  ${style.formGroup}`}>
+
+                                        <label htmlFor="exampleInputText1" className={`${style.lable}`} >Calculation Method: </label>
                                             <input
                                                 type="text"
                                                 name="calculationMethod"
@@ -852,6 +879,8 @@ export default function Payment() {
                                             />
                                         </div>
                                         <div className={`form-group  ${style.formGroup}`}>
+
+                                        <label htmlFor="exampleInputText1" className={`${style.lable}`} >Frequency: </label>
                                             <input
                                                 type="text"
                                                 name="frequency"
@@ -863,6 +892,8 @@ export default function Payment() {
                                             />
                                         </div>
                                         <div className={`form-group  ${style.formGroup}`}>
+
+                                        <label htmlFor="exampleInputText1" className={`${style.lable}`} >DueOn In Month: </label>
                                             <input
                                                 type="text"
                                                 name="dueOnInMonth"
@@ -874,6 +905,8 @@ export default function Payment() {
                                             />
                                         </div>
                                         <div className={`form-group  ${style.formGroup}`}>
+
+                                        <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Number Of Installments: </label>
                                             <input
                                                 type="number"
                                                 name="noOfInstallments"
@@ -885,7 +918,7 @@ export default function Payment() {
                                             />
                                         </div>
 
-                                        <button type="submit" className="btn btn-success mt-4">Add Payment</button>
+                                        <button type="submit" className={` w-100 ${style.imageButton}`}>Add Payment</button>
                                     </form>
 
                                     {addMsg ? <div className="alert alert-danger m-3 p-2">{addMsg}</div> : ''}
