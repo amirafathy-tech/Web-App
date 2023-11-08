@@ -1,142 +1,12 @@
 
-// import React, { useState, useEffect } from 'react';
-// import axios from 'axios';
-// import { Modal, Button } from 'react-bootstrap';
-
-// import style from './Project.module.css';
-// import { RiDeleteBinLine, RiEditLine } from 'react-icons/ri';
-
-// export default function Project() {
-//     const [project, setProject] = useState([]);
-//     const [addMsg, setAddMsg] = useState('');
-//     const [updateMsg, setUpdateMsg] = useState('');
-//     const [deleteMsg, setDeleteMsg] = useState('');
-
-
-//     const token = localStorage.getItem('token')
-//     let [newProject, setNewProject] = useState({
-//         projectID: Number,
-//         companyCodeID: Number,
-//         companyCodeDescription: '',
-//         projectDescription: '',
-//         validFrom: Date,
-//         regionalLocation: ''
-
-//     });
-
-
-//     function getFormValue(e) {
-//         let myProject = { ...newProject }
-//         myProject[e.target.name] = e.target.value
-//         setNewProject(myProject);// update project data
-//         console.log(myProject)
-//     }
-
-
-//     // call get API
-//     async function getProject() {
-//         // worked mock api
-//         // let { data } = await axios.get("https://bcbf775e-2518-44b8-a2eb-3ff6c0f1b2b1.mock.pstmn.io/project");
-
-//         // demo authentication with new fields
-//         let { data } = await axios.get("https://demo.c-910f80f.kyma.ondemand.com/projects", { headers: { "Authorization": `Bearer ${token}` } });
-//         console.log(data);
-//         console.log("project");
-//         setProject(data);
-//         console.log(Project);
-//     }
-
-//     useEffect(() => {
-//         getProject();
-//     }, []);
-
-
-//     // Render the project list
-//     const renderProjects = project.map((project) => (
-//         <tr key={project.projectID}>
-//             <td>{project.projectID}</td>
-//             <td>{project.companyCodeID}</td>
-//             <td>{project.companyCodeDescription}</td>
-//             <td>{project.projectDescription}</td>
-//             <td>{project.validFrom}</td>
-//             <td>{project.regionalLocation}</td>
-//             <td>
-
-//                 <button className={style.iconButton} onClick={() => handleDelete(project.projectID)} title="Delete">
-//                     <RiDeleteBinLine style={{ color: 'red' }} />
-//                 </button>
-
-//                 <button className={style.iconButton} onClick={() => handleEdit(project)} title="Edit">
-//                     <RiEditLine style={{ color: '#10ab80' }} />
-//                 </button>
-
-//             </td>
-//         </tr>
-//     ));
-//     return (
-//         <>
-//             <div className={`container`}>
-//                 <div className={`row align-items-center`}>
-//                     {/* Search Bar */}
-
-//                     {/* <div class="col-sm-3 mt-5 mb-4 text-gred">
-
-//                         <input
-//                             className={`${style.searchInput}`}
-//                             type="search"
-//                             placeholder="Search for project by description or location"
-//                             value={searchTerm}
-//                             onChange={(e) => setSearchTerm(e.target.value)}
-//                         />
-//                     </div> */}
-
-//                     <div className={`col-sm-3 offset-sm-2 mt-5 mb-4 text-gred ${style.maincolor}`}><h2><b>Project Details</b></h2></div>
-
-//                     <div className="col-sm-3 offset-sm-1  mt-5 mb-4 text-gred">
-//                         <button className={`w-100 ${style.imageButton}`} variant="primary" onClick={handleAddShow}>
-//                             Add New Project
-//                         </button>
-//                     </div>
-//                 </div>
-
-//                 {deleteMsg ? <div className="alert alert-danger m-3 p-2">{deleteMsg}</div> : ''}
-
-//                 <div className={`row`}>
-//                     <div className='table-responsive m-auto'>
-//                         <table className={`table table-striped table-hover table-head text-center`}>
-
-//                             <thead>
-//                                 <tr>
-//                                     <th>Project ID</th>
-//                                     <th>Company Code ID</th>
-//                                     <th>Company Code Description</th>
-//                                     <th>Project Description</th>
-//                                     <th>Valid From</th>
-//                                     <th>Regional Location</th>
-//                                     <th>Action</th>
-//                                 </tr>
-//                             </thead>
-//                             <tbody>
-//                                 {renderProjects}
-//                                 {/* {filteredProjects.length === 0 ? renderFilteredProjects : renderProjects} */}
-//                             </tbody>
-//                         </table>
-//                     </div>
-//                 </div>
-//             </div>
-//         </>
-//     );
-// };
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Modal, Button } from 'react-bootstrap';
-
 import style from './Project.module.css';
 import { RiDeleteBinLine, RiEditLine } from 'react-icons/ri';
 
-
 export default function Project() {
+  const BasicURL='https://demo.c-78984ef.kyma.ondemand.com'
   const [project, setProject] = useState([]);
   const [addMsg, setAddMsg] = useState('');
   const [updateMsg, setUpdateMsg] = useState('');
@@ -186,7 +56,7 @@ export default function Project() {
 
     const options = {
       method: 'POST',
-      url: "https://demoo.c-910f80f.kyma.ondemand.com/projects",
+      url: `${BasicURL}/projects`,
       headers: {
         "Authorization": `Bearer ${token}`
       },
@@ -215,7 +85,7 @@ export default function Project() {
     try {
       const options = {
         method: 'PUT',
-        url: `https://demoo.c-910f80f.kyma.ondemand.com/projects/${updatedProject.projectID}`,
+        url: `${BasicURL}/projects/${updatedProject.projectID}`,
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -247,7 +117,7 @@ export default function Project() {
     try {
       const options = {
         method: 'DELETE',
-        url: `https://demoo.c-910f80f.kyma.ondemand.com/projects/${projectID}`,
+        url: `${BasicURL}/projects/${projectID}`,
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -269,7 +139,7 @@ export default function Project() {
   // call get API
   async function getProject() {
     try {
-      let { data } = await axios.get("https://demoo.c-910f80f.kyma.ondemand.com/projects", { headers: { "Authorization": `Bearer ${token}` } });
+      let { data } = await axios.get(`${BasicURL}/projects`, { headers: { "Authorization": `Bearer ${token}` } });
       console.log(data);
       console.log("project");
       setProject(data);
@@ -282,7 +152,7 @@ export default function Project() {
   // call search API
   async function searchProjects(keyword) {
     try {
-      const response = await axios.get(`https://demoo.c-910f80f.kyma.ondemand.com/projects/search?keyword=${keyword}`, {
+      const response = await axios.get(`${BasicURL}/projects/search?keyword=${keyword}`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       console.log(response)

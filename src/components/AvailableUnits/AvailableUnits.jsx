@@ -7,6 +7,7 @@ import { Button, Modal } from 'react-bootstrap';
 import { RiDeleteBinLine, RiEditLine } from 'react-icons/ri';
 
 export default function AvailableUnits() {
+    const BasicURL='https://demo.c-78984ef.kyma.ondemand.com'
     let [unit, setUnit] = useState([]);
     const token = localStorage.getItem('token')
     const [addMsg, setAddMsg] = useState('');
@@ -14,6 +15,7 @@ export default function AvailableUnits() {
     const [deleteMsg, setDeleteMsg] = useState('');
     const [selectedUnit, setSelectedUnit] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
+
     // to handle modal for add
     const [addShow, setaddShow] = useState(false);
     const handleAddClose = () => setaddShow(false);
@@ -77,7 +79,7 @@ export default function AvailableUnits() {
         e.preventDefault();
         const options = {
             method: 'POST',
-            url: "https://demoo.c-910f80f.kyma.ondemand.com/units",
+            url: `${BasicURL}/units`,
             headers: {
                 "Authorization": `Bearer ${token}`
             },
@@ -135,7 +137,7 @@ export default function AvailableUnits() {
 
         // demo authentication with new fields
 
-        let { data } = await axios.get("https://demoo.c-910f80f.kyma.ondemand.com/units", { headers: { "Authorization": `Bearer ${token}` } });
+        let { data } = await axios.get(`${BasicURL}/units`, { headers: { "Authorization": `Bearer ${token}` } });
         console.log(data);
         setUnit(data);
         console.log(unit);
@@ -147,7 +149,7 @@ export default function AvailableUnits() {
         try {
             const options = {
                 method: 'PUT',
-                url: `https://demoo.c-910f80f.kyma.ondemand.com/units/${updatedUnit.unitKey}`,
+                url: `${BasicURL}/units/${updatedUnit.unitKey}`,
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
@@ -208,7 +210,7 @@ export default function AvailableUnits() {
         try {
             const options = {
                 method: 'DELETE',
-                url: `https://demoo.c-910f80f.kyma.ondemand.com/units/${unitKey}`,
+                url: `${BasicURL}/units/${unitKey}`,
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
@@ -228,9 +230,30 @@ export default function AvailableUnits() {
     };
 
 
+    // call search API
+    async function searchUnits(keyword) {
+        try {
+            const response = await axios.get(`${BasicURL}/units/search?keyword=${keyword}`, {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            console.log(response)
+            setUnit(response.data);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     useEffect(() => {
-        getUnit();
-    }, []);
+        if (searchTerm) {
+            searchUnits(searchTerm);
+        } else {
+            getUnit();
+        }
+    }, [searchTerm]);
+
+    // useEffect(() => {
+    //     getUnit();
+    // }, []);
 
     const navigate = useNavigate();
     // Define a function to handle the click event on the image
@@ -241,27 +264,25 @@ export default function AvailableUnits() {
 
     return (
         <>
-
-
             <div className={` container m-5`}>
                 <div className={`row`}>
 
-                {/* Search Bar */}
-            {/* <div className="col-sm-12 col-md-4 mt-5 mb-4 text-gred">
-              <input
-                className={`${style.searchInput}`}
-                type="search"
-                placeholder="Search for a project "
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div> */}
+                    {/* Search Bar */}
+                    <div className="col-sm-12 col-md-4 mt-5 mb-4 text-gred">
+                        <input
+                            className={`${style.searchInput}`}
+                            type="search"
+                            placeholder="Search for a unit "
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                    </div>
 
 
-                    <div className={`col-sm-3 offset-sm-2 mt-5 mb-4 text-gred ${style.maincolor}`}><h2><b>Unit Details</b></h2></div>
+                    <div className={`col-sm-12 col-md-4 mt-5 mb-4 text-gred ${style.maincolor}`}><h2><b>Unit Details</b></h2></div>
 
 
-                    <div className="col-sm-3 offset-sm-1  mt-5 mb-4 text-gred">
+                    <div className="col-sm-12 col-md-4 mt-5 mb-4 text-gred">
                         <button className={`w-100 ${style.imageButton}`} variant="primary" onClick={handleAddShow}>
                             Add New Unit
                         </button>
@@ -377,11 +398,17 @@ export default function AvailableUnits() {
                                         </tr>
                                     ))
                                 )
-                                    : (
-                                        <tr>
-                                            <td colSpan="15">Loading...</td>
-                                        </tr>
+                                    // : (
+                                    //     <tr>
+                                    //         <td colSpan="15">Loading...</td>
+                                    //     </tr>
+                                    // )}
+
+                                    : (<tr>
+                                        <td colSpan="12">No results match the search term.</td>
+                                    </tr>
                                     )}
+
                             </tbody>
 
 

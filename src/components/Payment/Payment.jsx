@@ -6,15 +6,15 @@ import style from './Payment.module.css';
 import { RiDeleteBinLine, RiEditLine } from 'react-icons/ri';
 
 export default function Payment() {
+    const BasicURL='https://demo.c-78984ef.kyma.ondemand.com'
     const [Payment, setPayment] = useState([]);
     const [addMsg, setAddMsg] = useState('');
     const [updateMsg, setUpdateMsg] = useState('');
     const [deleteMsg, setDeleteMsg] = useState('');
     const [selectedPayment, setSelectedPayment] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
     // const [searchField, setSearchField] = useState('PaymentDescription');
-    // const [searchTerm, setSearchTerm] = useState('');
 
-    // const [filteredPayments, setFilteredPayments] = useState([]);
     //   const [isLoading, setIsLoading] = useState(false);
     //   const [error, setError] = useState(null);
 
@@ -58,7 +58,7 @@ export default function Payment() {
 
         const options = {
             method: 'POST',
-            url: "https://demoo.c-910f80f.kyma.ondemand.com/paymentplans",
+            url: `${BasicURL}/paymentplans`,
             headers: {
                 "Authorization": `Bearer ${token}`
             },
@@ -117,24 +117,19 @@ export default function Payment() {
         // let { data } = await axios.get("https://bcbf775e-2518-44b8-a2eb-3ff6c0f1b2b1.mock.pstmn.io/Payment");
 
         // demo authentication with new fields
-        let { data } = await axios.get("https://demoo.c-910f80f.kyma.ondemand.com/paymentplans", { headers: { "Authorization": `Bearer ${token}` } });
+        let { data } = await axios.get(`${BasicURL}/paymentplans`, { headers: { "Authorization": `Bearer ${token}` } });
         console.log(data);
         console.log("Payment");
         setPayment(data);
         console.log(Payment);
     }
 
-    useEffect(() => {
-        getPayment();
-    }, []);
-
-
     // call update API
     const handleUpdate = async (updatedPayment) => {
         try {
             const options = {
                 method: 'PUT',
-                url: `https://demoo.c-910f80f.kyma.ondemand.com/paymentplans/${updatedPayment.paymentPlanCode}`,
+                url: `${BasicURL}/paymentplans/${updatedPayment.paymentPlanCode}`,
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
@@ -176,13 +171,12 @@ export default function Payment() {
         }
     };
 
-
     // call delete API
     const handleDelete = async (paymentPlanCode) => {
         try {
             const options = {
                 method: 'DELETE',
-                url: `https://demoo.c-910f80f.kyma.ondemand.com/paymentplans/${paymentPlanCode}`,
+                url: `${BasicURL}/paymentplans/${paymentPlanCode}`,
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
@@ -201,43 +195,74 @@ export default function Payment() {
         }
     };
 
+    // useEffect(() => {
+    //     getPayment();
+    // }, []);
+
+    // call search API
+    async function searchPayments(keyword) {
+        try {
+            const response = await axios.get(`${BasicURL}/paymentplans/search?keyword=${keyword}`, {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            console.log(response)
+            setPayment(response.data);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    useEffect(() => {
+        if (searchTerm) {
+            searchPayments(searchTerm);
+        } else {
+            getPayment();
+        }
+    }, [searchTerm]);
+
     // Render the Payment list
-    const renderPayments = Payment.map((Payment) => (
-        <tr key={Payment.paymentPlanCode}>
-            <td>{Payment.paymentPlanCode}</td>
-            <td>{Payment.paymentPlanDescription}</td>
-            <td>{Payment.conditionGroup}</td>
-            <td>{Payment.assignedPricePlan}</td>
-            <td>{Payment.noOfYears}</td>
-            <td>{Payment.validFrom}</td>
-            <td>{Payment.validTo}</td>
-            <td>{Payment.maintenanceNumberOfMonth}</td>
-            <td>{Payment.installmentCalculationMethod}</td>
-            <td>{Payment.Phase}</td>
-            <td>{Payment.planStatus}</td>
-            <td>{Payment.approvalStatus}</td>
-            <td>{Payment.assignedProjectsTab}</td>
-            <td>{Payment.paymentPlanDetails}</td>
-            <td>{Payment.conditionType}</td>
-            <td>{Payment.conditionPercentage}</td>
-            <td>{Payment.conditionBasePrice}</td>
-            <td>{Payment.calculationMethod}</td>
-            <td>{Payment.frequency}</td>
-            <td>{Payment.dueOnInMonth}</td>
-            <td>{Payment.noOfInstallments}</td>
-            <td>
+    const renderPayments = Payment.length > 0 ? (
+        Payment.map((Payment) => (
+            <tr key={Payment.paymentPlanCode}>
+                <td>{Payment.paymentPlanCode}</td>
+                <td>{Payment.paymentPlanDescription}</td>
+                <td>{Payment.conditionGroup}</td>
+                <td>{Payment.assignedPricePlan}</td>
+                <td>{Payment.noOfYears}</td>
+                <td>{Payment.validFrom}</td>
+                <td>{Payment.validTo}</td>
+                <td>{Payment.maintenanceNumberOfMonth}</td>
+                <td>{Payment.installmentCalculationMethod}</td>
+                <td>{Payment.Phase}</td>
+                <td>{Payment.planStatus}</td>
+                <td>{Payment.approvalStatus}</td>
+                <td>{Payment.assignedProjectsTab}</td>
+                <td>{Payment.paymentPlanDetails}</td>
+                <td>{Payment.conditionType}</td>
+                <td>{Payment.conditionPercentage}</td>
+                <td>{Payment.conditionBasePrice}</td>
+                <td>{Payment.calculationMethod}</td>
+                <td>{Payment.frequency}</td>
+                <td>{Payment.dueOnInMonth}</td>
+                <td>{Payment.noOfInstallments}</td>
+                <td>
 
-                <button className={style.iconButton} onClick={() => handleDelete(Payment.paymentPlanCode)} title="Delete">
-                    <RiDeleteBinLine style={{ color: 'red' }} />
-                </button>
+                    <button className={style.iconButton} onClick={() => handleDelete(Payment.paymentPlanCode)} title="Delete">
+                        <RiDeleteBinLine style={{ color: 'red' }} />
+                    </button>
 
-                <button className={style.iconButton} onClick={() => handleEdit(Payment)} title="Edit">
-                    <RiEditLine style={{ color: '#10ab80' }} />
-                </button>
+                    <button className={style.iconButton} onClick={() => handleEdit(Payment)} title="Edit">
+                        <RiEditLine style={{ color: '#10ab80' }} />
+                    </button>
 
-            </td>
+                </td>
+            </tr>
+        ))
+    ) : (
+        <tr>
+            <td colSpan="22">No results match the search term.</td>
         </tr>
-    ));
+    );
 
 
     return (
@@ -246,20 +271,19 @@ export default function Payment() {
                 <div className={`row align-items-center`}>
 
                     {/* Search Bar */}
-                    {/* <div class="col-sm-3 mt-5 mb-4 text-gred">
-                       
+                    <div className="col-sm-12 col-md-4 mt-5 mb-4 text-gred">
                         <input
                             className={`${style.searchInput}`}
                             type="search"
-                            placeholder="Search for Payment by description or location"
+                            placeholder="Search for a payment "
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
-                    </div> */}
+                    </div>
 
-                    <div className={`col-sm-3 offset-sm-2 mt-5 mb-4 text-gred ${style.maincolor}`}><h2><b>Payment Details</b></h2></div>
+                    <div className={`col-sm-12 col-md-4 mt-5 mb-4 text-gred ${style.maincolor}`}><h2><b>Payment Details</b></h2></div>
 
-                    <div className="col-sm-3 offset-sm-1  mt-5 mb-4 text-gred">
+                    <div className="col-sm-12 col-md-4 mt-5 mb-4 text-gred">
                         <button className={`w-100 ${style.imageButton}`} variant="primary" onClick={handleAddShow}>
                             Add New Payment
                         </button>
@@ -382,7 +406,7 @@ export default function Payment() {
                                             placeholder="Enter noOfYears"
                                         />
 
-                            <label htmlFor="exampleInputDate1" className={`${style.datelable}`} >ValidFrom  Date : </label>
+                                        <label htmlFor="exampleInputDate1" className={`${style.datelable}`} >ValidFrom  Date : </label>
                                         <input
                                             type="date"
                                             name="validFrom"
@@ -397,8 +421,8 @@ export default function Payment() {
                                             placeholder="Enter validFrom"
                                         />
 
-                            <label htmlFor="exampleInputDate1" className={`${style.datelable}`} >ValidTo  Date : </label>
-                                         <input
+                                        <label htmlFor="exampleInputDate1" className={`${style.datelable}`} >ValidTo  Date : </label>
+                                        <input
                                             type="date"
                                             name="valiTo"
                                             className="form-control m-3"
@@ -411,7 +435,7 @@ export default function Payment() {
                                             }
                                             placeholder="Enter validTo"
                                         />
-                                           <input
+                                        <input
                                             type="number"
                                             name="maintenanceNumberOfMonth"
                                             className="form-control m-3"
@@ -424,7 +448,7 @@ export default function Payment() {
                                             }
                                             placeholder="Enter maintenanceNumberOfMonth"
                                         />
-                                             <input
+                                        <input
                                             type="text"
                                             name="installmentCalculationMethod"
                                             className="form-control m-3"
@@ -438,7 +462,7 @@ export default function Payment() {
                                             placeholder="Enter installmentCalculationMethod"
                                         />
 
-                                          <input
+                                        <input
                                             type="text"
                                             name="Phase"
                                             className="form-control m-3"
@@ -451,7 +475,7 @@ export default function Payment() {
                                             }
                                             placeholder="Enter Phase"
                                         />
-                                          <input
+                                        <input
                                             type="text"
                                             name="planStatus"
                                             className="form-control m-3"
@@ -464,7 +488,7 @@ export default function Payment() {
                                             }
                                             placeholder="Enter planStatus"
                                         />
-                                          <input
+                                        <input
                                             type="text"
                                             name="approvalStatus"
                                             className="form-control m-3"
@@ -477,7 +501,7 @@ export default function Payment() {
                                             }
                                             placeholder="Enter approvalStatus"
                                         />
-                                         <input
+                                        <input
                                             type="text"
                                             name="assignedProjectsTab"
                                             className="form-control m-3"
@@ -490,7 +514,7 @@ export default function Payment() {
                                             }
                                             placeholder="Enter assignedProjectsTab"
                                         />
-                                           <input
+                                        <input
                                             type="text"
                                             name="paymentPlanDetails"
                                             className="form-control m-3"
@@ -503,7 +527,7 @@ export default function Payment() {
                                             }
                                             placeholder="Enter paymentPlanDetails"
                                         />
-                                         <input
+                                        <input
                                             type="text"
                                             name="conditionType"
                                             className="form-control m-3"
@@ -516,7 +540,7 @@ export default function Payment() {
                                             }
                                             placeholder="Enter conditionType"
                                         />
-                                           <input
+                                        <input
                                             type="text"
                                             name="conditionPercentage"
                                             className="form-control m-3"
@@ -529,7 +553,7 @@ export default function Payment() {
                                             }
                                             placeholder="Enter conditionPercentage"
                                         />
-                                         <input
+                                        <input
                                             type="number"
                                             name="conditionBasePrice"
                                             className="form-control m-3"
@@ -542,7 +566,7 @@ export default function Payment() {
                                             }
                                             placeholder="Enter conditionBasePrice"
                                         />
-                                         <input
+                                        <input
                                             type="text"
                                             name="calculationMethod"
                                             className="form-control m-3"
@@ -556,7 +580,7 @@ export default function Payment() {
                                             placeholder="Enter calculationMethod"
                                         />
 
-                                          <input
+                                        <input
                                             type="text"
                                             name="frequency"
                                             className="form-control m-3"
@@ -569,7 +593,7 @@ export default function Payment() {
                                             }
                                             placeholder="Enter frequency"
                                         />
-                                           <input
+                                        <input
                                             type="text"
                                             name="dueOnInMonth"
                                             className="form-control m-3"
@@ -582,7 +606,7 @@ export default function Payment() {
                                             }
                                             placeholder="Enter dueOnInMonth"
                                         />
-                                              <input
+                                        <input
                                             type="number"
                                             name="noOfInstallments"
                                             className="form-control m-3"
@@ -682,7 +706,7 @@ export default function Payment() {
                                         </div>
                                         <div className={`form-group  ${style.formGroup}`}>
 
-                            <label htmlFor="exampleInputDate1" className={`${style.datelable}`} >ValidFrom  Date : </label>
+                                            <label htmlFor="exampleInputDate1" className={`${style.datelable}`} >ValidFrom  Date : </label>
                                             <input
                                                 type="date"
                                                 name="validFrom"
@@ -695,7 +719,7 @@ export default function Payment() {
                                         </div>
                                         <div className={`form-group  ${style.formGroup}`}>
 
-                            <label htmlFor="exampleInputDate1" className={`${style.datelable}`} >ValidTo  Date : </label>
+                                            <label htmlFor="exampleInputDate1" className={`${style.datelable}`} >ValidTo  Date : </label>
                                             <input
                                                 type="date"
                                                 name="validTo"

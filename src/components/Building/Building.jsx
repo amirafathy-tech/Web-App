@@ -13,7 +13,12 @@ export default function Building() {
     const authAPI="https://newrecipe.c-910f80f.kyma.ondemand.com/buildings"
     async function getBuilding() {
         // let { data } = await axios.get("https://recipe.c-910f80f.kyma.ondemand.com/buildings");
-        let { data } = await axios.get("https://newrecipe.c-910f80f.kyma.ondemand.com/buildings",{ headers: {"Authorization" : `Bearer ${token}`} });
+        // worked authenticated API
+           let { data } = await axios.get("https://newrecipe.c-910f80f.kyma.ondemand.com/buildings",{ headers: {"Authorization" : `Bearer ${token}`} });
+        
+        // demo Authentication
+        
+           //let { data } = await axios.get("https://newrecipe.c-910f80f.kyma.ondemand.com/buildings",{ headers: {"Authorization" : `Bearer ${token}`} }); 
         console.log("AuthAPIResponse:  "+authAPI+"-->"+data); 
         setBuilding(data);
         console.log(token);

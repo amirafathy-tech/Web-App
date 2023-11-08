@@ -21,8 +21,8 @@ spec:
         kyma-grafana: enabled
     spec:
       containers:
-        - image: amirafathy/image6
-          name: container61
+        - image: amirafathy/image8
+          name: container8
           ports:
             - containerPort: 3000
           envFrom:
@@ -37,7 +37,7 @@ metadata:
   creationTimestamp: null
   labels:
     app: react
-  name: service6
+  name: service8
 spec:
   ports:
     - port: 3000
@@ -50,4 +50,6 @@ spec:
 status:
   loadBalancer: {}
 
+
+      
 

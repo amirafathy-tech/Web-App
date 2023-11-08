@@ -5,10 +5,10 @@ import Joi from 'joi'
 import React, { useState } from 'react'
 import style from './LoginForm.module.css';
 import { Link, useNavigate } from 'react-router-dom'
-import {encode} from 'base-64';
+import { encode } from 'base-64';
 
 export default function Login({ setUserData }) {
-   
+
     // Authenticated variables
     // const clientID = "77ce79f7-eb2d-421c-ab03-794811bbdbe3"
     // //"9f50a6eb-f310-4cc7-be6b-cbfffb49b623"
@@ -25,8 +25,10 @@ export default function Login({ setUserData }) {
 
 
     // demoo with search authenticated variables
-    const clientID="5188fd8d-dfeb-488d-aa4e-feeecd76e39e"
-    const clientSecret="z7gYrr9X/BGfr67aa4K1ujXZP9r_lAp"
+    // const clientID="5188fd8d-dfeb-488d-aa4e-feeecd76e39e"
+    // const clientSecret="z7gYrr9X/BGfr67aa4K1ujXZP9r_lAp"
+    const clientID = "3992cd17-fd1f-4236-9caf-e34cb5328341"
+    const clientSecret = "D9lW_73FBJC9O-G=F/:0U]cK_IPoc86V7"
     const url = "https://aey0y39na.trial-accounts.ondemand.com"
 
 
@@ -47,7 +49,7 @@ export default function Login({ setUserData }) {
 
     function validateForm() {
         const schema = Joi.object({
-            email: Joi.string().required().email({ tlds: { allow: ['com', 'net'] } }),
+            email: Joi.string().required(),
             password: Joi.string().required(),
 
         })
@@ -91,7 +93,7 @@ export default function Login({ setUserData }) {
             //     console.log(response.data.access_token);
 
             // curl command
-           
+
             const qs = require('qs');
             let data = qs.stringify({
                 'grant_type': 'password',
@@ -101,15 +103,14 @@ export default function Login({ setUserData }) {
                 //'H@g@rN117!'
             });
 
-               const clientid = clientID
-               
-              //const auth = "Basic " + Buffer.from(clientid + ':' + clientSecret).toString("base64");
-
-              const auth = "Basic " + encode(clientid + ':' + clientSecret);;
+            const clientid = clientID
+            //const auth = "Basic " + Buffer.from(clientid + ':' + clientSecret).toString("base64");
+            const auth = "Basic " + encode(clientid + ':' + clientSecret);;
             let config = {
                 method: 'post',
                 maxBodyLength: Infinity,
-                url: 'https://cors-anywhere.herokuapp.com/https://aey0y39na.trial-accounts.ondemand.com/oauth2/token',
+                url: 'https://cors-anywhere.herokuapp.com/https://aosfletgu.trial-accounts.ondemand.com/oauth2/token',
+                //'https://cors-anywhere.herokuapp.com/https://aey0y39na.trial-accounts.ondemand.com/oauth2/token',
                 headers: {
                     'Authorization': auth,
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -120,16 +121,16 @@ export default function Login({ setUserData }) {
             const response = await axios(config);
             console.log(response);
             console.log("response");
-          
+
 
 
             //if (response.statusText == "OK") {
-                if (response) {
+            if (response) {
                 //console.log("okkkk");
                 //localStorage.setItem('token', response.data.access_token); /// Step 1
-
+                console.log(response.data.id_token);
                 localStorage.setItem('token', response.data.id_token); /// Step 1
-            
+
                 setUserData();//// here call setUserData function 
                 goToHome();
             }
@@ -158,7 +159,7 @@ export default function Login({ setUserData }) {
     return (
         <>
 
-            <div className={`${style.size} `}>
+            {/* <div className={`${style.size} `}>
 
 
                 <div className='d-flex justify-content-center align-items-center my-5  '>
@@ -190,6 +191,69 @@ export default function Login({ setUserData }) {
                 </div>
                 <div className='clearfix'></div>
 
+            </div> */}
+
+            <div className={`${style.size} `}>
+                <div className="d-flex justify-content-center align-items-center my-5">
+                    <div className={`w-50 p-5 bg-light overflow-auto ${style.form}`}>
+                        <h1 className="my-4 text-center text-dark">Login </h1>
+                        {errorMsg ? <div className="alert alert-danger p-2">{errorMsg}</div> : ""}
+                        {errorList.map((error, index) => (
+                            <div className="alert alert-danger p-2" key={index}>
+                                {error.message}
+                            </div>
+                        ))}
+                        <form onSubmit={submitFormData}>
+                            <div className="input-gp my-3">
+                                <label className="form-label" htmlFor="form3Example3">
+                                    Email address
+                                </label>
+                                <input
+                                    onChange={getFormValue}
+                                    type="email"
+                                    className="form-control my-2"
+                                    name="email"
+                                    placeholder="email"
+                                />
+                            </div>
+                            <div className="input-gp my-3">
+                                <label className="form-label" htmlFor="form3Example4">
+                                    Password
+                                </label>
+
+                                <input
+                                    onChange={getFormValue}
+                                    type="password"
+                                    className="form-control my-2"
+                                    name="password"
+                                    placeholder="password"
+                                />
+                            </div>
+                            <div className="d-flex justify-content-center my-3">
+                                <button
+                                    className={`${style.loginButton} w-100`}
+                                    type="submit"
+                                >
+                                    {loading ? (
+                                        // <i className="fa fa-spinner fa-spin"></i>
+                                        <p>Loading...</p>
+                                    ) : (
+                                        "Login"
+                                    )}
+                                </button>
+                            </div>
+                            <div className="d-flex justify-content-center my-3">
+                                <p>
+                                    New Account?
+                                    
+                                </p>
+                                <Link to="/register" className={style.link}>Sign UP</Link>
+                            </div>
+                            <div className="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+                <div className="clearfix"></div>
             </div>
 
         </>

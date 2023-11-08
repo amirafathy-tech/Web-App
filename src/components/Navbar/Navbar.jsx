@@ -146,14 +146,14 @@ export default function Navbar() {
                 </Link>
               </li>
             </ul>
-            <Link
+            {/* <Link
               className="nav-link nav-btn bg-main-color text-white rounded-5 px-4 py-2 ms-md-3 text-sm-center"
-              to="#"
+              to="register"
               data-bs-target="#exampleModal"
               onClick={handleNavbarToggle}
             >
               Register
-            </Link>
+            </Link> */}
 
             <Link
               className="nav-link nav-btn bg-main-color text-white rounded-5 px-4 py-2 ms-md-3 text-sm-center"

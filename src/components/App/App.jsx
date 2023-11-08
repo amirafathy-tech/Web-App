@@ -17,7 +17,7 @@ import jwtDecode from 'jwt-decode';
 // import background from '../../images/background.jpg'
 // import Login from '../Login/Login';
 import LoginForm from '../LoginForm/LoginForm'
-
+import RegisterForm from '../RegisterForm/RegisterForm'
 
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import Project from '../Project/Project';
@@ -56,8 +56,8 @@ function App() {
       <Routes>
 
         <Route path='/' element={<Home setListener={setListener} listener={listener} />}></Route>
-{/* 
-        <Route path='login' element={<Login />}></Route> */}
+
+        <Route path='register' element={<RegisterForm />}></Route>
         <Route path='login' element={<LoginForm setUserData={setUserData}/>}></Route>
 
         <Route path='home' element={<Home setListener={setListener} listener={listener} />}></Route>

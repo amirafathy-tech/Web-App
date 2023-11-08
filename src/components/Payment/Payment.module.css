@@ -31,6 +31,16 @@
     color: white;
     font-size: large;
 }
+.searchInput{
+    width:fit-content;
+    height: 3rem;
+    border-radius: 1rem;
+    background-color: #00ADB5;
+    border-color: rgb(10, 207, 241);
+    color: white;
+    font-size: large;
+    padding: 10px;
+}
 .formGroup{
     margin: 12px;
 }
