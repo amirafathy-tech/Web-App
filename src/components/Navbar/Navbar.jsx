@@ -69,7 +69,7 @@ export default function Navbar({ loginData, logOut }) {
                   </Link>
                 </li> */}
 
-                <li className="nav-item">
+                {/* <li className="nav-item">
                   <Link
                     className={`nav-link ${style.link}`}
                     to="unit"
@@ -77,7 +77,36 @@ export default function Navbar({ loginData, logOut }) {
                   >
                     Unit
                   </Link>
+                </li> */}
+
+                <li className="nav-item">
+                  <div className="subnav">
+                    <button className={`nav-link subnavbtn ${style.link}`} onClick={handleNavbarToggle}>
+                      Unit <i className="fa fa-caret-down" aria-hidden="true"></i>
+
+                    </button>
+                    {isNavbarOpen && (
+                      <div className="subnav-content">
+                        <Link
+                          className={`nav-link ${style.link}`}
+                          to="unitview"
+                          onClick={handleNavbarToggle}
+                        >
+                          Unit View
+                        </Link>
+                        <Link
+                          className={`nav-link ${style.link}`}
+                          to="unitusage"
+                          onClick={handleNavbarToggle}
+                        >
+                          Unit Usage
+                        </Link>
+
+                      </div>
+                    )}
+                  </div>
                 </li>
+
                 <li className="nav-item">
                   <Link
                     className={`nav-link ${style.link}`}
@@ -85,6 +114,24 @@ export default function Navbar({ loginData, logOut }) {
                     onClick={handleNavbarToggle}
                   >
                     Payment
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link
+                    className={`nav-link ${style.link}`}
+                    to="location"
+                    onClick={handleNavbarToggle}
+                  >
+                    Location
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link
+                    className={`nav-link ${style.link}`}
+                    to="company"
+                    onClick={handleNavbarToggle}
+                  >
+                    CompanyCodes
                   </Link>
                 </li>
               </ul>) : ("")}

@@ -16,6 +16,10 @@ export default function Project() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProject, setSelectedProject] = useState(null);
 
+  //   // for predefined lists ::
+  const [companyCodes, setCompanyCodes] = useState([]);
+  const [regionalLocations, setRegionalLocations] = useState([]);
+
   const token = localStorage.getItem('token');
 
   // to handle modal for add
@@ -36,7 +40,7 @@ export default function Project() {
   };
 
   let [newProject, setNewProject] = useState({
-    projectID: Number,
+    projectID: '',
     companyCodeID: Number,
     companyCodeDescription: '',
     projectDescription: '',
@@ -63,7 +67,7 @@ export default function Project() {
         "Authorization": `Bearer ${token}`
       },
       data: {
-        projectID: Number(newProject.projectID),
+        projectID: newProject.projectID,
         companyCodeID: Number(newProject.companyCodeID),
         companyCodeDescription: newProject.companyCodeDescription,
         projectDescription: newProject.projectDescription,
@@ -87,12 +91,13 @@ export default function Project() {
     try {
       const options = {
         method: 'PUT',
-        url: `${BasicURL}/projects/${updatedProject.projectID}`,
+        url: `${BasicURL}/projects/${updatedProject.project_code}`,
         headers: {
           'Authorization': `Bearer ${token}`,
         },
         data: {
-          projectID: Number(updatedProject.projectID),
+          project_code:updatedProject.project_code,
+          projectID: updatedProject.projectID,
           companyCodeID: Number(updatedProject.companyCodeID),
           companyCodeDescription: updatedProject.companyCodeDescription,
           projectDescription: updatedProject.projectDescription,
@@ -151,6 +156,38 @@ export default function Project() {
     }
   }
 
+
+  // test call get API with predefined lists :
+  //   async function getProject() {
+  //   try {
+  //     const { data } = await axios.get(`${BasicURL}/projects`, {
+  //       headers: { Authorization: `Bearer ${token}` },
+  //     });
+  //     console.log(data);
+  //     console.log("project");
+  //     setProject(data);
+  //     console.log(Project);
+
+  //     // Extract the company codes and regional locations from the API response
+  //     const fetchedCompanyCodes = data.map((project) => ({
+  //       id: project.companyCodeID,
+  //       description: project.companyCodeDescription,
+  //     }));
+
+  //     const fetchedRegionalLocations = data.map((project) => ({
+  //       id: project.regionalLocation,
+  //       description: project.regionalLocationDescription,
+  //     }));
+
+  //     // Set the company codes and regional locations in the state
+  //     setCompanyCodes(fetchedCompanyCodes);
+  //     setRegionalLocations(fetchedRegionalLocations);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }
+
+
   // call search API
   async function searchProjects(keyword) {
     try {
@@ -174,7 +211,7 @@ export default function Project() {
 
   const renderProjects = project.length > 0 ? (
     project.map((project) => (
-      <tr key={project.projectID}>
+      <tr key={project.project_code}>
         <td>{project.projectID}</td>
         <td>{project.companyCodeID}</td>
         <td>{project.companyCodeDescription}</td>
@@ -182,7 +219,7 @@ export default function Project() {
         <td>{project.validFrom}</td>
         <td>{project.regionalLocation}</td>
         <td>
-          <button className={style.iconButton} onClick={() => handleDelete(project.projectID)} title="Delete">
+          <button className={style.iconButton} onClick={() => handleDelete(project.project_code)} title="Delete">
             <RiDeleteBinLine style={{ color: 'red' }} />
           </button>
           <button className={style.iconButton} onClick={() => handleEdit(project)} title="Edit">
@@ -201,53 +238,31 @@ export default function Project() {
     <>
       <div className="container">
 
-       
-          <div className="row align-items-center justify-content-center">
-            {/* Search Bar */}
-            <div className="col-sm-12 col-md-4 mt-5 mb-4 text-gred">
-              <input
-                className={`${style.searchInput}`}
-                type="search"
-                placeholder="Search for a project "
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
 
-            <div className={`col-sm-12 col-md-4 mt-5 mb-4 text-gred ${style.maincolor}`}>
-              <h2>Project Details</h2>
-            </div>
-
-            <div className="col-sm-12 col-md-4 mt-5 mb-4 text-gred">
-              <button className={`w-100 ${style.imageButton}`} onClick={handleAddShow}>
-                Add New Project
-              </button>
-            </div>
-          </div>
-        
-        {/* <div className="row align-items-center">
-
-         
-          <div class="col-sm-3 mt-5 mb-4 text-gred">
+        <div className="row align-items-center justify-content-center">
+          {/* Search Bar */}
+          <div className="col-sm-12 col-md-4 mt-5 mb-4 text-gred">
             <input
               className={`${style.searchInput}`}
               type="search"
-              placeholder="Search for a project with any keyword "
+              placeholder="Search for a project "
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
 
-          <div className={`col-sm-3  mt-5 mb-4 text-gred ${style.maincolor}`}>
-            <h2><b>Project Details</b></h2>
+          <div className={`col-sm-12 col-md-4 mt-5 mb-4 text-gred ${style.maincolor}`}>
+            <h2>Project Details</h2>
           </div>
 
-          <div className="col-sm-3  mt-5 mb-4 text-gred">
-            <button className={`w-100 ${style.imageButton}`} variant="primary" onClick={handleAddShow}>
+          <div className="col-sm-12 col-md-4 mt-5 mb-4 text-gred">
+            <button className={`w-100 ${style.imageButton}`} onClick={handleAddShow}>
               Add New Project
             </button>
           </div>
-        </div> */}
+        </div>
+
+
 
         {deleteMsg ? <div className="alert alert-danger m-3 p-2">{deleteMsg}</div> : ''}
 
@@ -279,7 +294,7 @@ export default function Project() {
                 <Modal.Body>
                   <form>
                     <input
-                      type="number"
+                      type="text"
                       name="projectID"
                       className="form-control m-3"
                       value={selectedProject.projectID}
@@ -384,40 +399,141 @@ export default function Project() {
                 <Modal.Header closeButton>
                   <Modal.Title>Add Project</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                {/* <Modal.Body>
                   <form onSubmit={submitFormData}>
                     <div className={`form-group  ${style.formGroup}`}>
 
-                    <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Project ID: </label>
-                      <input type="number" name='projectID' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter ProjectID" />
+                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >Project ID: </label>
+                      <input type="text" required  name='projectID' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter ProjectID" />
                     </div>
                     <div className={`form-group  ${style.formGroup}`}>
 
-                    <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Company Code: </label>
+                      <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Company Code: </label>
                       <input type="number" name='companyCodeID' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter CompanyCodeID" />
                     </div>
 
                     <div className={`form-group  ${style.formGroup}`}>
 
-                    <label htmlFor="exampleInputText1" className={`${style.lable}`} >Company Description: </label>
+                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >Company Description: </label>
                       <input type="text" name='companyCodeDescription' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter CompanyCodeDescription" />
                     </div>
                     <div className={`form-group  ${style.formGroup}`}>
 
-                    <label htmlFor="exampleInputText1" className={`${style.lable}`} >Project Description: </label>
-                      <input type="text" name='projectDescription' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter ProjectDescription" />
+                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >Project Description: </label>
+                      <input type="text" required name='projectDescription' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter ProjectDescription" />
                     </div>
 
                     <div className={`form-group  ${style.formGroup}`}>
 
-                    <label htmlFor="exampleInputDate1" className={`${style.lable}`} >ValidFrom Date : </label>
-                      <input type="date" name='validFrom' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter ValidFromDate" />
+                      <label htmlFor="exampleInputDate1" className={`${style.lable}`} >ValidFrom Date : </label>
+                      <input type="date" required name='validFrom' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter ValidFromDate" />
                     </div>
                     <div className={`form-group  ${style.formGroup}`}>
 
-                    <label htmlFor="exampleInputText1" className={`${style.lable}`} >Regional Location: </label>
+                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >Regional Location: </label>
                       <input type="text" name='regionalLocation' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter RegionalLocation" />
                     </div>
+
+
+                    <div className={`form-group ${style.formGroup}`}>
+                      <label htmlFor="exampleInputNumber1" className={`${style.label}`}>
+                        Company Code:
+                      </label>
+                      <select
+                        name="companyCodeID"
+                        className="form-control"
+                        onChange={getFormValue}
+                      >
+                        <option value="">Select Company Code</option>
+                        {companyCodes.map((code) => (
+                          <option key={code.id} value={code.id}>
+                            {code.description}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className={`form-group ${style.formGroup}`}>
+                      <label htmlFor="exampleInputText1" className={`${style.label}`}>
+                        Regional Location:
+                      </label>
+                      <select
+                        name="regionalLocation"
+                        className="form-control"
+                        onChange={getFormValue}
+                      >
+                        <option value="">Select Regional Location</option>
+                        {regionalLocations.map((location) => (
+                          <option key={location.id} value={location.code}>
+                            {location.description}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <button type="submit" className={`w-100 ${style.imageButton}`}>Add Project</button>
+                  </form>
+
+                  {addMsg ? <div className="alert alert-danger m-3 p-2">{addMsg}</div> : ''}
+                </Modal.Body> */}
+
+                <Modal.Body>
+                  <form onSubmit={submitFormData}>
+                    <div className={`form-group ${style.formGroup}`}>
+                      <h4>Companies</h4>
+                      <label htmlFor="exampleInputText1" className={`${style.label}`}>Project ID:</label>
+                      <input type="text" required maxLength={8} name='projectID' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter ProjectID" />
+
+                      <label htmlFor="exampleInputNumber1" className={`${style.label}`}>Company Code:</label>
+                      <input type="number" name='companyCodeID' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter CompanyCodeID" />
+
+                      <label htmlFor="exampleInputText1" className={`${style.label}`}>Company Description:</label>
+                      <input type="text" name='companyCodeDescription' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter CompanyCodeDescription" />
+                    </div>
+
+                    <div className={`form-group ${style.formGroup}`}>
+                      <h4>Project Description</h4>
+                      <label htmlFor="exampleInputText1" className={`${style.label}`}>Project Description:</label>
+                      <input type="text" required name='projectDescription' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter ProjectDescription" />
+                    </div>
+
+                    <div className={`form-group ${style.formGroup}`}>
+                      <h4>Location</h4>
+                      <label htmlFor="exampleInputDate1" className={`${style.label}`}>Valid From Date:</label>
+                      <input type="date" required name='validFrom' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter ValidFromDate" />
+
+                      <label htmlFor="exampleInputText1" className={`${style.label}`}>Regional Location:</label>
+                      <input type="text" name='regionalLocation' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter RegionalLocation" />
+
+                      <label htmlFor="exampleInputNumber1" className={`${style.label}`}>Company Code:</label>
+                      <select
+                        name="companyCodeID"
+                        className="form-control"
+                        onChange={getFormValue}
+                      >
+                        <option value="">Select Company Code</option>
+                        {companyCodes.map((code) => (
+                          <option key={code.id} value={code.id}>
+                            {code.description}
+                          </option>
+                        ))}
+                      </select>
+
+                      <label htmlFor="exampleInputText1" className={`${style.label}`}>Regional Location:</label>
+                      <select
+                        name="regionalLocation"
+                        className="form-control"
+                        onChange={getFormValue}
+                      >
+                        <option value="">Select Regional Location</option>
+                        {regionalLocations.map((location) => (
+                          <option key={location.id} value={location.code}>
+                            {location.description}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
                     <button type="submit" className={`w-100 ${style.imageButton}`}>Add Project</button>
                   </form>
 

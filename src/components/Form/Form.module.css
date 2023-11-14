@@ -1,0 +1,48 @@
+.maincolor{
+    color: #00ADB5;
+}
+.imageButton{
+    background-color:#00ADB5 ;
+    border-radius: 1rem;
+    color: white;
+    border-color: rgb(10, 207, 241);
+    border-width: 3px;
+    padding: 10px;
+}
+.imageButton:hover{
+    transform: translateY(0.3rem);
+    background-color: white;
+    color:#00ADB5 ;
+}
+.iconButton{
+    background-color:white;
+    border-radius: 7px;
+    border-color: rgb(10, 207, 241);
+    border-width: 3px;
+    padding: 10px;
+    margin-right: 3px;
+}
+.searchInput{
+    width:fit-content;
+    height: 3rem;
+    border-radius: 1rem;
+    background-color: #00ADB5;
+    border-color: rgb(10, 207, 241);
+    color: white;
+    font-size: large;
+    padding: 10px;
+}
+.formGroup{
+    margin: 12px;
+}
+
+.label{
+    font-size: large;
+  color: #00ADB5;
+  margin: 8px;
+}
+.span{
+    color: red;
+    font-size: large;
+    margin-left: 2px;
+}

@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - image: amirafathy/image8
-          name: container8
+          name: container9
           ports:
             - containerPort: 3000
           envFrom:
@@ -37,7 +37,7 @@ metadata:
   creationTimestamp: null
   labels:
     app: react
-  name: service8
+  name: service9
 spec:
   ports:
     - port: 3000

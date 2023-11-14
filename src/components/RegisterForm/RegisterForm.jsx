@@ -5,11 +5,9 @@ import Joi from 'joi'
 import React, { useState } from 'react'
 import style from './RegisterForm.module.css';
 import { Link, useNavigate } from 'react-router-dom'
-import { encode } from 'base-64';
+//import { encode } from 'base-64';
 
 export default function Register() {
-    // const clientID = "2ed00dd1-8ea0-4a79-b94d-a55ddf8d5e3c"
-    // const clientSecret = "j]U:-L76L-rN_k1YxQ2S7uBNAD4[:?yM"
     let [user, setUser] = useState({
         value: '',
         familyName: '',
@@ -50,17 +48,7 @@ export default function Register() {
         else {
 
             // curl command
-            const qs = require('qs');
-            // let data = qs.stringify({
-            //     //'grant_type': 'password',
-            //     'value': user.value,
-            //     'familyName': user.familyName,
-            //     'givenName': user.givenName,
-            //     'userName': user.userName
-
-
-            // });
-            let data = {
+               let data = {
                 //'grant_type': 'password',
                 'value': user.value,
                 'familyName': user.familyName,
@@ -69,14 +57,7 @@ export default function Register() {
 
 
             };
-
-            // const clientid = clientID
-            // const username = 'c75aa7fe-9869-4e24-9144-531b6eb59974'
-            // const password = '@kzymnQBmJKfpHLxwr35QqSHkYRttBmoKp'
             // const auth = "Basic " + encode(clientid + ':' + clientSecret);
-            // const auth = "Basic " + encode(username + ':' + password);
-
-
             let config = {
                 method: 'POST',
                 maxBodyLength: Infinity,
@@ -147,7 +128,6 @@ return (
                             <div className='d-flex justify-content-center my-3'>
                                 <button className={`${style.loginButton} w-100`} type='submit'>
                                     {loading ? 
-                                    // <i className='fa fa-spinner fa-spin'></i> 
                                      <p>Loading...</p>
                                     : 'Register'}
                                 </button>

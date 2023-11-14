@@ -35,8 +35,8 @@ export default function AvailableUnits() {
     };
 
     let [newUnit, setNewUnit] = useState({
-        unitKey: Number,
-        sapUnitID: Number,
+        unitKey: '',
+       // sapUnitID: Number,// will remove it after i get new API Link
         oldNumber: Number,
         description: '',
         unitType: '',
@@ -85,8 +85,8 @@ export default function AvailableUnits() {
                 "Authorization": `Bearer ${token}`
             },
             data: {
-                unitKey: Number(newUnit.unitKey),
-                sapUnitID: Number(newUnit.sapUnitID),
+                unitKey: newUnit.unitKey,
+               // sapUnitID: Number(newUnit.sapUnitID),
                 oldNumber: Number(newUnit.oldNumber),
                 description: newUnit.description,
                 unitType: newUnit.unitType,
@@ -154,15 +154,16 @@ export default function AvailableUnits() {
         try {
             const options = {
                 method: 'PUT',
-                url: `${BasicURL}/units/${updatedUnit.unitKey}`,
+                url: `${BasicURL}/units/${updatedUnit.unit_code}`,
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
 
                 // will change to unit data
                 data: {
-                    unitKey: Number(updatedUnit.unitKey),
-                    sapUnitID: Number(updatedUnit.sapUnitID),
+                    unit_code:updatedUnit.unit_code,
+                    unitKey: updatedUnit.unitKey,
+                    // sapUnitID: Number(updatedUnit.sapUnitID),
                     oldNumber: Number(updatedUnit.oldNumber),
                     description: updatedUnit.description,
                     unitType: updatedUnit.unitType,
@@ -392,7 +393,7 @@ export default function AvailableUnits() {
 
 
                                             <td>
-                                                <button className={style.iconButton} onClick={() => handleDelete(item.unitKey)} title="Delete">
+                                                <button className={style.iconButton} onClick={() => handleDelete(item.unit_code)} title="Delete">
                                                     <RiDeleteBinLine style={{ color: 'red' }} />
                                                 </button>
                                                 <button className={style.iconButton} onClick={() => handleEdit(item)} title="Edit">
@@ -443,15 +444,15 @@ export default function AvailableUnits() {
                             </div> */}
                             <div className={`form-group ${style.formGroup}`}>
 
-                                <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Unit Key: </label>
-                                <input type="number" name='unitKey' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" />
-                                {/* <label className={style.label} htmlFor="floatingInput">Unit Key</label> */}
+                                <label htmlFor="exampleInputText1" className={`${style.lable}`} >Unit Key: </label>
+                                <input required maxLength={8} type="Text" name='unitKey' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" />
+                               
                             </div>
-                            <div className={`form-group  ${style.formGroup}`}>
+                            {/* <div className={`form-group  ${style.formGroup}`}>
 
                                 <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Unit SAPID: </label>
                                 <input type="number" name='sapUnitID' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter SAPUnitID" />
-                            </div>
+                            </div> */}
                             <div className={`form-group  ${style.formGroup}`}>
 
                                 <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Old Number: </label>
@@ -460,7 +461,7 @@ export default function AvailableUnits() {
                             <div className={`form-group  ${style.formGroup}`}>
 
                                 <label htmlFor="exampleInputText1" className={`${style.lable}`} >Description: </label>
-                                <input type="text" name='description' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter Unit Description" />
+                                <input required type="text" name='description' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter Unit Description" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
 
@@ -475,7 +476,7 @@ export default function AvailableUnits() {
                             <div className={`form-group  ${style.formGroup}`}>
 
                                 <label htmlFor="exampleInputText1" className={`${style.lable}`} >Unit Status: </label>
-                                <input type="text" name='unitStatus' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter Unit Status" />
+                                <input required type="text" name='unitStatus' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter Unit Status" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
 
@@ -541,7 +542,7 @@ export default function AvailableUnits() {
                             <div className={`form-group  ${style.formGroup}`}>
                                 
                             <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Number of Rooms: </label>
-                                <input type="number" name='numberOfRooms' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter NumberOfRooms " />
+                                <input type="number" name='numberOfRooms' min="0" className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter NumberOfRooms " />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
 
@@ -627,7 +628,9 @@ export default function AvailableUnits() {
                     <Modal.Body>
                         <form>
                             <input
-                                type="number"
+                                type="text"
+                                required
+                                maxLength={8}
                                 name="unitKey"
                                 className="form-control m-3"
                                 value={selectedUnit.unitKey}
@@ -639,7 +642,7 @@ export default function AvailableUnits() {
                                 }
                                 placeholder="Enter UnitKey"
                             />
-                            <input
+                            {/* <input
                                 type="number"
                                 name="sapUnitID"
                                 className="form-control m-3"
@@ -651,7 +654,7 @@ export default function AvailableUnits() {
                                     })
                                 }
                                 placeholder="Enter SapUnitID"
-                            />
+                            /> */}
                             <input
                                 type="number"
                                 name="oldNumber"
@@ -667,6 +670,7 @@ export default function AvailableUnits() {
                             />
                             <input
                                 type="text"
+                                required
                                 name="description"
                                 className="form-control m-3"
                                 value={selectedUnit.description}
@@ -706,6 +710,7 @@ export default function AvailableUnits() {
                             />
                             <input
                                 type="text"
+                                required
                                 name="unitStatus"
                                 className="form-control m-3"
                                 value={selectedUnit.unitStatus}
@@ -881,6 +886,7 @@ export default function AvailableUnits() {
                             <input
                                 type="number"
                                 name="numberOfRooms"
+                                min="0"
                                 className="form-control m-3"
                                 value={selectedUnit.numberOfRooms}
                                 onChange={(e) =>

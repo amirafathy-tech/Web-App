@@ -9,27 +9,14 @@ import { encode } from 'base-64';
 
 export default function Login({ setUserData }) {
 
-    // Authenticated variables
-    // const clientID = "77ce79f7-eb2d-421c-ab03-794811bbdbe3"
-    // //"9f50a6eb-f310-4cc7-be6b-cbfffb49b623"
-    // const clientSecret = "_H7MX2YRj6UE.seBIxX8zEnDGMYTG-DYShZ"
-    //"]b[dtj5pNc5@R5GndwGMvn0fLkkb?jG"
+    // const clientID = "1eb8c477-8309-4d77-b174-bb67b3e8b5d1"
+    // const clientSecret = "nZFdZBQsZy5cp_lzmfDIojf4S7PTafZiQ"
+    // new ones
 
-    // // demo authenticated variables
-    // const clientID="fc74a36a-d194-4401-ab00-c0c83d2c806f"
-    // const clientSecret="2p_H[tazCkYQIt3:=oFZIK4?AkYb4O"
+    const clientID = "15ef32d9-2046-426d-ac8d-be541f2db7e7"
+    const clientSecret = "rKbRqvHSPPFjCgHF?2v=ne=GAF1:CzH"
+
     // const url = "https://aey0y39na.trial-accounts.ondemand.com"
-
-
-
-
-
-    // demoo with search authenticated variables
-    // const clientID="5188fd8d-dfeb-488d-aa4e-feeecd76e39e"
-    // const clientSecret="z7gYrr9X/BGfr67aa4K1ujXZP9r_lAp"
-    const clientID = "65f6010e-ab29-4afa-8e2d-1cbd72b0fdcd"
-    const clientSecret = "2TL0nSJHbAR5xoGzxv[rgcrb_qM7i@V"
-    const url = "https://aey0y39na.trial-accounts.ondemand.com"
 
 
     let [user, setUser] = useState({
@@ -106,11 +93,51 @@ export default function Login({ setUserData }) {
             const clientid = clientID
             //const auth = "Basic " + Buffer.from(clientid + ':' + clientSecret).toString("base64");
             const auth = "Basic " + encode(clientid + ':' + clientSecret);;
-            let config = {
+            //         let config = {
+            //             method: 'post',
+            //             maxBodyLength: Infinity,
+            //             url: 'https://cors-anywhere.herokuapp.com/https://aosfletgu.trial-accounts.ondemand.com/oauth2/token',
+            //             //'https://cors-anywhere.herokuapp.com/https://aey0y39na.trial-accounts.ondemand.com/oauth2/token',
+            //             headers: {
+            //                 'Authorization': auth,
+            //                 'Content-Type': 'application/x-www-form-urlencoded'
+            //             },
+            //             data: data
+            //         };
+
+            //         const response = await axios(config);
+            //         console.log(response);
+            //         console.log("response");
+
+
+
+            //         if (response.statusText == "OK") {
+            //         //if (response) {
+            //             //console.log("okkkk");
+            //             //localStorage.setItem('token', response.data.access_token); /// Step 1
+            //             console.log(response.data.id_token);
+            //             localStorage.setItem('token', response.data.id_token); /// Step 1
+            //             setUserData();//// here call setUserData function 
+            //             goToHome();
+            //         }
+            //         else if(response.status === 400 ){
+            //             console.log("40000000");
+            //             setErrorMsg("Invalid Email or Password")
+            //             //setErrorMsg(response.data);
+            //         }
+            //         else{
+            //             setErrorMsg(response)
+            //         }
+            //         setLoading(false);
+            //     }
+
+            // }
+
+
+            const config = {
                 method: 'post',
                 maxBodyLength: Infinity,
                 url: 'https://cors-anywhere.herokuapp.com/https://aosfletgu.trial-accounts.ondemand.com/oauth2/token',
-                //'https://cors-anywhere.herokuapp.com/https://aey0y39na.trial-accounts.ondemand.com/oauth2/token',
                 headers: {
                     'Authorization': auth,
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -118,29 +145,33 @@ export default function Login({ setUserData }) {
                 data: data
             };
 
-            const response = await axios(config);
-            console.log(response);
-            console.log("response");
-
-
-
-            //if (response.statusText == "OK") {
-            if (response) {
-                //console.log("okkkk");
-                //localStorage.setItem('token', response.data.access_token); /// Step 1
-                console.log(response.data.id_token);
-                localStorage.setItem('token', response.data.id_token); /// Step 1
-
-                setUserData();//// here call setUserData function 
-                goToHome();
+            try {
+                const response = await axios(config);
+                console.log(response);
+                if (response.status === 200) {
+                    console.log(response.data.id_token);
+                    localStorage.setItem('token', response.data.id_token);
+                    setUserData();
+                    goToHome();
+                } else if (response.error_description === "User authentication failed.") {
+                    console.log("40000000");
+                    setErrorMsg("Invalid Email or Password");
+                } else {
+                    console.log(response);
+                    setErrorMsg(response);
+                }
+            } catch (error) {
+                console.error(error);
+                setErrorMsg("An error occurred (Invalid Email or Password)");
             }
-            else {
-                setErrorMsg(response.data);
-            }
+
             setLoading(false);
+
         }
 
     }
+
+
     // function goToForgetPassWord() {
     //     let path = '/forgetPassword';
     //     navigate(path);
@@ -158,40 +189,6 @@ export default function Login({ setUserData }) {
 
     return (
         <>
-
-            {/* <div className={`${style.size} `}>
-
-
-                <div className='d-flex justify-content-center align-items-center my-5  '>
-                    <div className={`w-50  p-5  bg-light overflow-auto ${style.form}`}>
-                        <h1 className='my-4 text-center text-dark'>Login </h1>
-                        {errorMsg ? <div className="alert alert-danger p-2">{errorMsg}</div> : ''}
-                        {errorList.map((error, index) => <div className="alert alert-danger p-2">{error.message}</div>)}
-                        <form onSubmit={submitFormData}>
-                            <div className="input-gp my-3">
-                                <label className="form-label" htmlFor="form3Example3">Email address</label>
-                                <input onChange={getFormValue} type='email' className="form-control my-2" name='email' placeholder='email' />
-                            </div>
-                            <div className="input-gp my-3">
-                                <label className="form-label" htmlFor="form3Example4">Password</label>
-
-                                <input onChange={getFormValue} type='password' className='form-control my-2' name='password' placeholder='password' />
-                            </div>
-                            <div className='d-flex justify-content-center my-3'>
-                                <button className={style.loginButton} type='submit'>
-                                    {loading ? <i className='fa fa-spinner fa-spin'></i> : 'Login'}
-                                </button>
-                            </div>
-
-                            <div className='clearfix'></div>
-                        </form>
-
-                    </div>
-
-                </div>
-                <div className='clearfix'></div>
-
-            </div> */}
 
             <div className={`${style.size} `}>
                 <div className="d-flex justify-content-center align-items-center my-5">
@@ -245,7 +242,7 @@ export default function Login({ setUserData }) {
                             <div className="d-flex justify-content-center my-3">
                                 <p>
                                     New Account?
-                                    
+
                                 </p>
                                 <Link to="/register" className={style.link}>Sign UP</Link>
                             </div>
