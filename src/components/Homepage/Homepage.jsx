@@ -1,7 +1,8 @@
 
 import style from './Homepage.module.css'
 import video from '../../images/bg-video.mp4'
-import BoxScene from "../../threejs/myapp"
+//import BoxScene from "../../threejs/myapp"
+import BoxScene from "../../threejs/model"
 export default function Homepage(props) {
 
     return (

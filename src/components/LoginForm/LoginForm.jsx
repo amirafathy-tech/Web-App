@@ -8,22 +8,21 @@ import { Link, useNavigate } from 'react-router-dom'
 import { encode } from 'base-64';
 
 export default function Login({ setUserData }) {
-
     // const clientID = "1eb8c477-8309-4d77-b174-bb67b3e8b5d1"
     // const clientSecret = "nZFdZBQsZy5cp_lzmfDIojf4S7PTafZiQ"
-    // new ones
 
-    const clientID = "15ef32d9-2046-426d-ac8d-be541f2db7e7"
-    const clientSecret = "rKbRqvHSPPFjCgHF?2v=ne=GAF1:CzH"
+    // trial
+    //const clientID = "15ef32d9-2046-426d-ac8d-be541f2db7e7"
+    //const clientSecret = "rKbRqvHSPPFjCgHF?2v=ne=GAF1:CzH"
 
+    // new trial
+    const clientID = "5bd52faa-51e7-4a72-aa28-cac126e86e85"
+    const clientSecret = "OlJsOwM-MSlmE5cV3:Bz3]-:RJ/WS/R1U"
     // const url = "https://aey0y39na.trial-accounts.ondemand.com"
-
-
     let [user, setUser] = useState({
         email: '',
         password: '',
     })
-
     let [errorMsg, setErrorMsg] = useState('');//to appeare in UI and talk with render function (Data From Backend)
     let [errorList, setErrorList] = useState([]);//(Data From Validation)
     let [loading, setLoading] = useState(false);
@@ -33,7 +32,6 @@ export default function Login({ setUserData }) {
         let path = '/home';
         navigate(path);
     }
-
     function validateForm() {
         const schema = Joi.object({
             email: Joi.string().required(),
@@ -42,8 +40,6 @@ export default function Login({ setUserData }) {
         })
         return schema.validate(user, { abortEarly: false });
     }
-
-
     async function submitFormData(e) {
         e.preventDefault();
         setLoading(true);
@@ -79,8 +75,8 @@ export default function Login({ setUserData }) {
             //     //console.log(response);
             //     console.log(response.data.access_token);
 
-            // curl command
 
+            // curl command
             const qs = require('qs');
             let data = qs.stringify({
                 'grant_type': 'password',
@@ -89,51 +85,9 @@ export default function Login({ setUserData }) {
                 'password': user.password
                 //'H@g@rN117!'
             });
-
             const clientid = clientID
             //const auth = "Basic " + Buffer.from(clientid + ':' + clientSecret).toString("base64");
             const auth = "Basic " + encode(clientid + ':' + clientSecret);;
-            //         let config = {
-            //             method: 'post',
-            //             maxBodyLength: Infinity,
-            //             url: 'https://cors-anywhere.herokuapp.com/https://aosfletgu.trial-accounts.ondemand.com/oauth2/token',
-            //             //'https://cors-anywhere.herokuapp.com/https://aey0y39na.trial-accounts.ondemand.com/oauth2/token',
-            //             headers: {
-            //                 'Authorization': auth,
-            //                 'Content-Type': 'application/x-www-form-urlencoded'
-            //             },
-            //             data: data
-            //         };
-
-            //         const response = await axios(config);
-            //         console.log(response);
-            //         console.log("response");
-
-
-
-            //         if (response.statusText == "OK") {
-            //         //if (response) {
-            //             //console.log("okkkk");
-            //             //localStorage.setItem('token', response.data.access_token); /// Step 1
-            //             console.log(response.data.id_token);
-            //             localStorage.setItem('token', response.data.id_token); /// Step 1
-            //             setUserData();//// here call setUserData function 
-            //             goToHome();
-            //         }
-            //         else if(response.status === 400 ){
-            //             console.log("40000000");
-            //             setErrorMsg("Invalid Email or Password")
-            //             //setErrorMsg(response.data);
-            //         }
-            //         else{
-            //             setErrorMsg(response)
-            //         }
-            //         setLoading(false);
-            //     }
-
-            // }
-
-
             const config = {
                 method: 'post',
                 maxBodyLength: Infinity,
@@ -164,11 +118,8 @@ export default function Login({ setUserData }) {
                 console.error(error);
                 setErrorMsg("An error occurred (Invalid Email or Password)");
             }
-
             setLoading(false);
-
         }
-
     }
 
 
@@ -176,7 +127,6 @@ export default function Login({ setUserData }) {
     //     let path = '/forgetPassword';
     //     navigate(path);
     // }
-
     function getFormValue(e) {
         let myUser = { ...user }
         myUser[e.target.name] = e.target.value
@@ -186,10 +136,8 @@ export default function Login({ setUserData }) {
     function cons() {
         console.log("rec");
     }
-
     return (
         <>
-
             <div className={`${style.size} `}>
                 <div className="d-flex justify-content-center align-items-center my-5">
                     <div className={`w-50 p-5 bg-light overflow-auto ${style.form}`}>

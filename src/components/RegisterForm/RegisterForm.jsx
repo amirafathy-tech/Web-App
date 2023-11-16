@@ -54,14 +54,12 @@ export default function Register() {
                 'familyName': user.familyName,
                 'givenName': user.givenName,
                 'userName': user.userName
-
-
             };
             // const auth = "Basic " + encode(clientid + ':' + clientSecret);
             let config = {
                 method: 'POST',
                 maxBodyLength: Infinity,
-                url: 'https://demooo.c-78984ef.kyma.ondemand.com/iasUsers',
+                url: 'https://newtrial.c-78984ef.kyma.ondemand.com/iasUsers',
                 headers: {
                    // 'Authorization': auth,
                     'Content-Type': 'application/json'

@@ -6,9 +6,10 @@ import style from './UnitStatus.module.css';
 import { RiDeleteBinLine, RiEditLine } from 'react-icons/ri';
 
 export default function UnitStatus() {
-  //const BasicURL='https://demo.c-78984ef.kyma.ondemand.com'
+  // new URL
+  const BasicURL=' https://newtrial.c-78984ef.kyma.ondemand.com'
 
-  const BasicURL = 'https://demooo.c-78984ef.kyma.ondemand.com'
+ // const BasicURL = 'https://demooo.c-78984ef.kyma.ondemand.com'
   const token = localStorage.getItem('token');
   const [UnitStatus, setUnitStatus] = useState([]);
   const [addMsg, setAddMsg] = useState('');
@@ -19,12 +20,16 @@ export default function UnitStatus() {
 
   // to handle modal for add
   const [addShow, setaddShow] = useState(false);
-  const handleAddClose = () => setaddShow(false);
   const handleAddShow = () => setaddShow(true);
+  const handleAddClose = () => {
+    setAddMsg('');
+    setaddShow(false);
+}
 
   // handle modal for edit
   const [show, setShow] = useState(false);
   const handleClose = () => {
+    setUpdateMsg('');
     setSelectedUnitStatus(null);
     setShow(false);
   };
@@ -39,8 +44,6 @@ export default function UnitStatus() {
     unitStatus: ''
 
   });
-
-
   function getFormValue(e) {
     let myUnitStatus = { ...newUnitStatus }
     myUnitStatus[e.target.name] = e.target.value
@@ -50,10 +53,9 @@ export default function UnitStatus() {
   // call add API 
   async function submitFormData(e) {
     e.preventDefault();
-
     const options = {
       method: 'POST',
-      url: `${BasicURL}/cities`,
+      url: `${BasicURL}/unitstatus`,
       headers: {
         "Authorization": `Bearer ${token}`
       },
@@ -62,7 +64,6 @@ export default function UnitStatus() {
         unitStatus: newUnitStatus.unitStatus
       }
     };
-
     const response = await axios(options);
     console.log(response);
     if (response.status == 200) {
@@ -78,7 +79,7 @@ export default function UnitStatus() {
     try {
       const options = {
         method: 'PUT',
-        url: `${BasicURL}/cities/${updatedUnitStatus.unitStatus_code}`,
+        url: `${BasicURL}/unitstatus/${updatedUnitStatus.unitStatus_code}`,
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -107,7 +108,7 @@ export default function UnitStatus() {
     try {
       const options = {
         method: 'DELETE',
-        url: `${BasicURL}/cities/${UnitStatusID}`,
+        url: `${BasicURL}/unitstatus/${UnitStatusID}`,
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -129,7 +130,7 @@ export default function UnitStatus() {
   // call get API
   async function getUnitStatus() {
     try {
-      let { data } = await axios.get(`${BasicURL}/cities`, { headers: { "Authorization": `Bearer ${token}` } });
+      let { data } = await axios.get(`${BasicURL}/unitstatus`, { headers: { "Authorization": `Bearer ${token}` } });
       console.log(data);
       console.log("UnitStatus");
       setUnitStatus(data);
@@ -142,7 +143,7 @@ export default function UnitStatus() {
   // call search API
   async function searchUnitStatuss(keyword) {
     try {
-      const response = await axios.get(`${BasicURL}/cities/search?keyword=${keyword}`, {
+      const response = await axios.get(`${BasicURL}/unitstatus/search?keyword=${keyword}`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       console.log(response)
@@ -199,7 +200,7 @@ export default function UnitStatus() {
           </div>
 
           <div className={`col-sm-12 col-md-4 mt-5 mb-4 text-gred ${style.maincolor}`}>
-            <h2>UnitStatus Details</h2>
+            <h2>Unit Status Details</h2>
           </div>
 
           <div className="col-sm-12 col-md-4 mt-5 mb-4 text-gred">
@@ -208,10 +209,8 @@ export default function UnitStatus() {
             </button>
           </div>
         </div>
-
-
-
-        {deleteMsg ? <div className="alert alert-danger m-3 p-2">{deleteMsg}</div> : ''}
+{/* 
+        {deleteMsg ? <div className="alert alert-danger m-3 p-2">{deleteMsg}</div> : ''} */}
 
         <div className="row">
           <div className="table-responsive m-auto">

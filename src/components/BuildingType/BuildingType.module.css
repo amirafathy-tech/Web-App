@@ -1,12 +1,9 @@
-.headtable{
-    background-color: green !important;
-}
 .maincolor{
     color: #00ADB5;
 }
 .imageButton{
     background-color:#00ADB5 ;
-    border-radius: 7px;
+    border-radius: 1rem;
     color: white;
     border-color: rgb(10, 207, 241);
     border-width: 3px;
@@ -23,6 +20,7 @@
     border-color: rgb(10, 207, 241);
     border-width: 3px;
     padding: 10px;
+    margin-right: 3px;
 }
 .searchInput{
     width:fit-content;
@@ -37,13 +35,9 @@
 .formGroup{
     margin: 12px;
 }
+
 .lable{
     font-size: large;
   color: #00ADB5;
   margin: 4px;
-}
-.label{
-    font-size: large;
-  color: #00ADB5;
-  margin: 8px;
 }

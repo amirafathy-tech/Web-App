@@ -7,14 +7,54 @@ import * as THREE from 'three'
 import loading from '../images/loading.gif'
 let global = {}
 
+// function Load() {
+//   let [display, setDisplay] = useState(false)
+//   global.setDisplay = setDisplay
+//   return <div className='loader'
+//     style={{ display: !display ? 'block' : 'none', background: '#5D5B41', position: 'absolute', zIndex: '100', left: 0, height: 0, width: "100%", height: "100vh" }}>
+//     <h1 style={{ color: 'white', textAlign: 'center', marginTop: '2' }}>Loading...</h1>
+//     <img src={loading}></img>
+//   </div>
+// }
+
 function Load() {
-  let [display, setDisplay] = useState(false)
-  global.setDisplay = setDisplay
-  return <div className='loader'
-    style={{ display: !display ? 'block' : 'none', background: '#5D5B41', position: 'absolute', zIndex: '100', left: 0, height: 0, width: "100%", height: "100vh" }}>
-    <h1 style={{ color: 'white', textAlign: 'center', marginTop: '2' }}>Loading...</h1>
-    <img src={loading}></img>
-  </div>
+  let [display, setDisplay] = useState(false);
+  global.setDisplay = setDisplay;
+
+  return (
+    <div
+      className="loader"
+      style={{
+        display: !display ? 'block' : 'none',
+        background: '#5D5B41',
+        position: 'absolute',
+        zIndex: '100',
+        left: 0,
+        width: '100%',
+        height: '100vh',
+      }}
+    >
+      <h1
+        style={{
+          color: 'white',
+          textAlign: 'center',
+          marginTop: '2',
+        }}
+      >
+        Loading...
+      </h1>
+      <img
+        src={loading}
+        style={{
+          maxWidth: '100%',
+          height: 'auto',
+          display: 'block',
+          margin: '0 auto',
+        }}
+        alt="Loading"
+      />
+    </div>
+  );
 }
 
 function Scene1() {

@@ -5,7 +5,9 @@ import { Modal, Button } from 'react-bootstrap';
 import style from './Form.module.css';
 import { RiDeleteBinLine, RiEditLine } from 'react-icons/ri';
 export default function Project() {
-    const BasicURL = 'https://demooo.c-78984ef.kyma.ondemand.com'
+  // new URL
+  const BasicURL=' https://newtrial.c-78984ef.kyma.ondemand.com'
+   // const BasicURL = 'https://demooo.c-78984ef.kyma.ondemand.com'
     const token = localStorage.getItem('token');
     const [project, setProject] = useState([]);
     const [addMsg, setAddMsg] = useState('');
@@ -45,7 +47,13 @@ export default function Project() {
         setSelectedProject(null);
         setShow(false);
     };
-    const handleShow = () => setShow(true);
+    const handleShow = () => {
+          // call get company codes
+          getCompanyCodes();
+          // call get location codes
+             getCity()
+        setShow(true);
+    }
     const handleEdit = (project) => {
         setSelectedProject(project);
         handleShow();
@@ -56,14 +64,44 @@ export default function Project() {
         setAddMsg('');
         setaddShow(false);
     }
-    const handleAddShow = () => setaddShow(true);
+    async function getCompanyCodes() {
+        try {
+          let { data } = await axios.get(`${BasicURL}/companymd`, { headers: { "Authorization": `Bearer ${token}` } });
+          console.log(data);
+          console.log("CompanyCodes");
+          setCompanyCodes(data);
+          console.log("compannny");
+          console.log(companyCodes)
+        } catch (error) {
+          console.error(error);
+        }
+      }
+       // call get API
+  async function getCity() {
+    try {
+      let { data } = await axios.get(`${BasicURL}/cities`, { headers: { "Authorization": `Bearer ${token}` } });
+      console.log(data);
+      console.log("City");
+      setRegionalLocations(data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+    const handleAddShow = () => {
+          // call get company codes
+          getCompanyCodes();
+          // call get location codes
+             getCity()
+        setaddShow(true);
+
+    }
 
     function validateForm(project) {
         // Check if all required fields are filled
         if (
             project.projectID &&
             project.companyCodeID &&
-            project.companyCodeDescription &&
+           // project.companyCodeDescription &&
             project.projectDescription &&
             project.validFrom &&
             project.regionalLocation
@@ -82,10 +120,14 @@ export default function Project() {
         const isValid = validateForm(myProject);
         setFormValid(isValid);
     }
+
+  
     // call add API 
     async function submitFormData(e) {
         e.preventDefault();
         try {
+            // // call get company codes
+            // getCompanyCodes();
             // Check form validity before updating
             if (!formValid) {
                 return
@@ -221,7 +263,7 @@ export default function Project() {
             console.error(error);
         }
     }
-    // here i call get API to retrieve companyCodes
+    
     // here i call get API to retrieve locationCodes
     // here i call get API to retrieve profitCodes
 
@@ -309,8 +351,25 @@ export default function Project() {
                                         <div className={`form-group ${style.formGroup}`}>
                                             <h2>Company:</h2>
 
-                                            <label htmlFor="exampleInputNumber1" className={`${style.label}`}>Company Code<span className={`${style.span}`}>*</span></label>
-                                            <input
+                                            <label htmlFor="exampleInputNumber1" className={`${style.label}`}>Company:<span className={`${style.span}`}>*</span></label>
+                                            <select
+                                                name="companyCodeID"
+                                                className="form-control"
+                                                onChange={(e) =>
+                                                    setSelectedProject({
+                                                        ...selectedProject,
+                                                        companyCodeID: e.target.value,
+                                                    })
+                                                }
+                                            >
+                                                <option value="">Select Company Code and Description</option>
+                                                {companyCodes.map((code) => (
+                                                    <option key={code.company_code} value={code.company_code}>
+                                                       {code.companyCodeID} - {code.companyCodeDescription}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                            {/* <input
                                                 type="number"
                                                 name="companyCodeID"
                                                 className="form-control"
@@ -337,15 +396,32 @@ export default function Project() {
                                                     })
                                                 }
                                                 placeholder="Enter CompanyCodeDescription"
-                                            />
+                                            /> */}
                                         </div>
 
 
                                         <div className={`form-group ${style.formGroup}`}>
-                                            <h2>Location</h2>
+                                            <h2>Location:</h2>
 
                                             <label htmlFor="exampleInputText1" className={`${style.label}`}>Regional Location:</label>
-                                            <input
+                                            <select
+                                                name="regionalLocation"
+                                                className="form-control"
+                                                onChange={(e) =>
+                                                    setSelectedProject({
+                                                        ...selectedProject,
+                                                        regionalLocation: e.target.value,
+                                                    })
+                                                }
+                                            >
+                                                <option value="">Select Regional Location</option>
+                                                {regionalLocations.map((location) => (
+                                                    <option key={location.cities_code} value={location.cities_code}>
+                                                        {location.citiesID} - {location.regionalLocation}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                            {/* <input
                                                 type="text"
                                                 name="regionalLocation"
                                                 className="form-control"
@@ -360,7 +436,7 @@ export default function Project() {
                                             />
                                         </div>
 
-                                        <div className={`form-group ${style.formGroup}`}>
+                                        <div className={`form-group ${style.formGroup}`}> */}
                                             <h2>Project Details:</h2>
                                             <label htmlFor="exampleInputText1" className={`${style.label}`}>Project ID:</label>
                                             <input
@@ -439,32 +515,33 @@ export default function Project() {
                                     <form onSubmit={submitFormData}>
                                         <div className={`form-group ${style.formGroup}`}>
                                             <h2>Company:</h2>
-                                            <label htmlFor="exampleInputNumber1" className={`${style.label}`}>Company Code<span className={`${style.span}`}>*</span></label>
+
+                                            {/* <label htmlFor="exampleInputNumber1" className={`${style.label}`}>Company Code<span className={`${style.span}`}>*</span></label>
                                             <input type="number" name='companyCodeID' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter CompanyCodeID" />
 
                                             <label htmlFor="exampleInputText1" className={`${style.label}`}>Company Description:</label>
-                                            <input type="text" name='companyCodeDescription' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter CompanyCodeDescription" />
+                                            <input type="text" name='companyCodeDescription' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter CompanyCodeDescription" /> */}
                                             {/* dropdown list companyCode */}
-                                            {/* <label htmlFor="exampleInputNumber1" className={`${style.label}`}>Company Code:</label>
+                                            <label htmlFor="exampleInputNumber1" className={`${style.label}`}>Company:</label>
                                             <select
                                                 name="companyCodeID"
                                                 className="form-control"
                                                 onChange={getFormValue}
                                             >
-                                                <option value="">Select Company Code</option>
+                                                <option value="">Select Company Code and Description</option>
                                                 {companyCodes.map((code) => (
-                                                    <option key={code.id} value={code.id}>
-                                                        {code.description}
+                                                    <option key={code.company_code} value={code.company_code}>
+                                                       {code.companyCodeID} - {code.companyCodeDescription}
                                                     </option>
                                                 ))}
-                                            </select> */}
+                                            </select>
                                         </div>
 
                                         <div className={`form-group ${style.formGroup}`}>
-                                            <h2>Location</h2>
-
+                                            <h2>Location:</h2>
+{/* 
                                             <label htmlFor="exampleInputText1" className={`${style.label}`}>Regional Location:</label>
-                                            <input type="text" name='regionalLocation' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter RegionalLocation" />
+                                            <input type="text" name='regionalLocation' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter RegionalLocation" /> */}
                                             {/* dropdown list locationCode */}
                                             <label htmlFor="exampleInputText1" className={`${style.label}`}>Regional Location:</label>
                                             <select
@@ -474,15 +551,15 @@ export default function Project() {
                                             >
                                                 <option value="">Select Regional Location</option>
                                                 {regionalLocations.map((location) => (
-                                                    <option key={location.id} value={location.code}>
-                                                        {location.description}
+                                                    <option key={location.cities_code} value={location.cities_code}>
+                                                        {location.citiesID} - {location.regionalLocation}
                                                     </option>
                                                 ))}
                                             </select>
                                         </div>
 
                                         <div className={`form-group ${style.formGroup}`}>
-                                            <h2>Project Details</h2>
+                                            <h2>Project Details:</h2>
                                             <label htmlFor="exampleInputText1" className={`${style.label}`}>Project ID:</label>
                                             <input type="text" required maxLength={8} name='projectID' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter ProjectID" />
                                             <label htmlFor="exampleInputText1" className={`${style.label}`}>Project Description:</label>

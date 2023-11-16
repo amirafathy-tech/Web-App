@@ -6,9 +6,9 @@ import style from './City.module.css';
 import { RiDeleteBinLine, RiEditLine } from 'react-icons/ri';
 
 export default function City() {
-  //const BasicURL='https://demo.c-78984ef.kyma.ondemand.com'
-
-  const BasicURL = 'https://demooo.c-78984ef.kyma.ondemand.com'
+  // new URL
+  const BasicURL='https://newtrial.c-78984ef.kyma.ondemand.com'
+  //const BasicURL = 'https://demooo.c-78984ef.kyma.ondemand.com'
   const [City, setCity] = useState([]);
   const [addMsg, setAddMsg] = useState('');
   const [updateMsg, setUpdateMsg] = useState('');

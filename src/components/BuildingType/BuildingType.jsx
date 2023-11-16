@@ -2,22 +2,20 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Modal, Button } from 'react-bootstrap';
-import style from './UnitFloor.module.css';
+import style from './BuildingType.module.css';
 import { RiDeleteBinLine, RiEditLine } from 'react-icons/ri';
 
-export default function UnitFloor() {
-
+export default function BuildingType() {
   // new URL
-  const BasicURL=' https://newtrial.c-78984ef.kyma.ondemand.com'
-
-  //const BasicURL = 'https://demooo.c-78984ef.kyma.ondemand.com'
+  const BasicURL = ' https://newtrial.c-78984ef.kyma.ondemand.com'
+  // const BasicURL = 'https://demooo.c-78984ef.kyma.ondemand.com'
   const token = localStorage.getItem('token');
-  const [UnitFloor, setUnitFloor] = useState([]);
+  const [BuildingType, setBuildingType] = useState([]);
   const [addMsg, setAddMsg] = useState('');
   const [updateMsg, setUpdateMsg] = useState('');
   const [deleteMsg, setDeleteMsg] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedUnitFloor, setSelectedUnitFloor] = useState(null);
+  const [selectedBuildingType, setSelectedBuildingType] = useState(null);
 
   // to handle modal for add
   const [addShow, setaddShow] = useState(false);
@@ -25,33 +23,29 @@ export default function UnitFloor() {
   const handleAddClose = () => {
     setAddMsg('');
     setaddShow(false);
-}
-
+  }
   // handle modal for edit
   const [show, setShow] = useState(false);
   const handleClose = () => {
     setUpdateMsg('');
-    setSelectedUnitFloor(null);
+    setSelectedBuildingType(null);
     setShow(false);
   };
   const handleShow = () => setShow(true);
-  const handleEdit = (UnitFloor) => {
-    setSelectedUnitFloor(UnitFloor);
+  const handleEdit = (BuildingType) => {
+    setSelectedBuildingType(BuildingType);
     handleShow();
   };
-
-  let [newUnitFloor, setNewUnitFloor] = useState({
-    unitFloorID: '',
-    floor: ''
-
+  let [newBuildingType, setNewBuildingType] = useState({
+    buildingTypeID: '',
+    buildTypeDesc: ''
   });
 
-
   function getFormValue(e) {
-    let myUnitFloor = { ...newUnitFloor }
-    myUnitFloor[e.target.name] = e.target.value
-    setNewUnitFloor(myUnitFloor);// update UnitFloor data
-    console.log(myUnitFloor)
+    let myBuildingType = { ...newBuildingType }
+    myBuildingType[e.target.name] = e.target.value
+    setNewBuildingType(myBuildingType);// update BuildingType data
+    console.log(myBuildingType)
   }
   // call add API 
   async function submitFormData(e) {
@@ -59,13 +53,13 @@ export default function UnitFloor() {
 
     const options = {
       method: 'POST',
-      url: `${BasicURL}/unitfloor`,
+      url: `${BasicURL}/buildingtype`,
       headers: {
         "Authorization": `Bearer ${token}`
       },
       data: {
-        unitFloorID: newUnitFloor.unitFloorID,
-        floor: newUnitFloor.floor
+        buildingTypeID: newBuildingType.buildingTypeID,
+        buildTypeDesc: newBuildingType.buildTypeDesc
       }
     };
 
@@ -73,25 +67,23 @@ export default function UnitFloor() {
     console.log(response);
     if (response.status == 200) {
       console.log("200")
-      setAddMsg("Your UnitFloor have been added successfully")
-      getUnitFloor()
+      setAddMsg("Your BuildingType have been added successfully")
+      getBuildingType()
     }
   }
-
-
   // call update API
-  const handleUpdate = async (updatedUnitFloor) => {
+  const handleUpdate = async (updatedBuildingType) => {
     try {
       const options = {
         method: 'PUT',
-        url: `${BasicURL}/unitfloor/${updatedUnitFloor.unitFloor_code}`,
+        url: `${BasicURL}/buildingtype/${updatedBuildingType.buildingType_code}`,
         headers: {
           'Authorization': `Bearer ${token}`,
         },
         data: {
-          unitFloor_code:updatedUnitFloor.unitFloor_code,
-          unitFloorID: updatedUnitFloor.unitFloorID,
-          floor: updatedUnitFloor.floor,
+          buildingType_code: updatedBuildingType.buildingType_code,
+          buildingTypeID: updatedBuildingType.buildingTypeID,
+          buildTypeDesc: updatedBuildingType.buildTypeDesc,
         },
       };
 
@@ -100,8 +92,8 @@ export default function UnitFloor() {
 
       if (response.status === 200) {
         console.log('200');
-        setUpdateMsg('Your UnitFloor has been updated successfully');
-        getUnitFloor();
+        setUpdateMsg('Your BuildingType has been updated successfully');
+        getBuildingType();
       }
     } catch (error) {
       console.error(error);
@@ -109,11 +101,11 @@ export default function UnitFloor() {
   };
 
   // call delete API
-  const handleDelete = async (UnitFloorID) => {
+  const handleDelete = async (BuildingTypeID) => {
     try {
       const options = {
         method: 'DELETE',
-        url: `${BasicURL}/unitfloor/${UnitFloorID}`,
+        url: `${BasicURL}/buildingtype/${BuildingTypeID}`,
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -124,8 +116,8 @@ export default function UnitFloor() {
 
       if (response.status === 200) {
         console.log('200');
-        setDeleteMsg('Your UnitFloor has been Deleted successfully');
-        getUnitFloor();
+        setDeleteMsg('Your BuildingType has been Deleted successfully');
+        getBuildingType();
       }
     } catch (error) {
       console.error(error);
@@ -133,26 +125,26 @@ export default function UnitFloor() {
   };
 
   // call get API
-  async function getUnitFloor() {
+  async function getBuildingType() {
     try {
-      let { data } = await axios.get(`${BasicURL}/unitfloor`, { headers: { "Authorization": `Bearer ${token}` } });
+      let { data } = await axios.get(`${BasicURL}/buildingtype`, { headers: { "Authorization": `Bearer ${token}` } });
       console.log(data);
-      console.log("UnitFloor");
-      setUnitFloor(data);
-      console.log(UnitFloor);
+      console.log("BuildingType");
+      setBuildingType(data);
+      console.log(BuildingType);
     } catch (error) {
       console.error(error);
     }
   }
 
   // call search API
-  async function searchUnitFloors(keyword) {
+  async function searchBuildingTypes(keyword) {
     try {
-      const response = await axios.get(`${BasicURL}/unitfloor/search?keyword=${keyword}`, {
+      const response = await axios.get(`${BasicURL}/buildingtype/search?keyword=${keyword}`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       console.log(response)
-      setUnitFloor(response.data);
+      setBuildingType(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -160,22 +152,22 @@ export default function UnitFloor() {
 
   useEffect(() => {
     if (searchTerm) {
-      searchUnitFloors(searchTerm);
+      searchBuildingTypes(searchTerm);
     } else {
-      getUnitFloor();
+      getBuildingType();
     }
   }, [searchTerm]);
 
-  const renderUnitFloors = UnitFloor.length > 0 ? (
-    UnitFloor.map((UnitFloor) => (
-      <tr key={UnitFloor.unitFloor_code}>
-        <td>{UnitFloor.unitFloorID}</td>
-        <td>{UnitFloor.floor}</td>
+  const renderBuildingTypes = BuildingType.length > 0 ? (
+    BuildingType.map((BuildingType) => (
+      <tr key={BuildingType.buildingType_code}>
+        <td>{BuildingType.buildingTypeID}</td>
+        <td>{BuildingType.buildTypeDesc}</td>
         <td>
-          <button className={style.iconButton} onClick={() => handleDelete(UnitFloor.unitFloor_code)} title="Delete">
+          <button className={style.iconButton} onClick={() => handleDelete(BuildingType.buildingType_code)} title="Delete">
             <RiDeleteBinLine style={{ color: 'red' }} />
           </button>
-          <button className={style.iconButton} onClick={() => handleEdit(UnitFloor)} title="Edit">
+          <button className={style.iconButton} onClick={() => handleEdit(BuildingType)} title="Edit">
             <RiEditLine style={{ color: '#10ab80' }} />
           </button>
         </td>
@@ -190,83 +182,84 @@ export default function UnitFloor() {
   return (
     <>
       <div className="container">
-
-
         <div className="row align-items-center justify-content-center">
           {/* Search Bar */}
           <div className="col-sm-12 col-md-4 mt-5 mb-4 text-gred">
             <input
               className={`${style.searchInput}`}
               type="search"
-              placeholder="Search for a UnitFloor "
+              placeholder="Search for a BuildingType "
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
 
           <div className={`col-sm-12 col-md-4 mt-5 mb-4 text-gred ${style.maincolor}`}>
-            <h2>UnitFloor Details</h2>
+            <h2>BuildingType Details</h2>
           </div>
 
           <div className="col-sm-12 col-md-4 mt-5 mb-4 text-gred">
             <button className={`w-100 ${style.imageButton}`} onClick={handleAddShow}>
-              Add New UnitFloor
+              Add New BuildingType
             </button>
           </div>
         </div>
-{/* 
-        {deleteMsg ? <div className="alert alert-danger m-3 p-2">{deleteMsg}</div> : ''} */}
+        {/* {deleteMsg ? <div className="alert alert-danger m-3 p-2">{deleteMsg}</div> : ''} */}
         <div className="row">
           <div className="table-responsive m-auto">
             <table className="table table-striped table-hover table-head text-center">
               <thead>
                 <tr>
-                  <th>UnitFloor ID</th>
-                  <th>Unit Floor</th>
+                  <th>BuildingType ID</th>
+                  <th>BuildingType Description</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-                {renderUnitFloors}
+                {renderBuildingTypes}
               </tbody>
             </table>
 
             {/* Render the edit modal */}
-            {selectedUnitFloor && (
+            {selectedBuildingType && (
               <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                  <Modal.Title>Edit UnitFloor</Modal.Title>
+                  <Modal.Title>Edit BuildingType</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                   <form>
+
+                    <label htmlFor="exampleInputText1" className={`${style.lable}`} >BuildingType ID: </label>
                     <input
                       type="text"
                       required
                       maxLength={8}
-                      name="unitFloorID"
+                      name="buildingTypeID"
                       className="form-control"
-                      value={selectedUnitFloor.unitFloorID}
+                      value={selectedBuildingType.buildingTypeID}
                       onChange={(e) =>
-                        setSelectedUnitFloor({
-                          ...selectedUnitFloor,
-                          unitFloorID: e.target.value,
+                        setSelectedBuildingType({
+                          ...selectedBuildingType,
+                          buildingTypeID: e.target.value,
                         })
                       }
-                      placeholder="Enter UnitFloorID"
+                      placeholder="Enter BuildingTypeID"
                     />
+
+                    <label htmlFor="exampleInputText1" className={`${style.lable}`} >BuildingType Description: </label>
                     <input
                       type="text"
                       required
-                      name="floor"
+                      name="buildTypeDesc"
                       className="form-control"
-                      value={selectedUnitFloor.floor}
+                      value={selectedBuildingType.buildTypeDesc}
                       onChange={(e) =>
-                        setSelectedUnitFloor({
-                          ...selectedUnitFloor,
-                          floor: e.target.value,
+                        setSelectedBuildingType({
+                          ...selectedBuildingType,
+                          buildTypeDesc: e.target.value,
                         })
                       }
-                      placeholder="Enter Unit Floor"
+                      placeholder="Enter BuildingTypeDesc"
                     />
 
                   </form>
@@ -277,7 +270,7 @@ export default function UnitFloor() {
                   <Button variant="secondary" onClick={handleClose}>
                     Close
                   </Button>
-                  <Button variant="primary" onClick={() => handleUpdate(selectedUnitFloor)}>
+                  <Button variant="primary" onClick={() => handleUpdate(selectedBuildingType)}>
                     Update
                   </Button>
                 </Modal.Footer>
@@ -293,34 +286,43 @@ export default function UnitFloor() {
                 keyboard={false}
               >
                 <Modal.Header closeButton>
-                  <Modal.Title>Add UnitFloor</Modal.Title>
+                  <Modal.Title>Add BuildingType</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                   <form onSubmit={submitFormData}>
                     <div className={`form-group  ${style.formGroup}`}>
 
-                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >UnitFloor ID: </label>
-                      <input type="text" required maxLength={8} name='unitFloorID' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter UnitFloorID" />
+                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >BuildingType ID: </label>
+                      <input type="text" required maxLength={8} name='buildingTypeID' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter BuildingTypeID" />
                     </div>
                     <div className={`form-group  ${style.formGroup}`}>
-                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >Unit Floor: </label>
-                      <input type="text" required name='floor' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter Unit Floor" />
+                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >BuildingType Description: </label>
+                      <input type="text" required name='buildTypeDesc' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter BuildingTypeDesc" />
                     </div>
 
-                    <button type="submit" className={`w-100 ${style.imageButton}`}>Add UnitFloor</button>
+                    <button type="submit" className={`w-100 ${style.imageButton}`}>Add BuildingType</button>
                   </form>
+
                   {addMsg ? <div className="alert alert-danger m-3 p-2">{addMsg}</div> : ''}
                 </Modal.Body>
+
                 <Modal.Footer>
                   <Button variant="secondary" onClick={handleAddClose}>
                     Close
                   </Button>
+
                 </Modal.Footer>
               </Modal>
             </div>
+
           </div>
         </div>
       </div>
+
+
+
+
+
     </>
   );
 }

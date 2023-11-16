@@ -7,8 +7,7 @@ import { RiDeleteBinLine, RiEditLine } from 'react-icons/ri';
 
 export default function CompanyCodes() {
   // new URL
-  const BasicURL=' https://trial.c-78984ef.kyma.ondemand.com'
-
+  const BasicURL=' https://newtrial.c-78984ef.kyma.ondemand.com'
  // const BasicURL = 'https://demooo.c-78984ef.kyma.ondemand.com'
   const [CompanyCodes, setCompanyCodes] = useState([]);
   const [addMsg, setAddMsg] = useState('');

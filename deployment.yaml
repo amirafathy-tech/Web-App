@@ -21,8 +21,8 @@ spec:
         kyma-grafana: enabled
     spec:
       containers:
-        - image: amirafathy/image8
-          name: container9
+        - image: amirafathy/image10
+          name: container10
           ports:
             - containerPort: 3000
           envFrom:
@@ -37,7 +37,7 @@ metadata:
   creationTimestamp: null
   labels:
     app: react
-  name: service9
+  name: service10
 spec:
   ports:
     - port: 3000

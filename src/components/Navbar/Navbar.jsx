@@ -20,6 +20,7 @@ export default function Navbar({ loginData, logOut }) {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="container">
+        {/* <div className="row"> */}
           <a className="navbar-brand" href="#">
             <h1 className={`${style.logo}`}>Compound Development</h1>
           </a>
@@ -59,6 +60,24 @@ export default function Navbar({ loginData, logOut }) {
                   </Link>
                 </li>
 
+                <li className="nav-item">
+                  <Link
+                    className={`nav-link ${style.link}`}
+                    to="buildingtype"
+                    onClick={handleNavbarToggle}
+                  >
+                    BuildingType
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link
+                    className={`nav-link ${style.link}`}
+                    to="building"
+                    onClick={handleNavbarToggle}
+                  >
+                    Buildings
+                  </Link>
+                </li>
                 {/* <li className="nav-item">
                   <Link
                     className={`nav-link ${style.link}`}
@@ -68,18 +87,55 @@ export default function Navbar({ loginData, logOut }) {
                     Building
                   </Link>
                 </li> */}
+                <li className="nav-item">
+                  <Link
+                    className={`nav-link ${style.link}`}
+                    to="unitview"
+                    onClick={handleNavbarToggle}
+                  >
+                    View
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link
+                    className={`nav-link ${style.link}`}
+                    to="unitusage"
+                    onClick={handleNavbarToggle}
+                  >
+                  Usage
+                  </Link>
+                </li>
+                <li className="nav-item">
 
-                {/* <li className="nav-item">
+                  <Link
+                    className={`nav-link ${style.link}`}
+                    to="unitstatus"
+                    onClick={handleNavbarToggle}
+                  >
+                   Status
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link
+                    className={`nav-link ${style.link}`}
+                    to="unitfloor"
+                    onClick={handleNavbarToggle}
+                  >
+                    Floor
+                  </Link>
+                </li>
+
+                <li className="nav-item">
                   <Link
                     className={`nav-link ${style.link}`}
                     to="unit"
                     onClick={handleNavbarToggle}
                   >
-                    Unit
+                    Units
                   </Link>
-                </li> */}
+                </li>
 
-                <li className="nav-item">
+                {/* <li className="nav-item">
                   <div className="subnav">
                     <button className={`nav-link subnavbtn ${style.link}`} onClick={handleNavbarToggle}>
                       Unit <i className="fa fa-caret-down" aria-hidden="true"></i>
@@ -87,6 +143,13 @@ export default function Navbar({ loginData, logOut }) {
                     </button>
                     {isNavbarOpen && (
                       <div className="subnav-content">
+                         <Link
+                          className={`nav-link ${style.link}`}
+                          to="unit"
+                          onClick={handleNavbarToggle}
+                        >
+                          Units
+                        </Link>
                         <Link
                           className={`nav-link ${style.link}`}
                           to="unitview"
@@ -105,8 +168,53 @@ export default function Navbar({ loginData, logOut }) {
                       </div>
                     )}
                   </div>
-                </li>
+                </li> */}
 
+                {/* <li className="nav-item">
+                  <div className={`${style.subnav}`}>
+                    <button
+                      className={`nav-link subnavbtn ${style.link}`}
+                      onClick={handleNavbarToggle}
+                    >
+                      Unit <i className="fa fa-caret-down" aria-hidden="true"></i>
+                    </button>
+                    {isNavbarOpen && (
+                      <div className={`${style.subnavcontent}`}>
+                        <Link
+                          className={`nav-link ${style.link}`}
+                          to="unit"
+                        >
+                          Units
+                        </Link>
+                        <Link
+                          className={`nav-link ${style.link}`}
+                          to="unitview"
+                        >
+                          Unit View
+                        </Link>
+                        <Link
+                          className={`nav-link ${style.link}`}
+                          to="unitusage"
+                        >
+                          Unit Usage
+                        </Link>
+                        <Link
+                          className={`nav-link ${style.link}`}
+                          to="unitstatus"
+                        >
+                          Unit Status
+                        </Link>
+                        <Link
+                          className={`nav-link ${style.link}`}
+                          to="unitfloor"
+                        >
+                          Unit Floor
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                </li> */}
+{/* 
                 <li className="nav-item">
                   <Link
                     className={`nav-link ${style.link}`}
@@ -115,7 +223,7 @@ export default function Navbar({ loginData, logOut }) {
                   >
                     Payment
                   </Link>
-                </li>
+                </li> */}
                 <li className="nav-item">
                   <Link
                     className={`nav-link ${style.link}`}
@@ -163,6 +271,7 @@ export default function Navbar({ loginData, logOut }) {
               </li>}
             </ul>
           </div>
+          {/* </div> */}
         </div>
       </nav>
     </>

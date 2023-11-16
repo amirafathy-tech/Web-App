@@ -6,9 +6,8 @@ import style from './UnitUsage.module.css';
 import { RiDeleteBinLine, RiEditLine } from 'react-icons/ri';
 
 export default function UnitUsage() {
-  //const BasicURL='https://demo.c-78984ef.kyma.ondemand.com'
-   // new URL
-   const BasicURL=' https://trial.c-78984ef.kyma.ondemand.com'
+  // new URL
+  const BasicURL=' https://newtrial.c-78984ef.kyma.ondemand.com'
 
   //const BasicURL = 'https://demooo.c-78984ef.kyma.ondemand.com'
   const token = localStorage.getItem('token');
@@ -21,12 +20,16 @@ export default function UnitUsage() {
 
   // to handle modal for add
   const [addShow, setaddShow] = useState(false);
-  const handleAddClose = () => setaddShow(false);
   const handleAddShow = () => setaddShow(true);
+  const handleAddClose = () => {
+    setAddMsg('');
+    setaddShow(false);
+}
 
   // handle modal for edit
   const [show, setShow] = useState(false);
   const handleClose = () => {
+    setUpdateMsg('');
     setSelectedUnitUsage(null);
     setShow(false);
   };
@@ -207,11 +210,7 @@ export default function UnitUsage() {
             </button>
           </div>
         </div>
-
-
-
-        {deleteMsg ? <div className="alert alert-danger m-3 p-2">{deleteMsg}</div> : ''}
-
+        {/* {deleteMsg ? <div className="alert alert-danger m-3 p-2">{deleteMsg}</div> : ''} */}
         <div className="row">
           <div className="table-responsive m-auto">
             <table className="table table-striped table-hover table-head text-center">
@@ -308,7 +307,6 @@ export default function UnitUsage() {
 
                   {addMsg ? <div className="alert alert-danger m-3 p-2">{addMsg}</div> : ''}
                 </Modal.Body>
-
                 <Modal.Footer>
                   <Button variant="secondary" onClick={handleAddClose}>
                     Close
@@ -319,11 +317,6 @@ export default function UnitUsage() {
           </div>
         </div>
       </div>
-
-
-
-
-
     </>
   );
 }
