@@ -8,8 +8,8 @@ import { RiDeleteBinLine, RiEditLine } from 'react-icons/ri';
 
 export default function AvailableUnits() {
     // new URL
-    const BasicURL=' https://newtrial.c-78984ef.kyma.ondemand.com'
-   // const BasicURL = 'https://demooo.c-78984ef.kyma.ondemand.com'
+    const BasicURL = ' https://newtrial.c-78984ef.kyma.ondemand.com'
+    // const BasicURL = 'https://demooo.c-78984ef.kyma.ondemand.com'
     let [unit, setUnit] = useState([]);
     const token = localStorage.getItem('token')
     let [errorMsg, setErrorMsg] = useState('');
@@ -29,6 +29,7 @@ export default function AvailableUnits() {
     const [buildingCodes, setBuildingCodes] = useState([]);
     const [fixtureCodes, setFixtureCodes] = useState([]);
     const [orientationCodes, setOrientationCodes] = useState([]);
+    const unitOfMeasurements = ['Meter', 'Square Meter', 'Square Foot', 'Hectare'];
 
     async function getCompanyCodes() {
         try {
@@ -411,6 +412,8 @@ export default function AvailableUnits() {
                     <div className={`col-sm-12 col-md-4 mt-5 mb-4 text-gred ${style.maincolor}`}><h2><b>Unit Details</b></h2></div>
                     <div className="col-sm-12 col-md-4 mt-5 mb-4 text-gred">
                         <button className={`w-100 ${style.imageButton}`} variant="primary" onClick={handleAddShow}>
+                            {/* // data-mdb-toggle="modal" data-mdb-target="#exampleModal"> */}
+                            {/* onClick={handleAddShow}> */}
                             Add New Unit
                         </button>
                     </div>
@@ -539,15 +542,17 @@ export default function AvailableUnits() {
             </div>
 
             {/* <!--- add Model Box ---> */}
-            <div className="model_box" style={{ width: 100 }}>
+            <div className="model_box ">
                 <Modal
                     show={addShow}
                     onHide={handleAddClose}
                     backdrop="static"
                     keyboard={false}
+                    size="xl"
+                    aria-labelledby="example-modal-sizes-title-xl"
                 >
                     <Modal.Header closeButton>
-                        <Modal.Title>Add Unit</Modal.Title>
+                        <Modal.Title id="example-modal-sizes-title-xl">Add Unit</Modal.Title>
                     </Modal.Header>
 
                     {errorMsg ? <div className="alert alert-danger p-2">{errorMsg}</div> : ''}
@@ -687,34 +692,34 @@ export default function AvailableUnits() {
                                 <input type="text" name='salesPhase' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter SalesPhase" />
 
                                 {/* dropdown list unit fixture code/desc */}
-                                {/* <label htmlFor="exampleInputNumber1" className={`${style.label}`}>Company Code:</label>
+                                <label htmlFor="exampleInputNumber1" className={`${style.label}`}>Fixture:</label>
                                             <select
                                                 name="companyCodeID"
                                                 className="form-control"
                                                 onChange={getFormValue}
                                             >
-                                                <option value="">Select Company Code</option>
+                                                <option value="">Select Fixture</option>
                                                 {companyCodes.map((code) => (
                                                     <option key={code.id} value={code.id}>
                                                         {code.description}
                                                     </option>
                                                 ))}
-                                            </select> */}
+                                            </select>
 
                                 {/* dropdown list unit orientation code/desc */}
-                                {/* <label htmlFor="exampleInputNumber1" className={`${style.label}`}>Company Code:</label>
+                                <label htmlFor="exampleInputNumber1" className={`${style.label}`}>Orientation:</label>
                                             <select
                                                 name="companyCodeID"
                                                 className="form-control"
                                                 onChange={getFormValue}
                                             >
-                                                <option value="">Select Company Code</option>
+                                                <option value="">Select Orientation</option>
                                                 {companyCodes.map((code) => (
                                                     <option key={code.id} value={code.id}>
                                                         {code.description}
                                                     </option>
                                                 ))}
-                                            </select> */}
+                                            </select>
 
                                 <label htmlFor="exampleInputText1" className={`${style.lable}`} >Blocking Reason: </label>
                                 <input type="text" name='blockingReason' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter  BlockingReason" />
@@ -724,33 +729,164 @@ export default function AvailableUnits() {
                             <div className={`form-group ${style.formGroup}`}>
                                 <h2>Unit Dates:</h2>
 
-                                <label htmlFor="exampleInputDate1" className={`${style.lable}`} >Construction Date : </label>
+                                <label htmlFor="exampleInputDate1" className={`${style.label}`} >Construction Date : </label>
                                 <input type="date" name='constructionDate' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter  ConstructionDate" />
 
 
-                                <label htmlFor="exampleInputDate1" className={`${style.lable}`} >Blocking Date : </label>
+                                <label htmlFor="exampleInputDate1" className={`${style.label}`} >Blocking Date : </label>
                                 <input type="date" name='blockingDate' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter  BlockingDate" />
 
                                 {/* will be added in newUnit above */}
-                                <label htmlFor="exampleInputDate1" className={`${style.lable}`} >Delivery Date : </label>
+                                <label htmlFor="exampleInputDate1" className={`${style.label}`} >Delivery Date : </label>
                                 <input type="date" name='deliveryDate' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter  DeliveryDate" />
 
 
                             </div>
 
+                            {/* <div style={{ width: '100%' }}> */}
                             <div className={`form-group ${style.formGroup}`}>
                                 <h2>Unit Areas:</h2>
+                                <div className='table-responsive m-auto'>
+                                    <table className={`table`} style={{ width: '100%' }}>
+                                        <thead>
+                                            <tr>
+                                                <th>Type of Area</th>
+                                                <th>Area Value</th>
+                                                <th>Unit of Measurement</th>
+                                                {/* <th>Actions</th> */}
+                                            </tr>
+                                            {/* <tr>
+                                                <th>Number Of Rooms</th>
+                                                </tr> */}
+                                        </thead>
+                                        <tbody style={{ width: '100%' }}>
 
+                                            <td className={` ${style.formInput}`}>
+                                                <input
+                                                    type="text"
+                                                    className={`form-control `} onChange={getFormValue}
+                                                    id="exampleInputText1" aria-describedby="textHelp"
+                                                />
+                                            </td>
+                                            <td className={` ${style.formInput}`}>
+                                                <input
+                                                    type="number"
+                                                    className={`form-control `} onChange={getFormValue}
+                                                    id="exampleInputNumber1" aria-describedby="numberHelp"
+                                                />
+                                            </td>
+                                            <td className={` ${style.formInput}`}>
+                                                <select
+                                                    className={`form-control `}
+                                                    onChange={getFormValue}
+                                                >
+                                                    <option value="">Select UnitOFMeasurement</option>
+                                                    {unitOfMeasurements.map((unit, unitIndex) => (
+                                                        <option key={unitIndex} value={unit}>
+                                                            {unit}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </td>
+                                            <tr>
+
+                                                <label htmlFor="exampleInputNumber1"  >Number of Rooms: </label>
+                                                <input type="number" name='numberOfRooms'
+                                                    min="0" className="form-control" onChange={getFormValue}
+                                                    id="exampleInputNumber1" aria-describedby="numberHelp" />
+
+                                            </tr>
+                                        </tbody>
+
+
+                                    </table>
+                                </div>
                             </div>
+                            {/* </div> */}
 
                             <div className={`form-group ${style.formGroup}`}>
                                 <h2>Unit Prices:</h2>
+                                <div className='table-responsive m-auto'>
+                                    <table className={`table`} style={{ width: '100%' }}>
+                                        <thead>
+                                            <tr>
+                                                <th>Price Type:</th>
+                                                <th>MethodOfCalculation:</th>
+                                                <th>Price:</th>
+                                                <th>Currency:</th>
+                                                <th>Valid From:</th>
+                                                {/* <th>Actions</th> */}
+                                            </tr>
+                                        </thead>
+                                        <tbody style={{ width: '100%' }}>
 
+                                            <td className={` ${style.formInput}`} >
+                                                <select
+                                                    className={`form-control `}
+                                                    onChange={getFormValue}
+                                                >
+                                                    <option value="">Select PriceType </option>
+                                                    {unitOfMeasurements.map((unit, unitIndex) => (
+                                                        <option key={unitIndex} value={unit}>
+                                                            {unit}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </td>
+                                            <td className={` ${style.formInput}`}>
+                                                <select
+                                                    className={`form-control `}
+                                                    onChange={getFormValue}
+                                                // value={area.unitOfMeasurement}
+                                                //onChange={(e) => handleAreaChange(index, 'unitOfMeasurement', e.target.value)}
+                                                >
+                                                    <option value="">Select MOC</option>
+                                                    {unitOfMeasurements.map((unit, unitIndex) => (
+                                                        <option key={unitIndex} value={unit}>
+                                                            {unit}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </td>
+                                            <td className={` ${style.formInput}`}>
+
+                                                <input type="number" name='price' min="0"
+                                                    className={`form-control `} onChange={getFormValue}
+                                                    id="exampleInputNumber1" aria-describedby="numberHelp"
+                                                />
+
+                                            </td>
+
+                                            <td className={` ${style.formInput}`}>
+                                                <select
+                                                    className={`form-control `}
+                                                    onChange={getFormValue}
+                                                // value={area.unitOfMeasurement}
+                                                //onChange={(e) => handleAreaChange(index, 'unitOfMeasurement', e.target.value)}
+                                                >
+                                                    <option value="">Select Currency</option>
+                                                    {unitOfMeasurements.map((unit, unitIndex) => (
+                                                        <option key={unitIndex} value={unit}>
+                                                            {unit}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </td>
+                                            <td className={` ${style.formInput}`}>
+
+                                                <input type="date" name='validFrom'
+                                                    className={`form-control `} onChange={getFormValue}
+                                                    id="exampleInputText1" aria-describedby="textHelp" />
+                                            </td>
+                                        </tbody>
+
+                                    </table>
+                                </div>
                             </div>
 
                             {/* Old Fields Of Unit Area and Price */}
                             <div className={`form-group  ${style.formGroup}`}>
-                                <label htmlFor="exampleInputText1" className={`${style.lable}`} >Built UP Area: </label>
+                                <label htmlFor="exampleInputText1" className={`${style.label}`} >Built UP Area: </label>
                                 <input type="text" name='builtUpArea' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter BuiltUpArea" />
                             </div>
                             <div className={`form-group  ${style.formGroup}`}>
@@ -838,258 +974,288 @@ export default function AvailableUnits() {
 
                     </Modal.Footer>
                 </Modal>
-            </div>
+            </div >
+            {/* <!-- Modal --> */}
+            {/* <div class="modal top fade"
+                id="exampleModal"
+                tabindex="-1"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+                data-mdb-backdrop="true"
+                data-mdb-keyboard="true">
+                <div class="modal-dialog modal-fullscreen">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">...</div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">
+                                Close
+                            </button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div> */}
 
 
 
             {/* Render the edit modal */}
-            {selectedUnit && (
-                <Modal show={editshow} onHide={handleEditClose}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Edit Unit</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <form>
-                            <div className={`form-group ${style.formGroup}`}>
-                                <h2>Company:</h2>
-                                {/* dropdown list company code/desc */}
-                                <label htmlFor="exampleInputNumber1" className={`${style.label}`}>Company Code:</label>
-                                <select
-                                    name="companyCodeID"
-                                    className="form-control"
-                                    // will change 
-                                    value={selectedUnit.unitKey}
-                                    onChange={(e) =>
-                                        setSelectedUnit({
-                                            ...selectedUnit,
-                                            unitKey: e.target.value,
-                                        })
-                                    }
-                                >
-                                    <option value="">Select Company Code and Description</option>
-                                    {companyCodes.map((code) => (
-                                        <option key={code.company_code} value={code.company_code}>
-                                            {code.companyCodeID} - {code.companyCodeDescription}
-                                        </option>
-                                    ))}
-                                </select>
+            {
+                selectedUnit && (
+                    <Modal show={editshow} onHide={handleEditClose}
 
-                            </div>
-                            <div className={`form-group ${style.formGroup}`}>
-                                <h2>Project:</h2>
-                                {/* dropdown list project code/desc */}
-                                <label htmlFor="exampleInputNumber1" className={`${style.label}`}>Project:</label>
-                                <select
-                                    name="companyCodeID"
-                                    className="form-control"
-                                    // will change 
-                                    value={selectedUnit.unitKey}
-                                    onChange={(e) =>
-                                        setSelectedUnit({
-                                            ...selectedUnit,
-                                            unitKey: e.target.value,
-                                        })
-                                    }
-                                >
-                                    <option value="">Select Project </option>
-                                    {projectCodes.map((code) => (
-                                        <option key={code.project_code} value={code.project_code}>
-                                            {code.projectID} - {code.projectDescription}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                            <div className={`form-group ${style.formGroup}`}>
-                                <h2>Building:</h2>
-                                {/* dropdown list building code/desc */}
-                                <label htmlFor="exampleInputNumber1" className={`${style.label}`}>Building:</label>
-                                <select
-                                    name="companyCodeID"
-                                    className="form-control"
-                                    value={selectedUnit.unitKey}
-                                    onChange={(e) =>
-                                        setSelectedUnit({
-                                            ...selectedUnit,
-                                            unitKey: e.target.value,
-                                        })
-                                    }
-                                >
-                                    <option value="">Select Building</option>
-                                    {buildingCodes.map((code) => (
-                                        <option key={code.building_code} value={code.building_code}>
-                                            {code.buildingID} - {code.buildingDescription}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
+                        size="xl"
+                        aria-labelledby="example-modal-sizes-title-xl"
 
-                            <div className={`form-group ${style.formGroup}`}>
-                                <h2>Unit Details:</h2>
+                    >
+                        <Modal.Header closeButton>
+                            <Modal.Title id="example-modal-sizes-title-xl">Edit Unit</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <form>
+                                <div className={`form-group ${style.formGroup}`}>
+                                    <h2>Company:</h2>
+                                    {/* dropdown list company code/desc */}
+                                    <label htmlFor="exampleInputNumber1" className={`${style.label}`}>Company Code:</label>
+                                    <select
+                                        name="companyCodeID"
+                                        className="form-control"
+                                        // will change 
+                                        value={selectedUnit.unitKey}
+                                        onChange={(e) =>
+                                            setSelectedUnit({
+                                                ...selectedUnit,
+                                                unitKey: e.target.value,
+                                            })
+                                        }
+                                    >
+                                        <option value="">Select Company Code and Description</option>
+                                        {companyCodes.map((code) => (
+                                            <option key={code.company_code} value={code.company_code}>
+                                                {code.companyCodeID} - {code.companyCodeDescription}
+                                            </option>
+                                        ))}
+                                    </select>
 
-                                <label htmlFor="exampleInputText1" className={`${style.lable}`} >Unit Key: </label>
-                                <input
-                                    type="text"
-                                    required
-                                    maxLength={8}
-                                    name="unitKey"
-                                    className="form-control m-3"
-                                    value={selectedUnit.unitKey}
-                                    onChange={(e) =>
-                                        setSelectedUnit({
-                                            ...selectedUnit,
-                                            unitKey: e.target.value,
-                                        })
-                                    }
-                                    placeholder="Enter UnitKey"
-                                />
+                                </div>
+                                <div className={`form-group ${style.formGroup}`}>
+                                    <h2>Project:</h2>
+                                    {/* dropdown list project code/desc */}
+                                    <label htmlFor="exampleInputNumber1" className={`${style.label}`}>Project:</label>
+                                    <select
+                                        name="companyCodeID"
+                                        className="form-control"
+                                        // will change 
+                                        value={selectedUnit.unitKey}
+                                        onChange={(e) =>
+                                            setSelectedUnit({
+                                                ...selectedUnit,
+                                                unitKey: e.target.value,
+                                            })
+                                        }
+                                    >
+                                        <option value="">Select Project </option>
+                                        {projectCodes.map((code) => (
+                                            <option key={code.project_code} value={code.project_code}>
+                                                {code.projectID} - {code.projectDescription}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className={`form-group ${style.formGroup}`}>
+                                    <h2>Building:</h2>
+                                    {/* dropdown list building code/desc */}
+                                    <label htmlFor="exampleInputNumber1" className={`${style.label}`}>Building:</label>
+                                    <select
+                                        name="companyCodeID"
+                                        className="form-control"
+                                        value={selectedUnit.unitKey}
+                                        onChange={(e) =>
+                                            setSelectedUnit({
+                                                ...selectedUnit,
+                                                unitKey: e.target.value,
+                                            })
+                                        }
+                                    >
+                                        <option value="">Select Building</option>
+                                        {buildingCodes.map((code) => (
+                                            <option key={code.building_code} value={code.building_code}>
+                                                {code.buildingID} - {code.buildingDescription}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
 
-                                <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Old Number: </label>
-                                <input
-                                    type="number"
-                                    name="oldNumber"
-                                    className="form-control m-3"
-                                    value={selectedUnit.oldNumber}
-                                    onChange={(e) =>
-                                        setSelectedUnit({
-                                            ...selectedUnit,
-                                            oldNumber: e.target.value,
-                                        })
-                                    }
-                                    placeholder="Enter oldNumber"
-                                />
+                                <div className={`form-group ${style.formGroup}`}>
+                                    <h2>Unit Details:</h2>
 
-                                <label htmlFor="exampleInputText1" className={`${style.lable}`} >Description: </label>
-                                <input
-                                    type="text"
-                                    required
-                                    name="description"
-                                    className="form-control m-3"
-                                    value={selectedUnit.description}
-                                    onChange={(e) =>
-                                        setSelectedUnit({
-                                            ...selectedUnit,
-                                            description: e.target.value,
-                                        })
-                                    }
-                                    placeholder="Enter description"
-                                />
+                                    <label htmlFor="exampleInputText1" className={`${style.lable}`} >Unit Key: </label>
+                                    <input
+                                        type="text"
+                                        required
+                                        maxLength={8}
+                                        name="unitKey"
+                                        className="form-control m-3"
+                                        value={selectedUnit.unitKey}
+                                        onChange={(e) =>
+                                            setSelectedUnit({
+                                                ...selectedUnit,
+                                                unitKey: e.target.value,
+                                            })
+                                        }
+                                        placeholder="Enter UnitKey"
+                                    />
 
-                                {/* dropdown list unit usage type code/desc */}
-                                <label htmlFor="exampleInputNumber1" className={`${style.label}`}>Unit Usage Type:</label>
-                                <select
-                                    name="companyCodeID"
-                                    className="form-control"
-                                    value={selectedUnit.unitType}
-                                    onChange={(e) =>
-                                        setSelectedUnit({
-                                            ...selectedUnit,
-                                            unitType: e.target.value,
-                                        })
-                                    }
-                                >
-                                    <option value="">Select Usage Type</option>
-                                    {usageTypeCodes.map((code) => (
-                                        <option key={code.unitUsage_code} value={code.unitUsage_code}>
-                                            {code.unitUsageID} - {code.unitUsageID}
-                                        </option>
-                                    ))}
-                                </select>
+                                    <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Old Number: </label>
+                                    <input
+                                        type="number"
+                                        name="oldNumber"
+                                        className="form-control m-3"
+                                        value={selectedUnit.oldNumber}
+                                        onChange={(e) =>
+                                            setSelectedUnit({
+                                                ...selectedUnit,
+                                                oldNumber: e.target.value,
+                                            })
+                                        }
+                                        placeholder="Enter oldNumber"
+                                    />
 
-                                {/* dropdown list unit status code/desc */}
-                                <label htmlFor="exampleInputNumber1" className={`${style.label}`}>Unit Status:</label>
-                                <select
-                                    name="companyCodeID"
-                                    className="form-control"
-                                    value={selectedUnit.unitStatus}
-                                    onChange={(e) =>
-                                        setSelectedUnit({
-                                            ...selectedUnit,
-                                            unitStatus: e.target.value,
-                                        })
-                                    }
-                                >
-                                    <option value="">Select Unit Status</option>
-                                    {statusCodes.map((code) => (
-                                        <option key={code.unitStatus_code} value={code.unitStatus_code}>
-                                            {code.unitStatusID} - {code.unitStatusID}
-                                        </option>
-                                    ))}
-                                </select>
+                                    <label htmlFor="exampleInputText1" className={`${style.lable}`} >Description: </label>
+                                    <input
+                                        type="text"
+                                        required
+                                        name="description"
+                                        className="form-control m-3"
+                                        value={selectedUnit.description}
+                                        onChange={(e) =>
+                                            setSelectedUnit({
+                                                ...selectedUnit,
+                                                description: e.target.value,
+                                            })
+                                        }
+                                        placeholder="Enter description"
+                                    />
 
-                                {/* dropdown list unit view code/desc */}
-                                <label htmlFor="exampleInputNumber1" className={`${style.label}`}>Unit View:</label>
-                                <select
-                                    name="companyCodeID"
-                                    className="form-control"
-                                    value={selectedUnit.view}
-                                    onChange={(e) =>
-                                        setSelectedUnit({
-                                            ...selectedUnit,
-                                            view: e.target.value,
-                                        })
-                                    }
-                                >
-                                    <option value="">Select Unit View</option>
-                                    {viewCodes.map((code) => (
-                                        <option key={code.unitView_code} value={code.unitView_code}>
-                                            {code.unitViewID} - {code.view}
-                                        </option>
-                                    ))}
-                                </select>
+                                    {/* dropdown list unit usage type code/desc */}
+                                    <label htmlFor="exampleInputNumber1" className={`${style.label}`}>Unit Usage Type:</label>
+                                    <select
+                                        name="companyCodeID"
+                                        className="form-control"
+                                        value={selectedUnit.unitType}
+                                        onChange={(e) =>
+                                            setSelectedUnit({
+                                                ...selectedUnit,
+                                                unitType: e.target.value,
+                                            })
+                                        }
+                                    >
+                                        <option value="">Select Usage Type</option>
+                                        {usageTypeCodes.map((code) => (
+                                            <option key={code.unitUsage_code} value={code.unitUsage_code}>
+                                                {code.unitUsageID} - {code.unitUsageID}
+                                            </option>
+                                        ))}
+                                    </select>
 
-                                {/* dropdown list unit floor code/desc */}
-                                <label htmlFor="exampleInputNumber1" className={`${style.label}`}>Unit Floor:</label>
-                                <select
-                                    name="companyCodeID"
-                                    className="form-control"
-                                    value={selectedUnit.floor}
-                                    onChange={(e) =>
-                                        setSelectedUnit({
-                                            ...selectedUnit,
-                                            floor: e.target.value,
-                                        })
-                                    }
-                                >
-                                    <option value="">Select Unit Floor</option>
-                                    {floorCodes.map((code) => (
-                                        <option key={code.unitFloor_code} value={code.unitFloor_code}>
-                                            {code.unitFloorID} -  {code.floor}
-                                        </option>
-                                    ))}
-                                </select>
+                                    {/* dropdown list unit status code/desc */}
+                                    <label htmlFor="exampleInputNumber1" className={`${style.label}`}>Unit Status:</label>
+                                    <select
+                                        name="companyCodeID"
+                                        className="form-control"
+                                        value={selectedUnit.unitStatus}
+                                        onChange={(e) =>
+                                            setSelectedUnit({
+                                                ...selectedUnit,
+                                                unitStatus: e.target.value,
+                                            })
+                                        }
+                                    >
+                                        <option value="">Select Unit Status</option>
+                                        {statusCodes.map((code) => (
+                                            <option key={code.unitStatus_code} value={code.unitStatus_code}>
+                                                {code.unitStatusID} - {code.unitStatusID}
+                                            </option>
+                                        ))}
+                                    </select>
 
-                                {/* will change to make it floor , toFloor ( From--- to) */}
-                                <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >To Floor: </label>
-                                <input
-                                    type="number"
-                                    name="toFloor"
-                                    className="form-control m-3"
-                                    value={selectedUnit.toFloor}
-                                    onChange={(e) =>
-                                        setSelectedUnit({
-                                            ...selectedUnit,
-                                            toFloor: e.target.value,
-                                        })
-                                    }
-                                    placeholder="Enter toFloor"
-                                />
+                                    {/* dropdown list unit view code/desc */}
+                                    <label htmlFor="exampleInputNumber1" className={`${style.label}`}>Unit View:</label>
+                                    <select
+                                        name="companyCodeID"
+                                        className="form-control"
+                                        value={selectedUnit.view}
+                                        onChange={(e) =>
+                                            setSelectedUnit({
+                                                ...selectedUnit,
+                                                view: e.target.value,
+                                            })
+                                        }
+                                    >
+                                        <option value="">Select Unit View</option>
+                                        {viewCodes.map((code) => (
+                                            <option key={code.unitView_code} value={code.unitView_code}>
+                                                {code.unitViewID} - {code.view}
+                                            </option>
+                                        ))}
+                                    </select>
 
-                                <label htmlFor="exampleInputText1" className={`${style.lable}`} >Sales Phase: </label>
-                                <input
-                                    type="text"
-                                    name="salesPhase"
-                                    className="form-control m-3"
-                                    value={selectedUnit.salesPhase}
-                                    onChange={(e) =>
-                                        setSelectedUnit({
-                                            ...selectedUnit,
-                                            salesPhase: e.target.value,
-                                        })
-                                    }
-                                    placeholder="Enter salesPhase"
-                                />
-                                {/* dropdown list unit fixture code/desc */}
-                                {/* <label htmlFor="exampleInputNumber1" className={`${style.label}`}>Company Code:</label>
+                                    {/* dropdown list unit floor code/desc */}
+                                    <label htmlFor="exampleInputNumber1" className={`${style.label}`}>Unit Floor:</label>
+                                    <select
+                                        name="companyCodeID"
+                                        className="form-control"
+                                        value={selectedUnit.floor}
+                                        onChange={(e) =>
+                                            setSelectedUnit({
+                                                ...selectedUnit,
+                                                floor: e.target.value,
+                                            })
+                                        }
+                                    >
+                                        <option value="">Select Unit Floor</option>
+                                        {floorCodes.map((code) => (
+                                            <option key={code.unitFloor_code} value={code.unitFloor_code}>
+                                                {code.unitFloorID} -  {code.floor}
+                                            </option>
+                                        ))}
+                                    </select>
+
+                                    {/* will change to make it floor , toFloor ( From--- to) */}
+                                    <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >To Floor: </label>
+                                    <input
+                                        type="number"
+                                        name="toFloor"
+                                        className="form-control m-3"
+                                        value={selectedUnit.toFloor}
+                                        onChange={(e) =>
+                                            setSelectedUnit({
+                                                ...selectedUnit,
+                                                toFloor: e.target.value,
+                                            })
+                                        }
+                                        placeholder="Enter toFloor"
+                                    />
+
+                                    <label htmlFor="exampleInputText1" className={`${style.lable}`} >Sales Phase: </label>
+                                    <input
+                                        type="text"
+                                        name="salesPhase"
+                                        className="form-control m-3"
+                                        value={selectedUnit.salesPhase}
+                                        onChange={(e) =>
+                                            setSelectedUnit({
+                                                ...selectedUnit,
+                                                salesPhase: e.target.value,
+                                            })
+                                        }
+                                        placeholder="Enter salesPhase"
+                                    />
+                                    {/* dropdown list unit fixture code/desc */}
+                                    <label htmlFor="exampleInputNumber1" className={`${style.label}`}>Fixture:</label>
                                             <select
                                                 name="companyCodeID"
                                                 className="form-control"
@@ -1107,10 +1273,10 @@ export default function AvailableUnits() {
                                                         {code.description}
                                                     </option>
                                                 ))}
-                                            </select> */}
+                                            </select>
 
-                                {/* dropdown list unit orientation code/desc */}
-                                {/* <label htmlFor="exampleInputNumber1" className={`${style.label}`}>Company Code:</label>
+                                    {/* dropdown list unit orientation code/desc */}
+                                    <label htmlFor="exampleInputNumber1" className={`${style.label}`}>Orientation:</label>
                                             <select
                                                 name="companyCodeID"
                                                 className="form-control"
@@ -1128,292 +1294,480 @@ export default function AvailableUnits() {
                                                         {code.description}
                                                     </option>
                                                 ))}
-                                            </select> */}
-                                <label htmlFor="exampleInputText1" className={`${style.lable}`} >Blocking Reason: </label>
+                                            </select>
+                                    <label htmlFor="exampleInputText1" className={`${style.lable}`} >Blocking Reason: </label>
+                                    <input
+                                        type="text"
+                                        name="blockingReason"
+                                        className="form-control m-3"
+                                        value={selectedUnit.blockingReason}
+                                        onChange={(e) =>
+                                            setSelectedUnit({
+                                                ...selectedUnit,
+                                                blockingReason: e.target.value,
+                                            })
+                                        }
+                                        placeholder="Enter blockingReason"
+                                    />
+                                </div>
+
+                                <div className={`form-group ${style.formGroup}`}>
+                                    <h2>Unit Dates</h2>
+                                    <label htmlFor="exampleInputDate1" className={`${style.label}`} >Construction Date : </label>
+                                    <input
+                                        type="date"
+                                        name="constructionDate"
+                                        className="form-control m-3"
+                                        value={selectedUnit.constructionDate}
+                                        onChange={(e) =>
+                                            setSelectedUnit({
+                                                ...selectedUnit,
+                                                constructionDate: e.target.value,
+                                            })
+                                        }
+                                        placeholder="Enter constructionDate"
+                                    />
+                                    <label htmlFor="exampleInputDate1" className={`${style.label}`} >Blocking Date : </label>
+                                    <input
+                                        type="date"
+                                        name="blockingDate"
+                                        className="form-control m-3"
+                                        value={selectedUnit.blockingDate}
+                                        onChange={(e) =>
+                                            setSelectedUnit({
+                                                ...selectedUnit,
+                                                blockingDate: e.target.value,
+                                            })
+                                        }
+                                        placeholder="Enter blockingDate"
+                                    />
+                                    <label htmlFor="exampleInputDate1" className={`${style.label}`} >Delivery Date : </label>
+                                    <input
+                                        type="date"
+                                        name="deliveryDate"
+                                        className="form-control m-3"
+                                        value={selectedUnit.deliveryDate}
+                                        onChange={(e) =>
+                                            setSelectedUnit({
+                                                ...selectedUnit,
+                                                deliveryDate: e.target.value,
+                                            })
+                                        }
+                                        placeholder="Enter deliveryDate"
+                                    />
+                                </div>
+
+                                <div className={`form-group ${style.formGroup}`}>
+                                    <h2>Unit Areas:</h2>
+                                    <div className='table-responsive m-auto'>
+                                    <table className={`table`} style={{ width: '100%' }}>
+                                        <thead>
+                                            <tr>
+                                                <th>Type of Area</th>
+                                                <th>Area Value</th>
+                                                <th>Unit of Measurement</th>
+                                                {/* <th>Actions</th> */}
+                                            </tr>
+                                            {/* <tr>
+                                                <th>Number Of Rooms</th>
+                                                </tr> */}
+                                        </thead>
+                                        <tbody style={{ width: '100%' }}>
+
+                                            <td className={` ${style.formInput}`}>
+                                                <input
+                                                    type="text"
+                                                    className="form-control m-3"
+                                                    value={selectedUnit.blockingReason}
+                                                    onChange={(e) =>
+                                                        setSelectedUnit({
+                                                            ...selectedUnit,
+                                                            blockingReason: e.target.value,
+                                                        })
+                                                    }
+                                                />
+                                            </td>
+                                            <td className={` ${style.formInput}`}>
+                                                <input
+                                                    type="number"
+                                                    className="form-control m-3"
+                                                    value={selectedUnit.blockingReason}
+                                                    onChange={(e) =>
+                                                        setSelectedUnit({
+                                                            ...selectedUnit,
+                                                            blockingReason: e.target.value,
+                                                        })
+                                                    }
+                                                    id="exampleInputNumber1" aria-describedby="numberHelp"
+                                                />
+                                            </td>
+                                            <td className={` ${style.formInput}`}>
+                                                <select
+                                                    className={`form-control `}
+                                                    value={selectedUnit.orientation}
+                                                    onChange={(e) =>
+                                                        setSelectedUnit({
+                                                            ...selectedUnit,
+                                                            orientation: e.target.value,
+                                                        })
+                                                    }
+                                                >
+                                                    <option value="">Select UnitOFMeasurement</option>
+                                                    {unitOfMeasurements.map((unit, unitIndex) => (
+                                                        <option key={unitIndex} value={unit}>
+                                                            {unit}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </td>
+                                            <tr>
+
+                                                <label htmlFor="exampleInputNumber1"  >Number of Rooms: </label>
+                                                <input type="number" name='numberOfRooms'
+                                                      className="form-control m-3"
+                                                      value={selectedUnit.numberOfRooms}
+                                                      onChange={(e) =>
+                                                          setSelectedUnit({
+                                                              ...selectedUnit,
+                                                              numberOfRooms: e.target.value,
+                                                          })
+                                                      }
+                                                    id="exampleInputNumber1" aria-describedby="numberHelp" />
+
+                                            </tr>
+                                        </tbody>
+
+
+                                    </table>
+                                </div>
+                                </div>
+
+                                <div className={`form-group ${style.formGroup}`}>
+                                    <h2>Unit Prices:</h2>
+                                    <div className='table-responsive m-auto'>
+                                    <table className={`table`} style={{ width: '100%' }}>
+                                        <thead>
+                                            <tr>
+                                                <th>Price Type:</th>
+                                                <th>MethodOfCalculation:</th>
+                                                <th>Price:</th>
+                                                <th>Currency:</th>
+                                                <th>Valid From:</th>
+                                                {/* <th>Actions</th> */}
+                                            </tr>
+                                        </thead>
+                                        <tbody style={{ width: '100%' }}>
+
+                                            <td className={` ${style.formInput}`} >
+                                                <select
+                                                    className={`form-control `}
+                                                    value={selectedUnit.orientation}
+                                                    onChange={(e) =>
+                                                        setSelectedUnit({
+                                                            ...selectedUnit,
+                                                            orientation: e.target.value,
+                                                        })
+                                                    }
+                                                >
+                                                    <option value="">Select PriceType </option>
+                                                    {unitOfMeasurements.map((unit, unitIndex) => (
+                                                        <option key={unitIndex} value={unit}>
+                                                            {unit}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </td>
+                                            <td className={` ${style.formInput}`}>
+                                                <select
+                                                    className={`form-control `}
+                                                    value={selectedUnit.orientation}
+                                                    onChange={(e) =>
+                                                        setSelectedUnit({
+                                                            ...selectedUnit,
+                                                            orientation: e.target.value,
+                                                        })
+                                                    }
+                                                >
+                                                    <option value="">Select MOC</option>
+                                                    {unitOfMeasurements.map((unit, unitIndex) => (
+                                                        <option key={unitIndex} value={unit}>
+                                                            {unit}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </td>
+                                            <td className={` ${style.formInput}`}>
+
+                                                <input type="number" name='price' min="0"
+                                                    className="form-control m-3"
+                                                    value={selectedUnit.numberOfRooms}
+                                                    onChange={(e) =>
+                                                        setSelectedUnit({
+                                                            ...selectedUnit,
+                                                            numberOfRooms: e.target.value,
+                                                        })
+                                                    }
+                                                    id="exampleInputNumber1" aria-describedby="numberHelp"
+                                                />
+
+                                            </td>
+
+                                            <td className={` ${style.formInput}`}>
+                                                <select
+                                                    className={`form-control `}
+                                                    value={selectedUnit.orientation}
+                                                    onChange={(e) =>
+                                                        setSelectedUnit({
+                                                            ...selectedUnit,
+                                                            orientation: e.target.value,
+                                                        })
+                                                    }
+                                                // value={area.unitOfMeasurement}
+                                                //onChange={(e) => handleAreaChange(index, 'unitOfMeasurement', e.target.value)}
+                                                >
+                                                    <option value="">Select Currency</option>
+                                                    {unitOfMeasurements.map((unit, unitIndex) => (
+                                                        <option key={unitIndex} value={unit}>
+                                                            {unit}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </td>
+                                            <td className={` ${style.formInput}`}>
+
+                                                <input type="date" name='validFrom'
+                                                      className="form-control m-3"
+                                                      value={selectedUnit.numberOfRooms}
+                                                      onChange={(e) =>
+                                                          setSelectedUnit({
+                                                              ...selectedUnit,
+                                                              numberOfRooms: e.target.value,
+                                                          })
+                                                      }
+                                                    id="exampleInputDate1" aria-describedby="dateHelp" />
+                                            </td>
+                                        </tbody>
+
+                                    </table>
+                                </div>
+                                </div>
+
+                                {/* Old Fields Of Unit Area and Price */}
                                 <input
                                     type="text"
-                                    name="blockingReason"
+                                    name="builtUpArea"
                                     className="form-control m-3"
-                                    value={selectedUnit.blockingReason}
+                                    value={selectedUnit.builtUpArea}
                                     onChange={(e) =>
                                         setSelectedUnit({
                                             ...selectedUnit,
-                                            blockingReason: e.target.value,
+                                            builtUpArea: e.target.value,
                                         })
                                     }
-                                    placeholder="Enter blockingReason"
+                                    placeholder="Enter builtUpArea"
                                 />
-                            </div>
-
-                            <div className={`form-group ${style.formGroup}`}>
-                                <h2>Unit Dates</h2>
-                                <label htmlFor="exampleInputDate1" className={`${style.label}`} >Construction Date : </label>
                                 <input
-                                    type="date"
-                                    name="constructionDate"
+                                    type="text"
+                                    name="gardenArea"
                                     className="form-control m-3"
-                                    value={selectedUnit.constructionDate}
+                                    value={selectedUnit.gardenArea}
                                     onChange={(e) =>
                                         setSelectedUnit({
                                             ...selectedUnit,
-                                            constructionDate: e.target.value,
+                                            gardenArea: e.target.value,
                                         })
                                     }
-                                    placeholder="Enter constructionDate"
+                                    placeholder="Enter gardenArea"
                                 />
-                                <label htmlFor="exampleInputDate1" className={`${style.label}`} >Blocking Date : </label>
                                 <input
-                                    type="date"
-                                    name="blockingDate"
+                                    type="number"
+                                    name="numberOfRooms"
+                                    min="0"
                                     className="form-control m-3"
-                                    value={selectedUnit.blockingDate}
+                                    value={selectedUnit.numberOfRooms}
                                     onChange={(e) =>
                                         setSelectedUnit({
                                             ...selectedUnit,
-                                            blockingDate: e.target.value,
+                                            numberOfRooms: e.target.value,
                                         })
                                     }
-                                    placeholder="Enter blockingDate"
+                                    placeholder="Enter numberOfRooms"
                                 />
-                                <label htmlFor="exampleInputDate1" className={`${style.label}`} >Delivery Date : </label>
                                 <input
-                                    type="date"
-                                    name="deliveryDate"
+                                    type="number"
+                                    name="measurementValue"
                                     className="form-control m-3"
-                                    value={selectedUnit.deliveryDate}
+                                    value={selectedUnit.measurementValue}
                                     onChange={(e) =>
                                         setSelectedUnit({
                                             ...selectedUnit,
-                                            deliveryDate: e.target.value,
+                                            measurementValue: e.target.value,
                                         })
                                     }
-                                    placeholder="Enter deliveryDate"
+                                    placeholder="Enter measurementValue"
                                 />
-                            </div>
+                                <input
+                                    type="number"
+                                    name="measurements"
+                                    className="form-control m-3"
+                                    value={selectedUnit.measurements}
+                                    onChange={(e) =>
+                                        setSelectedUnit({
+                                            ...selectedUnit,
+                                            measurements: e.target.value,
+                                        })
+                                    }
+                                    placeholder="Enter measurements"
+                                />
+                                <input
+                                    type="number"
+                                    name="measurementsID"
+                                    className="form-control m-3"
+                                    value={selectedUnit.measurementsID}
+                                    onChange={(e) =>
+                                        setSelectedUnit({
+                                            ...selectedUnit,
+                                            measurementsID: e.target.value,
+                                        })
+                                    }
+                                    placeholder="Enter measurementsID"
+                                />
+                                <input
+                                    type="number"
+                                    name="measurementsDescription"
+                                    className="form-control m-3"
+                                    value={selectedUnit.measurementsDescription}
+                                    onChange={(e) =>
+                                        setSelectedUnit({
+                                            ...selectedUnit,
+                                            measurementsDescription: e.target.value,
+                                        })
+                                    }
+                                    placeholder="Enter measurementsDescription"
+                                />
+                                <input
+                                    type="text"
+                                    name="unitOfMeasurement"
+                                    className="form-control m-3"
+                                    value={selectedUnit.unitOfMeasurement}
+                                    onChange={(e) =>
+                                        setSelectedUnit({
+                                            ...selectedUnit,
+                                            unitOfMeasurement: e.target.value,
+                                        })
+                                    }
+                                    placeholder="Enter unitOfMeasurement"
+                                />
+                                <input
+                                    type="number"
+                                    name="pricingTab"
+                                    className="form-control m-3"
+                                    value={selectedUnit.pricingTab}
+                                    onChange={(e) =>
+                                        setSelectedUnit({
+                                            ...selectedUnit,
+                                            pricingTab: e.target.value,
+                                        })
+                                    }
+                                    placeholder="Enter pricingTab"
+                                />
+                                <input
+                                    type="text"
+                                    name="pricePlan"
+                                    className="form-control m-3"
+                                    value={selectedUnit.pricePlan}
+                                    onChange={(e) =>
+                                        setSelectedUnit({
+                                            ...selectedUnit,
+                                            pricePlan: e.target.value,
+                                        })
+                                    }
+                                    placeholder="Enter pricePlan"
+                                />
+                                <input
+                                    type="number"
+                                    name="price"
+                                    className="form-control m-3"
+                                    value={selectedUnit.price}
+                                    onChange={(e) =>
+                                        setSelectedUnit({
+                                            ...selectedUnit,
+                                            price: e.target.value,
+                                        })
+                                    }
+                                    placeholder="Enter price"
+                                />
+                                <input
+                                    type="number"
+                                    name="unitAdditionalPayment"
+                                    className="form-control m-3"
+                                    value={selectedUnit.unitAdditionalPayment}
+                                    onChange={(e) =>
+                                        setSelectedUnit({
+                                            ...selectedUnit,
+                                            unitAdditionalPayment: e.target.value,
+                                        })
+                                    }
+                                    placeholder="Enter unitAdditionalPayment"
+                                />
+                                <input
+                                    type="text"
+                                    name="conditionCode"
+                                    className="form-control m-3"
+                                    value={selectedUnit.conditionCode}
+                                    onChange={(e) =>
+                                        setSelectedUnit({
+                                            ...selectedUnit,
+                                            conditionCode: e.target.value,
+                                        })
+                                    }
+                                    placeholder="Enter conditionCode"
+                                />
+                                <input
+                                    type="text"
+                                    name="conditionDescription"
+                                    className="form-control m-3"
+                                    value={selectedUnit.conditionDescription}
+                                    onChange={(e) =>
+                                        setSelectedUnit({
+                                            ...selectedUnit,
+                                            conditionDescription: e.target.value,
+                                        })
+                                    }
+                                    placeholder="Enter conditionDescription"
+                                />
 
-                            <div className={`form-group ${style.formGroup}`}>
-                                <h2>Unit Areas:</h2>
-                            </div>
+                                <input
+                                    type="number"
+                                    name="amount"
+                                    className="form-control m-3"
+                                    value={selectedUnit.amount}
+                                    onChange={(e) =>
+                                        setSelectedUnit({
+                                            ...selectedUnit,
+                                            amount: e.target.value,
+                                        })
+                                    }
+                                    placeholder="Enter Amount"
+                                />
+                            </form>
 
-                            <div className={`form-group ${style.formGroup}`}>
-                                <h2>Unit Prices:</h2>
-                            </div>
-
-                            {/* Old Fields Of Unit Area and Price */}
-                            <input
-                                type="text"
-                                name="builtUpArea"
-                                className="form-control m-3"
-                                value={selectedUnit.builtUpArea}
-                                onChange={(e) =>
-                                    setSelectedUnit({
-                                        ...selectedUnit,
-                                        builtUpArea: e.target.value,
-                                    })
-                                }
-                                placeholder="Enter builtUpArea"
-                            />
-                            <input
-                                type="text"
-                                name="gardenArea"
-                                className="form-control m-3"
-                                value={selectedUnit.gardenArea}
-                                onChange={(e) =>
-                                    setSelectedUnit({
-                                        ...selectedUnit,
-                                        gardenArea: e.target.value,
-                                    })
-                                }
-                                placeholder="Enter gardenArea"
-                            />
-                            <input
-                                type="number"
-                                name="numberOfRooms"
-                                min="0"
-                                className="form-control m-3"
-                                value={selectedUnit.numberOfRooms}
-                                onChange={(e) =>
-                                    setSelectedUnit({
-                                        ...selectedUnit,
-                                        numberOfRooms: e.target.value,
-                                    })
-                                }
-                                placeholder="Enter numberOfRooms"
-                            />
-                            <input
-                                type="number"
-                                name="measurementValue"
-                                className="form-control m-3"
-                                value={selectedUnit.measurementValue}
-                                onChange={(e) =>
-                                    setSelectedUnit({
-                                        ...selectedUnit,
-                                        measurementValue: e.target.value,
-                                    })
-                                }
-                                placeholder="Enter measurementValue"
-                            />
-                            <input
-                                type="number"
-                                name="measurements"
-                                className="form-control m-3"
-                                value={selectedUnit.measurements}
-                                onChange={(e) =>
-                                    setSelectedUnit({
-                                        ...selectedUnit,
-                                        measurements: e.target.value,
-                                    })
-                                }
-                                placeholder="Enter measurements"
-                            />
-                            <input
-                                type="number"
-                                name="measurementsID"
-                                className="form-control m-3"
-                                value={selectedUnit.measurementsID}
-                                onChange={(e) =>
-                                    setSelectedUnit({
-                                        ...selectedUnit,
-                                        measurementsID: e.target.value,
-                                    })
-                                }
-                                placeholder="Enter measurementsID"
-                            />
-                            <input
-                                type="number"
-                                name="measurementsDescription"
-                                className="form-control m-3"
-                                value={selectedUnit.measurementsDescription}
-                                onChange={(e) =>
-                                    setSelectedUnit({
-                                        ...selectedUnit,
-                                        measurementsDescription: e.target.value,
-                                    })
-                                }
-                                placeholder="Enter measurementsDescription"
-                            />
-                            <input
-                                type="text"
-                                name="unitOfMeasurement"
-                                className="form-control m-3"
-                                value={selectedUnit.unitOfMeasurement}
-                                onChange={(e) =>
-                                    setSelectedUnit({
-                                        ...selectedUnit,
-                                        unitOfMeasurement: e.target.value,
-                                    })
-                                }
-                                placeholder="Enter unitOfMeasurement"
-                            />
-                            <input
-                                type="number"
-                                name="pricingTab"
-                                className="form-control m-3"
-                                value={selectedUnit.pricingTab}
-                                onChange={(e) =>
-                                    setSelectedUnit({
-                                        ...selectedUnit,
-                                        pricingTab: e.target.value,
-                                    })
-                                }
-                                placeholder="Enter pricingTab"
-                            />
-                            <input
-                                type="text"
-                                name="pricePlan"
-                                className="form-control m-3"
-                                value={selectedUnit.pricePlan}
-                                onChange={(e) =>
-                                    setSelectedUnit({
-                                        ...selectedUnit,
-                                        pricePlan: e.target.value,
-                                    })
-                                }
-                                placeholder="Enter pricePlan"
-                            />
-                            <input
-                                type="number"
-                                name="price"
-                                className="form-control m-3"
-                                value={selectedUnit.price}
-                                onChange={(e) =>
-                                    setSelectedUnit({
-                                        ...selectedUnit,
-                                        price: e.target.value,
-                                    })
-                                }
-                                placeholder="Enter price"
-                            />
-                            <input
-                                type="number"
-                                name="unitAdditionalPayment"
-                                className="form-control m-3"
-                                value={selectedUnit.unitAdditionalPayment}
-                                onChange={(e) =>
-                                    setSelectedUnit({
-                                        ...selectedUnit,
-                                        unitAdditionalPayment: e.target.value,
-                                    })
-                                }
-                                placeholder="Enter unitAdditionalPayment"
-                            />
-                            <input
-                                type="text"
-                                name="conditionCode"
-                                className="form-control m-3"
-                                value={selectedUnit.conditionCode}
-                                onChange={(e) =>
-                                    setSelectedUnit({
-                                        ...selectedUnit,
-                                        conditionCode: e.target.value,
-                                    })
-                                }
-                                placeholder="Enter conditionCode"
-                            />
-                            <input
-                                type="text"
-                                name="conditionDescription"
-                                className="form-control m-3"
-                                value={selectedUnit.conditionDescription}
-                                onChange={(e) =>
-                                    setSelectedUnit({
-                                        ...selectedUnit,
-                                        conditionDescription: e.target.value,
-                                    })
-                                }
-                                placeholder="Enter conditionDescription"
-                            />
-
-                            <input
-                                type="number"
-                                name="amount"
-                                className="form-control m-3"
-                                value={selectedUnit.amount}
-                                onChange={(e) =>
-                                    setSelectedUnit({
-                                        ...selectedUnit,
-                                        amount: e.target.value,
-                                    })
-                                }
-                                placeholder="Enter Amount"
-                            />
-                        </form>
-
-                        {updateMsg ? <div className="alert alert-danger m-3 p-2">{updateMsg}</div> : ''}
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button className={` ${style.imageButton}`} onClick={handleEditClose}>
-                            Close
-                        </Button>
-                        {/* 
+                            {updateMsg ? <div className="alert alert-danger m-3 p-2">{updateMsg}</div> : ''}
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button className={` ${style.imageButton}`} onClick={handleEditClose}>
+                                Close
+                            </Button>
+                            {/* 
                         <button type="submit" className={`btn mt-4 w-100 ${style.imageButton}`}>Add Unit</button> */}
-                        <Button className={` ${style.imageButton}`}  onClick={() => handleUpdate(selectedUnit)}>
-                        {/* disabled={!editFormValid}  will be added after ensuring final fields */}
-                            Update
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
-            )}
+                            <Button className={` ${style.imageButton}`} onClick={() => handleUpdate(selectedUnit)}>
+                                {/* disabled={!editFormValid}  will be added after ensuring final fields */}
+                                Update
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
+                )
+            }
         </>
     )
 }

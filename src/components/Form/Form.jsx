@@ -5,9 +5,9 @@ import { Modal, Button } from 'react-bootstrap';
 import style from './Form.module.css';
 import { RiDeleteBinLine, RiEditLine } from 'react-icons/ri';
 export default function Project() {
-  // new URL
-  const BasicURL=' https://newtrial.c-78984ef.kyma.ondemand.com'
-   // const BasicURL = 'https://demooo.c-78984ef.kyma.ondemand.com'
+    // new URL
+    const BasicURL = ' https://newtrial.c-78984ef.kyma.ondemand.com'
+    // const BasicURL = 'https://demooo.c-78984ef.kyma.ondemand.com'
     const token = localStorage.getItem('token');
     const [project, setProject] = useState([]);
     const [addMsg, setAddMsg] = useState('');
@@ -48,10 +48,10 @@ export default function Project() {
         setShow(false);
     };
     const handleShow = () => {
-          // call get company codes
-          getCompanyCodes();
-          // call get location codes
-             getCity()
+        // call get company codes
+        getCompanyCodes();
+        // call get location codes
+        getCity()
         setShow(true);
     }
     const handleEdit = (project) => {
@@ -66,32 +66,32 @@ export default function Project() {
     }
     async function getCompanyCodes() {
         try {
-          let { data } = await axios.get(`${BasicURL}/companymd`, { headers: { "Authorization": `Bearer ${token}` } });
-          console.log(data);
-          console.log("CompanyCodes");
-          setCompanyCodes(data);
-          console.log("compannny");
-          console.log(companyCodes)
+            let { data } = await axios.get(`${BasicURL}/companymd`, { headers: { "Authorization": `Bearer ${token}` } });
+            console.log(data);
+            console.log("CompanyCodes");
+            setCompanyCodes(data);
+            console.log("compannny");
+            console.log(companyCodes)
         } catch (error) {
-          console.error(error);
+            console.error(error);
         }
-      }
-       // call get API
-  async function getCity() {
-    try {
-      let { data } = await axios.get(`${BasicURL}/cities`, { headers: { "Authorization": `Bearer ${token}` } });
-      console.log(data);
-      console.log("City");
-      setRegionalLocations(data);
-    } catch (error) {
-      console.error(error);
     }
-  }
+    // call get API
+    async function getCity() {
+        try {
+            let { data } = await axios.get(`${BasicURL}/cities`, { headers: { "Authorization": `Bearer ${token}` } });
+            console.log(data);
+            console.log("City");
+            setRegionalLocations(data);
+        } catch (error) {
+            console.error(error);
+        }
+    }
     const handleAddShow = () => {
-          // call get company codes
-          getCompanyCodes();
-          // call get location codes
-             getCity()
+        // call get company codes
+        getCompanyCodes();
+        // call get location codes
+        getCity()
         setaddShow(true);
 
     }
@@ -101,7 +101,7 @@ export default function Project() {
         if (
             project.projectID &&
             project.companyCodeID &&
-           // project.companyCodeDescription &&
+            // project.companyCodeDescription &&
             project.projectDescription &&
             project.validFrom &&
             project.regionalLocation
@@ -121,7 +121,7 @@ export default function Project() {
         setFormValid(isValid);
     }
 
-  
+
     // call add API 
     async function submitFormData(e) {
         e.preventDefault();
@@ -263,7 +263,7 @@ export default function Project() {
             console.error(error);
         }
     }
-    
+
     // here i call get API to retrieve locationCodes
     // here i call get API to retrieve profitCodes
 
@@ -365,7 +365,7 @@ export default function Project() {
                                                 <option value="">Select Company Code and Description</option>
                                                 {companyCodes.map((code) => (
                                                     <option key={code.company_code} value={code.company_code}>
-                                                       {code.companyCodeID} - {code.companyCodeDescription}
+                                                        {code.companyCodeID} - {code.companyCodeDescription}
                                                     </option>
                                                 ))}
                                             </select>
@@ -486,6 +486,30 @@ export default function Project() {
                                         {/* <button type="submit" className={`w-100 ${style.imageButton}`} disabled={!editFormValid}>
                                             Update Project
                                         </button> */}
+
+                                        <div className={`form-group ${style.formGroup}`}>
+                                            <h2>Profit:</h2>
+
+                                            <label htmlFor="exampleInputNumber1" className={`${style.label}`}>Profit:<span className={`${style.span}`}>*</span></label>
+                                            <select
+                                                name="companyCodeID"
+                                                className="form-control"
+                                                onChange={(e) =>
+                                                    setSelectedProject({
+                                                        ...selectedProject,
+                                                        companyCodeID: e.target.value,
+                                                    })
+                                                }
+                                            >
+                                                <option value="">Select Profit</option>
+                                                {companyCodes.map((code) => (
+                                                    <option key={code.company_code} value={code.company_code}>
+                                                        {code.companyCodeID} - {code.companyCodeDescription}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                           
+                                        </div>
                                     </form>
                                     {updateMsg ? <div className="alert alert-danger m-3 p-2">{updateMsg}</div> : ''}
                                 </Modal.Body>
@@ -531,7 +555,7 @@ export default function Project() {
                                                 <option value="">Select Company Code and Description</option>
                                                 {companyCodes.map((code) => (
                                                     <option key={code.company_code} value={code.company_code}>
-                                                       {code.companyCodeID} - {code.companyCodeDescription}
+                                                        {code.companyCodeID} - {code.companyCodeDescription}
                                                     </option>
                                                 ))}
                                             </select>
@@ -539,7 +563,7 @@ export default function Project() {
 
                                         <div className={`form-group ${style.formGroup}`}>
                                             <h2>Location:</h2>
-{/* 
+                                            {/* 
                                             <label htmlFor="exampleInputText1" className={`${style.label}`}>Regional Location:</label>
                                             <input type="text" name='regionalLocation' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter RegionalLocation" /> */}
                                             {/* dropdown list locationCode */}
@@ -566,6 +590,27 @@ export default function Project() {
                                             <input type="text" required name='projectDescription' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter ProjectDescription" />
                                             <label htmlFor="exampleInputDate1" className={`${style.label}`}>Valid From Date:</label>
                                             <input type="date" required name='validFrom' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter ValidFromDate" />
+                                        </div>
+
+                                        <div className={`form-group ${style.formGroup}`}>
+                                            <h2>Profit:</h2>
+                                            {/* 
+                                            <label htmlFor="exampleInputText1" className={`${style.label}`}>Regional Location:</label>
+                                            <input type="text" name='regionalLocation' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter RegionalLocation" /> */}
+                                            {/* dropdown list locationCode */}
+                                            <label htmlFor="exampleInputText1" className={`${style.label}`}>Profit:</label>
+                                            <select
+                                                name="regionalLocation"
+                                                className="form-control"
+                                                onChange={getFormValue}
+                                            >
+                                                <option value="">Select Profit</option>
+                                                {regionalLocations.map((location) => (
+                                                    <option key={location.cities_code} value={location.cities_code}>
+                                                        {location.citiesID} - {location.regionalLocation}
+                                                    </option>
+                                                ))}
+                                            </select>
                                         </div>
 
 

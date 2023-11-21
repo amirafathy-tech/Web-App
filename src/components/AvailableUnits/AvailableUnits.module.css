@@ -47,3 +47,14 @@
   color: #00ADB5;
   margin: 8px;
 }
+.modal{
+    width:100%
+}
+.mymodal {
+    width: 90vw;
+    max-width: 90vw;
+} 
+.formInput{
+    margin-right: 9rem;
+    padding: 1rem;
+}

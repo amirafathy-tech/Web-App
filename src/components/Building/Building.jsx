@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import style from './Building.module.css';
 import axios from 'axios';
+import { Modal, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { RiDeleteBinLine, RiEditLine } from 'react-icons/ri';
 
@@ -42,7 +43,6 @@ export default function Building() {
         oldNumber: '',
         validFrom: Date,
         numberOfFloors: Number
-
     });
 
     function getFormValue(e) {
@@ -94,7 +94,7 @@ export default function Building() {
                     'Authorization': `Bearer ${token}`,
                 },
                 data: {
-                    building_code:updatedBuilding.building_code,
+                    building_code: updatedBuilding.building_code,
                     buildingID: updatedBuilding.buildingID,
                     buildingDescription: updatedBuilding.buildingDescription,
                     oldNumber: updatedBuilding.oldNumber,
@@ -102,13 +102,12 @@ export default function Building() {
                     numberOfFloors: Number(updatedBuilding.numberOfFloors)
                 },
             };
-
             const response = await axios(options);
             console.log(response);
 
             if (response.status === 200) {
                 console.log('200');
-                setUpdateMsg('Your BuildingType has been updated successfully');
+                setUpdateMsg('Your Building has been updated successfully');
                 getBuilding();
             }
         } catch (error) {
@@ -122,7 +121,7 @@ export default function Building() {
         try {
             const options = {
                 method: 'DELETE',
-                url: `${BasicURL}/buildingtype/${BuildingID}`,
+                url: `${BasicURL}/buildings/${BuildingID}`,
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
@@ -133,7 +132,7 @@ export default function Building() {
 
             if (response.status === 200) {
                 console.log('200');
-                setDeleteMsg('Your BuildingType has been Deleted successfully');
+                setDeleteMsg('Your Building has been Deleted successfully');
                 getBuilding();
             }
         } catch (error) {
@@ -153,39 +152,85 @@ export default function Building() {
         }
     }
 
+     // call search API
+  async function searchBuildings(keyword) {
+    try {
+      const response = await axios.get(`${BasicURL}/buildings/search?keyword=${keyword}`, {
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+      console.log(response)
+      setBuilding(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+    // useEffect(() => {
+    //     getBuilding();
+    // }, []);
     useEffect(() => {
-        getBuilding();
-    }, []);
+        if (searchTerm) {
+          searchBuildings(searchTerm);
+        } else {
+          getBuilding();
+        }
+      }, [searchTerm]);
 
 
-    const renderBuilding = Building.length > 0 ? (
-        Building.map((Building) => (
-          <tr key={Building.building_code}>
-            <td>{Building.buildingID}</td>
-            <td>{Building.buildingDescription}</td>
-            <td>
-              <button className={style.iconButton} onClick={() => handleDelete(Building.building_code)} title="Delete">
-                <RiDeleteBinLine style={{ color: 'red' }} />
-              </button>
-              <button className={style.iconButton} onClick={() => handleEdit(Building)} title="Edit">
-                <RiEditLine style={{ color: '#10ab80' }} />
-              </button>
-            </td>
-          </tr>
+    const renderBuilding = building.length > 0 ? (
+        building.map((Building) => (
+            <tr key={Building.building_code}>
+                <td>{Building.buildingID}</td>
+                <td>{Building.buildingDescription}</td>
+                <td>{Building.oldNumber}</td>
+                <td>{Building.validFrom}</td>
+                <td>{Building.numberOfFloors}</td>
+                <td>
+                    <button className={style.iconButton} onClick={() => handleDelete(Building.building_code)} title="Delete">
+                        <RiDeleteBinLine style={{ color: 'red' }} />
+                    </button>
+                    <button className={style.iconButton} onClick={() => handleEdit(Building)} title="Edit">
+                        <RiEditLine style={{ color: '#10ab80' }} />
+                    </button>
+                </td>
+            </tr>
         ))
-      ) : (
+    ) : (
         <tr>
-          <td colSpan="7">No results match the search term.</td>
+            <td colSpan="7">No results match the search term.</td>
         </tr>
-      );
+    );
 
     return (
         <>
             <div className={`container`}>
-                <div className={``}>
-                    <h1 className={`${style.maincolor}`}>Buildings</h1>
 
-                    <div className='table-responsive'>
+                <div className="row align-items-center justify-content-center">
+                    {/* Search Bar */}
+                    <div className="col-sm-12 col-md-4 mt-5 mb-4 text-gred">
+                        <input
+                            className={`${style.searchInput}`}
+                            type="search"
+                            placeholder="Search for a Building "
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                    </div>
+
+                    <div className={`col-sm-12 col-md-4 mt-5 mb-4 text-gred ${style.maincolor}`}>
+                        <h2>Building Details</h2>
+                    </div>
+
+                    <div className="col-sm-12 col-md-4 mt-5 mb-4 text-gred">
+                        <button className={`w-100 ${style.imageButton}`} onClick={handleAddShow}>
+                            Add New Building
+                        </button>
+                    </div>
+                </div>
+
+                {deleteMsg ? <div className="alert alert-danger m-3 p-2">{deleteMsg}</div> : ''}
+                <div className={`row"`}>
+                    <div className='table-responsive m-auto'>
                         <table className={`table  table-striped table-hover table-head text-center`}>
                             <thead>
                                 <tr className={``}>
@@ -195,24 +240,19 @@ export default function Building() {
                                     <th>Building OldNumber</th>
                                     <th>Valid From</th>
                                     <th>Number Of Floors</th>
+                                    <th>Actions</th>
                                     {/* <th>Units</th> */}
                                 </tr>
                             </thead>
                             <tbody>
-                                {building.map((item, id) => (
-                                    <tr key={item.building_code}>
-                                        <td>{item.buildingID}</td>
-                                        <td>{item.buildingDescription}</td>
-                                        <td>{item.oldNumber}</td>
-                                        <td>{item.validFrom}</td>
-                                        <td>{item.numberOfFloors}</td>
+                            {renderBuilding}
                                         {/* <td >
                                             <Link className={`${style.maincolor} text-decoration-none`} to={`/building/${item.buildingCode}/units`}>Available Units</Link>
                                         </td> */}
-                                    </tr>
-                                ))}
+                            
                             </tbody>
                         </table>
+
                     </div>
                 </div>
             </div>
