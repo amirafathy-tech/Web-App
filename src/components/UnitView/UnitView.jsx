@@ -7,8 +7,7 @@ import { RiDeleteBinLine, RiEditLine } from 'react-icons/ri';
 
 export default function UnitView() {
   // new URL
-  const BasicURL=' https://newtrial.c-78984ef.kyma.ondemand.com'
-  // const BasicURL = 'https://demooo.c-78984ef.kyma.ondemand.com'
+  const BasicURL = 'https://dev.c-1e53052.kyma.ondemand.com'
   const token = localStorage.getItem('token');
   const [UnitView, setUnitView] = useState([]);
   const [addMsg, setAddMsg] = useState('');
@@ -182,8 +181,23 @@ export default function UnitView() {
   return (
     <>
       <div className="container">
-        <div className="row align-items-center justify-content-center">
-          {/* Search Bar */}
+        <div className="row text-white m-3">
+          <div className="col-sm">
+            <input
+              className={`${style.searchInput}`}
+              type="search"
+              placeholder="Search for a view "
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <div className={`col-sm ${style.maincolor}`}><h2>View Details</h2></div>
+          <div className="col-sm">  <button className={`w-100 ${style.imageButton}`} onClick={handleAddShow}>
+            Add New View
+          </button></div>
+        </div>
+
+        {/* <div className="row align-items-center justify-content-center">
           <div className="col-sm-12 col-md-4 mt-5 mb-4 text-gred">
             <input
               className={`${style.searchInput}`}
@@ -203,7 +217,7 @@ export default function UnitView() {
               Add New UnitView
             </button>
           </div>
-        </div>
+        </div> */}
         {/* {deleteMsg ? <div className="alert alert-danger m-3 p-2">{deleteMsg}</div> : ''} */}
         <div className="row">
           <div className="table-responsive m-auto">
@@ -228,36 +242,43 @@ export default function UnitView() {
                 </Modal.Header>
                 <Modal.Body>
                   <form>
-                    <input
-                      type="text"
-                      required
-                      maxLength={8}
-                      name="unitViewID"
-                      className="form-control"
-                      value={selectedUnitView.unitViewID}
-                      onChange={(e) =>
-                        setSelectedUnitView({
-                          ...selectedUnitView,
-                          unitViewID: e.target.value,
-                        })
-                      }
-                      placeholder="Enter UnitViewID"
-                    />
-                    <input
-                      type="text"
-                      required
-                      name="view"
-                      className="form-control"
-                      value={selectedUnitView.view}
-                      onChange={(e) =>
-                        setSelectedUnitView({
-                          ...selectedUnitView,
-                          view: e.target.value,
-                        })
-                      }
-                      placeholder="Enter View"
-                    />
 
+                    <div className={`form-group  `}>
+                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >UnitView Code: </label>
+                      <input
+                        type="text"
+                        required
+                        maxLength={8}
+                        name="unitViewID"
+                        className="form-control"
+                        value={selectedUnitView.unitViewID}
+                        onChange={(e) =>
+                          setSelectedUnitView({
+                            ...selectedUnitView,
+                            unitViewID: e.target.value,
+                          })
+                        }
+                        placeholder="Enter UnitViewID"
+                      />
+                    </div>
+
+                    <div className={`form-group `}>
+                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >View Description: </label>
+                      <input
+                        type="text"
+                        required
+                        name="view"
+                        className="form-control"
+                        value={selectedUnitView.view}
+                        onChange={(e) =>
+                          setSelectedUnitView({
+                            ...selectedUnitView,
+                            view: e.target.value,
+                          })
+                        }
+                        placeholder="Enter View"
+                      />
+                    </div>
                   </form>
 
                   {updateMsg ? <div className="alert alert-danger m-3 p-2">{updateMsg}</div> : ''}
@@ -288,7 +309,7 @@ export default function UnitView() {
                   <form onSubmit={submitFormData}>
                     <div className={`form-group  ${style.formGroup}`}>
 
-                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >UnitView ID: </label>
+                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >UnitView Code: </label>
                       <input type="text" required maxLength={8} name='unitViewID' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter UnitViewID" />
                     </div>
                     <div className={`form-group  ${style.formGroup}`}>

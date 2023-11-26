@@ -2,18 +2,18 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Modal, Button } from 'react-bootstrap';
-import style from './Orientation.module.css';
+import style from './Currency.module.css';
 import { RiDeleteBinLine, RiEditLine } from 'react-icons/ri';
 
-export default function Orientation() {
-   // new URL
-   const BasicURL = 'https://dev.c-1e53052.kyma.ondemand.com'
-  const [Orientation, setOrientation] = useState([]);
+export default function Currency() {
+  // new URL
+  const BasicURL = 'https://dev.c-1e53052.kyma.ondemand.com'
+  const [Currency, setCurrency] = useState([]);
   const [addMsg, setAddMsg] = useState('');
   const [updateMsg, setUpdateMsg] = useState('');
   const [deleteMsg, setDeleteMsg] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedOrientation, setSelectedOrientation] = useState(null);
+  const [selectedCurrency, setSelectedCurrency] = useState(null);
 
   const token = localStorage.getItem('token');
 
@@ -21,37 +21,38 @@ export default function Orientation() {
   const [addShow, setaddShow] = useState(false);
   const handleAddClose = () => {
     setAddMsg('')
-    setaddShow(false);}
+    setaddShow(false);
+  }
   const handleAddShow = () => setaddShow(true);
 
   // handle modal for edit
   const [show, setShow] = useState(false);
   const handleClose = () => {
-    setUpdateMsg('')
-    setSelectedOrientation(null);
+    setUpdateMsg('');
+    setSelectedCurrency(null);
     setShow(false);
   };
   const handleShow = () => setShow(true);
-  const handleEdit = (Orientation) => {
-    console.log(Orientation);
-    setSelectedOrientation(Orientation);
+  const handleEdit = (Currency) => {
+    console.log(Currency);
+    setSelectedCurrency(Currency);
     console.log("selected");
-    console.log(selectedOrientation);
+    console.log(selectedCurrency);
     handleShow();
   };
 
-  let [newOrientation, setNewOrientation] = useState({
-    orientationID: '',
-    orientationDescription: '',
+  let [newCurrency, setNewCurrency] = useState({
+    currencyID: '',
+    currencyDescription: '',
 
   });
 
 
   function getFormValue(e) {
-    let myOrientation = { ...newOrientation }
-    myOrientation[e.target.name] = e.target.value
-    setNewOrientation(myOrientation);// update Orientation data
-    console.log(myOrientation)
+    let myCurrency = { ...newCurrency }
+    myCurrency[e.target.name] = e.target.value
+    setNewCurrency(myCurrency);// update Currency data
+    console.log(myCurrency)
   }
   // call add API 
   async function submitFormData(e) {
@@ -59,13 +60,13 @@ export default function Orientation() {
 
     const options = {
       method: 'POST',
-      url: `${BasicURL}/orientation`,
+      url: `${BasicURL}/currency`,
       headers: {
         "Authorization": `Bearer ${token}`
       },
       data: {
-        orientationID: newOrientation.orientationID,
-        orientationDescription: newOrientation.orientationDescription,
+        currencyID: newCurrency.currencyID,
+        currencyDescription: newCurrency.currencyDescription,
       }
     };
 
@@ -73,27 +74,27 @@ export default function Orientation() {
     console.log(response);
     if (response.status == 200) {
       console.log("200")
-      setAddMsg("Your Orientation have been added successfully")
-      getOrientation()
+      setAddMsg("Your Currency have been added successfully")
+      getCurrency()
     }
   }
 
 
   // call update API
-  const handleUpdate = async (updatedOrientation) => {
-    console.log(updatedOrientation);
+  const handleUpdate = async (updatedCurrency) => {
+    console.log(updatedCurrency);
     try {
       const options = {
         method: 'PUT',
-        url: `${BasicURL}/orientation/${updatedOrientation.orientation_code}`,
+        url: `${BasicURL}/currency/${updatedCurrency.currency_code}`,
         headers: {
           'Authorization': `Bearer ${token}`,
         },
         data: {
-          orientation_code:updatedOrientation.orientation_code,
-          orientationID: updatedOrientation.orientationID,
-          orientationDescription: updatedOrientation.orientationDescription,
-         
+          currency_code: updatedCurrency.currency_code,
+          currencyID: updatedCurrency.currencyID,
+          currencyDescription: updatedCurrency.currencyDescription,
+
         },
       };
 
@@ -102,8 +103,8 @@ export default function Orientation() {
 
       if (response.status === 200) {
         console.log('200');
-        setUpdateMsg('Your Orientation has been updated successfully');
-        getOrientation();
+        setUpdateMsg('Your Currency has been updated successfully');
+        getCurrency();
       }
     } catch (error) {
       console.error(error);
@@ -111,11 +112,11 @@ export default function Orientation() {
   };
 
   // call delete API
-  const handleDelete = async (OrientationID) => {
+  const handleDelete = async (CurrencyID) => {
     try {
       const options = {
         method: 'DELETE',
-        url: `${BasicURL}/orientation/${OrientationID}`,
+        url: `${BasicURL}/currency/${CurrencyID}`,
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -126,8 +127,8 @@ export default function Orientation() {
 
       if (response.status === 200) {
         console.log('200');
-        setDeleteMsg('Your Orientation has been Deleted successfully');
-        getOrientation();
+        setDeleteMsg('Your Currency has been Deleted successfully');
+        getCurrency();
       }
     } catch (error) {
       console.error(error);
@@ -135,26 +136,26 @@ export default function Orientation() {
   };
 
   // call get API
-  async function getOrientation() {
+  async function getCurrency() {
     try {
-      let { data } = await axios.get(`${BasicURL}/orientation`, { headers: { "Authorization": `Bearer ${token}` } });
+      let { data } = await axios.get(`${BasicURL}/currency`, { headers: { "Authorization": `Bearer ${token}` } });
       console.log(data);
-      console.log("Orientation");
-      setOrientation(data);
-      console.log(Orientation);
+      console.log("Currency");
+      setCurrency(data);
+      console.log(Currency);
     } catch (error) {
       console.error(error);
     }
   }
 
   // call search API
-  async function searchOrientations(keyword) {
+  async function searchCurrencys(keyword) {
     try {
-      const response = await axios.get(`${BasicURL}/orientation/search?keyword=${keyword}`, {
+      const response = await axios.get(`${BasicURL}/currency/search?keyword=${keyword}`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       console.log(response)
-      setOrientation(response.data);
+      setCurrency(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -162,23 +163,23 @@ export default function Orientation() {
 
   useEffect(() => {
     if (searchTerm) {
-      searchOrientations(searchTerm);
+      searchCurrencys(searchTerm);
     } else {
-      getOrientation();
+      getCurrency();
     }
   }, [searchTerm]);
 
-  const renderOrientations = Orientation.length > 0 ? (
-    Orientation.map((Orientation) => (
-      <tr key={Orientation.orientation_code}>
-        <td>{Orientation.orientationID}</td>
-        <td>{Orientation.orientationDescription}</td>
-      
+  const renderCurrencys = Currency.length > 0 ? (
+    Currency.map((Currency) => (
+      <tr key={Currency.currency_code}>
+        <td>{Currency.currencyID}</td>
+        <td>{Currency.currencyDescription}</td>
+
         <td>
-          <button className={style.iconButton} onClick={() => handleDelete(Orientation.orientation_code)} title="Delete">
+          <button className={style.iconButton} onClick={() => handleDelete(Currency.currency_code)} title="Delete">
             <RiDeleteBinLine style={{ color: 'red' }} />
           </button>
-          <button className={style.iconButton} onClick={() => handleEdit(Orientation)} title="Edit">
+          <button className={style.iconButton} onClick={() => handleEdit(Currency)} title="Edit">
             <RiEditLine style={{ color: '#10ab80' }} />
           </button>
         </td>
@@ -193,19 +194,19 @@ export default function Orientation() {
   return (
     <>
       <div className="container">
-      <div className="row text-white m-3">
+        <div className="row text-white m-3">
           <div className="col-sm">
             <input
               className={`${style.searchInput}`}
               type="search"
-              placeholder="Search for an orientation"
+              placeholder="Search for a currency"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <div className={`col-sm ${style.maincolor}`}><h2>Orientation Details</h2></div>
+          <div className={`col-sm ${style.maincolor}`}><h2>Currency Details</h2></div>
           <div className="col-sm">  <button className={`w-100 ${style.imageButton}`} onClick={handleAddShow}>
-            Add New Orientation
+            Add New Currency
           </button></div>
         </div>
 
@@ -214,88 +215,90 @@ export default function Orientation() {
             <input
               className={`${style.searchInput}`}
               type="search"
-              placeholder="Search for an Orientation"
+              placeholder="Search for a Cuurency "
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
 
           <div className={`col-sm-12 col-md-4 mt-5 mb-4 text-gred ${style.maincolor}`}>
-            <h2>Orientation Details</h2>
+            <h2>Cuurency Details</h2>
           </div>
 
           <div className="col-sm-12 col-md-4 mt-5 mb-4 text-gred">
             <button className={`w-100 ${style.imageButton}`} onClick={handleAddShow}>
-              Add New Orientation
+              Add New Cuurency
             </button>
           </div>
         </div> */}
 
-        {/* {deleteMsg ? <div className="alert alert-danger m-3 p-2">{deleteMsg}</div> : ''} */}
+
+{/* 
+        {deleteMsg ? <div className="alert alert-danger m-3 p-2">{deleteMsg}</div> : ''} */}
 
         <div className="row">
           <div className="table-responsive m-auto">
             <table className="table table-striped table-hover table-head text-center">
               <thead>
                 <tr>
-                
-                  <th>Orientation ID</th>
-                  <th>Orientation Description</th>
-                  
+
+                  <th>Currency ID</th>
+                  <th>Currency Description</th>
+
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-                {renderOrientations}
+                {renderCurrencys}
               </tbody>
             </table>
 
             {/* Render the edit modal */}
-            {selectedOrientation && (
+            {selectedCurrency && (
               <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                  <Modal.Title>Edit Orientation</Modal.Title>
+                  <Modal.Title>Edit Cuurency</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                   <form>
-                  
-                  <div className={`form-group `}>
 
-<label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Orientation Code: </label>
-                    <input
-                      type="text"
-                      required
-                      maxLength={8}
-                      name="orientationID"
-                      className="form-control m-3"
-                      value={selectedOrientation.orientationID}
-                      onChange={(e) =>
-                        setSelectedOrientation({
-                          ...selectedOrientation,
-                          orientationID: e.target.value,
-                        })
-                      }
-                      placeholder="Enter orientationID"
-                    />
+                    <div className={`form-group `}>
+
+                      <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Currency Code: </label>
+                      <input
+                        type="text"
+                        required
+                        maxLength={8}
+                        name="currencyID"
+                        className="form-control m-3"
+                        value={selectedCurrency.currencyID}
+                        onChange={(e) =>
+                          setSelectedCurrency({
+                            ...selectedCurrency,
+                            currencyID: e.target.value,
+                          })
+                        }
+                        placeholder="Enter currencyID"
+                      />
                     </div>
 
                     <div className={`form-group `}>
 
-                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >Orientation Description: </label>
-                    <input
-                      type="text"
-                      required
-                      name="orientationDescription"
-                      className="form-control m-3"
-                      value={selectedOrientation.orientationDescription}
-                      onChange={(e) =>
-                        setSelectedOrientation({
-                          ...selectedOrientation,
-                          orientationDescription: e.target.value,
-                        })
-                      }
-                      placeholder="Enter orientationDescription"
-                    />
+                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >Currency Description: </label>
+                      <input
+                        type="text"
+                        required
+                        name="currencyDescription"
+                        className="form-control m-3"
+                        value={selectedCurrency.currencyDescription}
+                        onChange={(e) =>
+                          setSelectedCurrency({
+                            ...selectedCurrency,
+                            currencyDescription: e.target.value,
+                          })
+                        }
+                        placeholder="Enter currencyDescription"
+                      />
                     </div>
                   </form>
 
@@ -305,7 +308,7 @@ export default function Orientation() {
                   <Button variant="secondary" onClick={handleClose}>
                     Close
                   </Button>
-                  <Button variant="primary" onClick={() => handleUpdate(selectedOrientation)}>
+                  <Button variant="primary" onClick={() => handleUpdate(selectedCurrency)}>
                     Update
                   </Button>
                 </Modal.Footer>
@@ -321,25 +324,25 @@ export default function Orientation() {
                 keyboard={false}
               >
                 <Modal.Header closeButton>
-                  <Modal.Title>Add Orientation</Modal.Title>
+                  <Modal.Title>Add Cuurency</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                   <form onSubmit={submitFormData}>
-                
+
                     <div className={`form-group  ${style.formGroup}`}>
 
-                      <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Orientation Code: </label>
-                      <input type="text" required maxLength={8} name='orientationID' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="numberHelp" placeholder="Enter orientationID" />
+                      <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Currency Code: </label>
+                      <input type="text" required maxLength={8} name='currencyID' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="numberHelp" placeholder="Enter currencyID" />
                     </div>
 
                     <div className={`form-group  ${style.formGroup}`}>
 
-                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >Orientation Description: </label>
-                      <input type="text" required  name='orientationDescription' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter orientationDescription" />
+                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >Currency Description: </label>
+                      <input type="text" required name='currencyDescription' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter currencyDescription" />
                     </div>
-                   
 
-                    <button type="submit" className={`w-100 ${style.imageButton}`}>Add Orientation</button>
+
+                    <button type="submit" className={`w-100 ${style.imageButton}`}>Add Cuurency</button>
                   </form>
 
                   {addMsg ? <div className="alert alert-danger m-3 p-2">{addMsg}</div> : ''}
@@ -357,6 +360,10 @@ export default function Orientation() {
           </div>
         </div>
       </div>
+
+
+
+
 
     </>
   );

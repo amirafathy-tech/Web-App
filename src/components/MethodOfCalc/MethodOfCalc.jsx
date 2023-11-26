@@ -2,18 +2,18 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Modal, Button } from 'react-bootstrap';
-import style from './Orientation.module.css';
+import style from './MethodOfCalc.module.css';
 import { RiDeleteBinLine, RiEditLine } from 'react-icons/ri';
 
-export default function Orientation() {
+export default function MethodOfCalc() {
    // new URL
    const BasicURL = 'https://dev.c-1e53052.kyma.ondemand.com'
-  const [Orientation, setOrientation] = useState([]);
+  const [MethodOfCalc, setMethodOfCalc] = useState([]);
   const [addMsg, setAddMsg] = useState('');
   const [updateMsg, setUpdateMsg] = useState('');
   const [deleteMsg, setDeleteMsg] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedOrientation, setSelectedOrientation] = useState(null);
+  const [selectedMethodOfCalc, setSelectedMethodOfCalc] = useState(null);
 
   const token = localStorage.getItem('token');
 
@@ -28,30 +28,30 @@ export default function Orientation() {
   const [show, setShow] = useState(false);
   const handleClose = () => {
     setUpdateMsg('')
-    setSelectedOrientation(null);
+    setSelectedMethodOfCalc(null);
     setShow(false);
   };
   const handleShow = () => setShow(true);
-  const handleEdit = (Orientation) => {
-    console.log(Orientation);
-    setSelectedOrientation(Orientation);
+  const handleEdit = (MethodOfCalc) => {
+    console.log(MethodOfCalc);
+    setSelectedMethodOfCalc(MethodOfCalc);
     console.log("selected");
-    console.log(selectedOrientation);
+    console.log(selectedMethodOfCalc);
     handleShow();
   };
 
-  let [newOrientation, setNewOrientation] = useState({
-    orientationID: '',
-    orientationDescription: '',
+  let [newMethodOfCalc, setNewMethodOfCalc] = useState({
+    methodOfCalcID: '',
+    methodOfCalcDescription: '',
 
   });
 
 
   function getFormValue(e) {
-    let myOrientation = { ...newOrientation }
-    myOrientation[e.target.name] = e.target.value
-    setNewOrientation(myOrientation);// update Orientation data
-    console.log(myOrientation)
+    let myMethodOfCalc = { ...newMethodOfCalc }
+    myMethodOfCalc[e.target.name] = e.target.value
+    setNewMethodOfCalc(myMethodOfCalc);// update MethodOfCalc data
+    console.log(myMethodOfCalc)
   }
   // call add API 
   async function submitFormData(e) {
@@ -59,13 +59,13 @@ export default function Orientation() {
 
     const options = {
       method: 'POST',
-      url: `${BasicURL}/orientation`,
+      url: `${BasicURL}/moc`,
       headers: {
         "Authorization": `Bearer ${token}`
       },
       data: {
-        orientationID: newOrientation.orientationID,
-        orientationDescription: newOrientation.orientationDescription,
+        methodOfCalcID: newMethodOfCalc.methodOfCalcID,
+        methodOfCalcDescription: newMethodOfCalc.methodOfCalcDescription,
       }
     };
 
@@ -73,26 +73,26 @@ export default function Orientation() {
     console.log(response);
     if (response.status == 200) {
       console.log("200")
-      setAddMsg("Your Orientation have been added successfully")
-      getOrientation()
+      setAddMsg("Your MethodOfCalculation have been added successfully")
+      getMethodOfCalc()
     }
   }
 
 
   // call update API
-  const handleUpdate = async (updatedOrientation) => {
-    console.log(updatedOrientation);
+  const handleUpdate = async (updatedMethodOfCalc) => {
+    console.log(updatedMethodOfCalc);
     try {
       const options = {
         method: 'PUT',
-        url: `${BasicURL}/orientation/${updatedOrientation.orientation_code}`,
+        url: `${BasicURL}/moc/${updatedMethodOfCalc.methodOfCalc_code}`,
         headers: {
           'Authorization': `Bearer ${token}`,
         },
         data: {
-          orientation_code:updatedOrientation.orientation_code,
-          orientationID: updatedOrientation.orientationID,
-          orientationDescription: updatedOrientation.orientationDescription,
+          methodOfCalc_code:updatedMethodOfCalc.methodOfCalc_code,
+          methodOfCalcID: updatedMethodOfCalc.methodOfCalcID,
+          methodOfCalcDescription: updatedMethodOfCalc.methodOfCalcDescription,
          
         },
       };
@@ -102,8 +102,8 @@ export default function Orientation() {
 
       if (response.status === 200) {
         console.log('200');
-        setUpdateMsg('Your Orientation has been updated successfully');
-        getOrientation();
+        setUpdateMsg('Your MethodOfCalculation has been updated successfully');
+        getMethodOfCalc();
       }
     } catch (error) {
       console.error(error);
@@ -111,11 +111,11 @@ export default function Orientation() {
   };
 
   // call delete API
-  const handleDelete = async (OrientationID) => {
+  const handleDelete = async (MethodOfCalcID) => {
     try {
       const options = {
         method: 'DELETE',
-        url: `${BasicURL}/orientation/${OrientationID}`,
+        url: `${BasicURL}/moc/${MethodOfCalcID}`,
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -126,8 +126,8 @@ export default function Orientation() {
 
       if (response.status === 200) {
         console.log('200');
-        setDeleteMsg('Your Orientation has been Deleted successfully');
-        getOrientation();
+        setDeleteMsg('Your MethodOfCalculation has been Deleted successfully');
+        getMethodOfCalc();
       }
     } catch (error) {
       console.error(error);
@@ -135,26 +135,26 @@ export default function Orientation() {
   };
 
   // call get API
-  async function getOrientation() {
+  async function getMethodOfCalc() {
     try {
-      let { data } = await axios.get(`${BasicURL}/orientation`, { headers: { "Authorization": `Bearer ${token}` } });
+      let { data } = await axios.get(`${BasicURL}/moc`, { headers: { "Authorization": `Bearer ${token}` } });
       console.log(data);
-      console.log("Orientation");
-      setOrientation(data);
-      console.log(Orientation);
+      console.log("MethodOfCalc");
+      setMethodOfCalc(data);
+      console.log(MethodOfCalc);
     } catch (error) {
       console.error(error);
     }
   }
 
   // call search API
-  async function searchOrientations(keyword) {
+  async function searchMethodOfCalcs(keyword) {
     try {
-      const response = await axios.get(`${BasicURL}/orientation/search?keyword=${keyword}`, {
+      const response = await axios.get(`${BasicURL}/moc/search?keyword=${keyword}`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       console.log(response)
-      setOrientation(response.data);
+      setMethodOfCalc(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -162,23 +162,23 @@ export default function Orientation() {
 
   useEffect(() => {
     if (searchTerm) {
-      searchOrientations(searchTerm);
+      searchMethodOfCalcs(searchTerm);
     } else {
-      getOrientation();
+      getMethodOfCalc();
     }
   }, [searchTerm]);
 
-  const renderOrientations = Orientation.length > 0 ? (
-    Orientation.map((Orientation) => (
-      <tr key={Orientation.orientation_code}>
-        <td>{Orientation.orientationID}</td>
-        <td>{Orientation.orientationDescription}</td>
+  const renderMethodOfCalcs = MethodOfCalc.length > 0 ? (
+    MethodOfCalc.map((MethodOfCalc) => (
+      <tr key={MethodOfCalc.methodOfCalc_code}>
+        <td>{MethodOfCalc.methodOfCalcID}</td>
+        <td>{MethodOfCalc.methodOfCalcDescription}</td>
       
         <td>
-          <button className={style.iconButton} onClick={() => handleDelete(Orientation.orientation_code)} title="Delete">
+          <button className={style.iconButton} onClick={() => handleDelete(MethodOfCalc.methodOfCalc_code)} title="Delete">
             <RiDeleteBinLine style={{ color: 'red' }} />
           </button>
-          <button className={style.iconButton} onClick={() => handleEdit(Orientation)} title="Edit">
+          <button className={style.iconButton} onClick={() => handleEdit(MethodOfCalc)} title="Edit">
             <RiEditLine style={{ color: '#10ab80' }} />
           </button>
         </td>
@@ -193,43 +193,46 @@ export default function Orientation() {
   return (
     <>
       <div className="container">
+
       <div className="row text-white m-3">
-          <div className="col-sm">
-            <input
-              className={`${style.searchInput}`}
-              type="search"
-              placeholder="Search for an orientation"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-          <div className={`col-sm ${style.maincolor}`}><h2>Orientation Details</h2></div>
-          <div className="col-sm">  <button className={`w-100 ${style.imageButton}`} onClick={handleAddShow}>
-            Add New Orientation
-          </button></div>
-        </div>
+                    <div className="col-sm">
+                        <input
+                            className={`${style.searchInput}`}
+                            type="search"
+                            placeholder="Search for a method "
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                    </div>
+                    <div className={`col-sm ${style.maincolor}`}><h2>MethodOfCalculation Details</h2></div>
+                    <div className="col-sm">  <button className={`w-100 ${style.imageButton}`} onClick={handleAddShow}>
+                        Add New MethodOfCalculation
+                    </button></div>
+                </div>
 
         {/* <div className="row align-items-center justify-content-center">
           <div className="col-sm-12 col-md-4 mt-5 mb-4 text-gred">
             <input
               className={`${style.searchInput}`}
               type="search"
-              placeholder="Search for an Orientation"
+              placeholder="Search for a MethodOfCalculation "
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
 
           <div className={`col-sm-12 col-md-4 mt-5 mb-4 text-gred ${style.maincolor}`}>
-            <h2>Orientation Details</h2>
+            <h2>MethodOfCalculation Details</h2>
           </div>
 
           <div className="col-sm-12 col-md-4 mt-5 mb-4 text-gred">
             <button className={`w-100 ${style.imageButton}`} onClick={handleAddShow}>
-              Add New Orientation
+              Add New MethodOfCalculation
             </button>
           </div>
         </div> */}
+
+
 
         {/* {deleteMsg ? <div className="alert alert-danger m-3 p-2">{deleteMsg}</div> : ''} */}
 
@@ -239,62 +242,61 @@ export default function Orientation() {
               <thead>
                 <tr>
                 
-                  <th>Orientation ID</th>
-                  <th>Orientation Description</th>
+                  <th>MethodOfCalculation ID</th>
+                  <th>MethodOfCalculation Description</th>
                   
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-                {renderOrientations}
+                {renderMethodOfCalcs}
               </tbody>
             </table>
 
             {/* Render the edit modal */}
-            {selectedOrientation && (
+            {selectedMethodOfCalc && (
               <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                  <Modal.Title>Edit Orientation</Modal.Title>
+                  <Modal.Title>Edit MethodOfCalculation</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                   <form>
                   
                   <div className={`form-group `}>
 
-<label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Orientation Code: </label>
+<label htmlFor="exampleInputNumber1" className={`${style.lable}`} >MethodOfCalculation Code: </label>
                     <input
                       type="text"
                       required
                       maxLength={8}
-                      name="orientationID"
+                      name="methodOfCalcID"
                       className="form-control m-3"
-                      value={selectedOrientation.orientationID}
+                      value={selectedMethodOfCalc.methodOfCalcID}
                       onChange={(e) =>
-                        setSelectedOrientation({
-                          ...selectedOrientation,
-                          orientationID: e.target.value,
+                        setSelectedMethodOfCalc({
+                          ...selectedMethodOfCalc,
+                          methodOfCalcID: e.target.value,
                         })
                       }
-                      placeholder="Enter orientationID"
+                      placeholder="Enter methodOfCalcID"
                     />
                     </div>
 
-                    <div className={`form-group `}>
-
-                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >Orientation Description: </label>
+                    <div className={`form-group`}>
+                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >MethodOfCalculation Description: </label>
                     <input
                       type="text"
                       required
-                      name="orientationDescription"
+                      name="methodOfCalcDescription"
                       className="form-control m-3"
-                      value={selectedOrientation.orientationDescription}
+                      value={selectedMethodOfCalc.methodOfCalcDescription}
                       onChange={(e) =>
-                        setSelectedOrientation({
-                          ...selectedOrientation,
-                          orientationDescription: e.target.value,
+                        setSelectedMethodOfCalc({
+                          ...selectedMethodOfCalc,
+                          methodOfCalcDescription: e.target.value,
                         })
                       }
-                      placeholder="Enter orientationDescription"
+                      placeholder="Enter methodOfCalcDescription"
                     />
                     </div>
                   </form>
@@ -305,7 +307,7 @@ export default function Orientation() {
                   <Button variant="secondary" onClick={handleClose}>
                     Close
                   </Button>
-                  <Button variant="primary" onClick={() => handleUpdate(selectedOrientation)}>
+                  <Button variant="primary" onClick={() => handleUpdate(selectedMethodOfCalc)}>
                     Update
                   </Button>
                 </Modal.Footer>
@@ -321,25 +323,25 @@ export default function Orientation() {
                 keyboard={false}
               >
                 <Modal.Header closeButton>
-                  <Modal.Title>Add Orientation</Modal.Title>
+                  <Modal.Title>Add MethodOfCalculation</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                   <form onSubmit={submitFormData}>
                 
                     <div className={`form-group  ${style.formGroup}`}>
 
-                      <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Orientation Code: </label>
-                      <input type="text" required maxLength={8} name='orientationID' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="numberHelp" placeholder="Enter orientationID" />
+                      <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >MethodOfCalculation Code: </label>
+                      <input type="text" required maxLength={8} name='methodOfCalcID' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="numberHelp" placeholder="Enter methodOfCalcID" />
                     </div>
 
                     <div className={`form-group  ${style.formGroup}`}>
 
-                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >Orientation Description: </label>
-                      <input type="text" required  name='orientationDescription' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter orientationDescription" />
+                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >MethodOfCalculation Description: </label>
+                      <input type="text" required  name='methodOfCalcDescription' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter methodOfCalcDescription" />
                     </div>
                    
 
-                    <button type="submit" className={`w-100 ${style.imageButton}`}>Add Orientation</button>
+                    <button type="submit" className={`w-100 ${style.imageButton}`}>Add MethodOfCalculation</button>
                   </form>
 
                   {addMsg ? <div className="alert alert-danger m-3 p-2">{addMsg}</div> : ''}
@@ -357,6 +359,10 @@ export default function Orientation() {
           </div>
         </div>
       </div>
+
+
+
+
 
     </>
   );

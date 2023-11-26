@@ -1,10 +1,11 @@
-import { createRoot } from 'react-dom/client';
+import { createRoot } from 'react-dom/client'; // this function used to create root level render tree for react components
 import React, { useRef, useState, useMemo } from 'react';
-import { Canvas, useFrame, useLoader } from '@react-three/fiber';
-import { PresentationControls, OrbitControls, Loader, PointerLockControls, BBAnchor, Html } from '@react-three/drei';
+import { Canvas, useFrame, useLoader } from '@react-three/fiber'; // provide react renderer for three.js 
+import { PresentationControls, OrbitControls, Loader, PointerLockControls, BBAnchor, Html } from '@react-three/drei'; // provides additional utilities and components for working with three.js in react
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import * as THREE from 'three';
-import loading from '../images/loading.gif';
+//import loading from '../images/loading.gif';
+import loading from '../images/MasterPlan.jpg';
 import style from './model.module.css'
 
 let global = {};
@@ -20,8 +21,8 @@ function Load() {
         display: !display ? 'block' : 'none',
         background: '#5D5B41',
         position: 'absolute',
-        zIndex: '100',
-        left: 0,
+        // zIndex: '100',
+        left: '10%',
         width: '100%',
         height: '100vh',
       }}
@@ -38,7 +39,7 @@ function Load() {
       <img
         src={loading}
         style={{
-          maxWidth: '100%',
+          width: '90%', // or  maxWidth: '100%',
           height: 'auto',
           display: 'block',
           margin: '0 auto',
@@ -102,13 +103,13 @@ function BoxScene(props) {
       <Load />
 
       <div className={`container ${style.container}`}>
-        <div className={`conntent ${style.content}`}>
+        <div className={` ${style.content}`}>
           <Canvas
             shadows
             flat
             dpr={[1, 2]}
             camera={{ zoom: 1, fov: 25, position: object.position }}
-            style={{ width: '100%', height: '100%' }}
+            style={{ width: '100%', height: '88%' }}
           >
             <ambientLight intensity={0.8} />
             <color attach="background" args={['#00ADB5']} />

@@ -6,11 +6,8 @@ import style from './UnitFloor.module.css';
 import { RiDeleteBinLine, RiEditLine } from 'react-icons/ri';
 
 export default function UnitFloor() {
-
-  // new URL
-  const BasicURL=' https://newtrial.c-78984ef.kyma.ondemand.com'
-
-  //const BasicURL = 'https://demooo.c-78984ef.kyma.ondemand.com'
+   // new URL
+   const BasicURL = 'https://dev.c-1e53052.kyma.ondemand.com'
   const token = localStorage.getItem('token');
   const [UnitFloor, setUnitFloor] = useState([]);
   const [addMsg, setAddMsg] = useState('');
@@ -191,9 +188,22 @@ export default function UnitFloor() {
     <>
       <div className="container">
 
-
-        <div className="row align-items-center justify-content-center">
-          {/* Search Bar */}
+      <div className="row text-white m-3">
+          <div className="col-sm">
+            <input
+              className={`${style.searchInput}`}
+              type="search"
+              placeholder="Search for a floor "
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <div className={`col-sm ${style.maincolor}`}><h2>Floor Details</h2></div>
+          <div className="col-sm">  <button className={`w-100 ${style.imageButton}`} onClick={handleAddShow}>
+            Add New Floor
+          </button></div>
+        </div>
+        {/* <div className="row align-items-center justify-content-center">
           <div className="col-sm-12 col-md-4 mt-5 mb-4 text-gred">
             <input
               className={`${style.searchInput}`}
@@ -213,7 +223,7 @@ export default function UnitFloor() {
               Add New UnitFloor
             </button>
           </div>
-        </div>
+        </div> */}
 {/* 
         {deleteMsg ? <div className="alert alert-danger m-3 p-2">{deleteMsg}</div> : ''} */}
         <div className="row">
@@ -239,6 +249,10 @@ export default function UnitFloor() {
                 </Modal.Header>
                 <Modal.Body>
                   <form>
+
+                  <div className={`form-group `}>
+
+<label htmlFor="exampleInputText1" className={`${style.lable}`} >UnitFloor Code: </label>
                     <input
                       type="text"
                       required
@@ -254,6 +268,10 @@ export default function UnitFloor() {
                       }
                       placeholder="Enter UnitFloorID"
                     />
+                    </div>
+
+                    <div className={`form-group `}>
+                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >Unit Floor: </label>
                     <input
                       type="text"
                       required
@@ -268,6 +286,7 @@ export default function UnitFloor() {
                       }
                       placeholder="Enter Unit Floor"
                     />
+                    </div>
 
                   </form>
 
@@ -299,7 +318,7 @@ export default function UnitFloor() {
                   <form onSubmit={submitFormData}>
                     <div className={`form-group  ${style.formGroup}`}>
 
-                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >UnitFloor ID: </label>
+                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >UnitFloor Code: </label>
                       <input type="text" required maxLength={8} name='unitFloorID' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter UnitFloorID" />
                     </div>
                     <div className={`form-group  ${style.formGroup}`}>

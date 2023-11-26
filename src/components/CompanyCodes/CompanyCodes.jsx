@@ -7,8 +7,7 @@ import { RiDeleteBinLine, RiEditLine } from 'react-icons/ri';
 
 export default function CompanyCodes() {
   // new URL
-  const BasicURL=' https://newtrial.c-78984ef.kyma.ondemand.com'
- // const BasicURL = 'https://demooo.c-78984ef.kyma.ondemand.com'
+  const BasicURL = 'https://dev.c-1e53052.kyma.ondemand.com'
   const [CompanyCodes, setCompanyCodes] = useState([]);
   const [addMsg, setAddMsg] = useState('');
   const [updateMsg, setUpdateMsg] = useState('');
@@ -18,14 +17,19 @@ export default function CompanyCodes() {
 
   const token = localStorage.getItem('token');
 
+
   // to handle modal for add
   const [addShow, setaddShow] = useState(false);
-  const handleAddClose = () => setaddShow(false);
+  const handleAddClose = () => {
+    setAddMsg('');
+    setaddShow(false);
+  }
   const handleAddShow = () => setaddShow(true);
 
   // handle modal for edit
   const [show, setShow] = useState(false);
   const handleClose = () => {
+    setUpdateMsg('');
     setSelectedCompanyCodes(null);
     setShow(false);
   };
@@ -41,10 +45,7 @@ export default function CompanyCodes() {
   let [newCompanyCodes, setNewCompanyCodes] = useState({
     companyCodeID: '',
     companyCodeDescription: '',
-
   });
-
-
   function getFormValue(e) {
     let myCompanyCodes = { ...newCompanyCodes }
     myCompanyCodes[e.target.name] = e.target.value
@@ -66,17 +67,14 @@ export default function CompanyCodes() {
         companyCodeDescription: newCompanyCodes.companyCodeDescription,
       }
     };
-
     const response = await axios(options);
     console.log(response);
-    if (response.status == 200) {
-      console.log("200")
+    if (response.status == 201) {
+      console.log("201")
       setAddMsg("Your Company have been added successfully")
       getCompanyCodes()
     }
   }
-
-
   // call update API
   const handleUpdate = async (updatedCompanyCodes) => {
     console.log(updatedCompanyCodes);
@@ -88,10 +86,10 @@ export default function CompanyCodes() {
           'Authorization': `Bearer ${token}`,
         },
         data: {
-          company_code:updatedCompanyCodes.company_code,
+          company_code: updatedCompanyCodes.company_code,
           companyCodeID: updatedCompanyCodes.companyCodeID,
           companyCodeDescription: updatedCompanyCodes.companyCodeDescription,
-         
+
         },
       };
 
@@ -107,7 +105,6 @@ export default function CompanyCodes() {
       console.error(error);
     }
   };
-
   // call delete API
   const handleDelete = async (CompanyCodesID) => {
     try {
@@ -131,7 +128,6 @@ export default function CompanyCodes() {
       console.error(error);
     }
   };
-
   // call get API
   async function getCompanyCodes() {
     try {
@@ -171,7 +167,7 @@ export default function CompanyCodes() {
       <tr key={CompanyCodes.company_code}>
         <td>{CompanyCodes.companyCodeID}</td>
         <td>{CompanyCodes.companyCodeDescription}</td>
-      
+
         <td>
           <button className={style.iconButton} onClick={() => handleDelete(CompanyCodes.company_code)} title="Delete">
             <RiDeleteBinLine style={{ color: 'red' }} />
@@ -191,44 +187,28 @@ export default function CompanyCodes() {
   return (
     <>
       <div className="container">
-
-
-        <div className="row align-items-center justify-content-center">
-          {/* Search Bar */}
-          <div className="col-sm-12 col-md-4 mt-5 mb-4 text-gred">
+        <div className="row text-white m-3">
+          <div className="col-sm">
             <input
               className={`${style.searchInput}`}
               type="search"
-              placeholder="Search for a CompanyCode "
+              placeholder="Search for a Company "
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-
-          <div className={`col-sm-12 col-md-4 mt-5 mb-4 text-gred ${style.maincolor}`}>
-            <h2>CompanyCode Details</h2>
-          </div>
-
-          <div className="col-sm-12 col-md-4 mt-5 mb-4 text-gred">
-            <button className={`w-100 ${style.imageButton}`} onClick={handleAddShow}>
-              Add New CompanyCode
-            </button>
-          </div>
+          <div className={`col-sm ${style.maincolor}`}><h2>Company Details</h2></div>
+          <div className="col-sm">  <button className={`w-100 ${style.imageButton}`} onClick={handleAddShow}>
+            Add New Company
+          </button></div>
         </div>
-
-
-
-        {deleteMsg ? <div className="alert alert-danger m-3 p-2">{deleteMsg}</div> : ''}
-
         <div className="row">
           <div className="table-responsive m-auto">
             <table className="table table-striped table-hover table-head text-center">
               <thead>
                 <tr>
-                
                   <th>Company Code ID</th>
                   <th>Company Code Description</th>
-                  
                   <th>Action</th>
                 </tr>
               </thead>
@@ -236,6 +216,48 @@ export default function CompanyCodes() {
                 {renderCompanyCodess}
               </tbody>
             </table>
+            {/* <!--- Render the add Model---> */}
+            <div className="model_box" style={{ width: 100 }}>
+              <Modal
+                show={addShow}
+                onHide={handleAddClose}
+                backdrop="static"
+                keyboard={false}
+              >
+                <Modal.Header closeButton>
+                  <Modal.Title>Add CompanyCode</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <form onSubmit={submitFormData}>
+
+                    <div className={`form-group  ${style.formGroup}`}>
+
+                      <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Company Code: </label>
+                      <input type="text" required maxLength={8} name='companyCodeID' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="numberHelp" placeholder="Enter CompanyCodeID" />
+                    </div>
+
+                    <div className={`form-group  ${style.formGroup}`}>
+
+                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >Company Description: </label>
+                      <input type="text" required name='companyCodeDescription' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter CompanyCodeDescription" />
+                    </div>
+
+                    <button type="submit" className={`w-100 ${style.imageButton}`}>Add CompanyCode</button>
+                  </form>
+
+                  {addMsg ? <div className="alert alert-danger m-3 p-2">{addMsg}</div> : ''}
+                </Modal.Body>
+
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={handleAddClose}>
+                    Close
+                  </Button>
+
+                </Modal.Footer>
+              </Modal>
+            </div>
+
+
 
             {/* Render the edit modal */}
             {selectedCompanyCodes && (
@@ -245,7 +267,7 @@ export default function CompanyCodes() {
                 </Modal.Header>
                 <Modal.Body>
                   <form>
-                  
+
                     <input
                       type="text"
                       required
@@ -289,48 +311,6 @@ export default function CompanyCodes() {
                 </Modal.Footer>
               </Modal>
             )}
-
-            {/* <!--- Render the add Model---> */}
-            <div className="model_box" style={{ width: 100 }}>
-              <Modal
-                show={addShow}
-                onHide={handleAddClose}
-                backdrop="static"
-                keyboard={false}
-              >
-                <Modal.Header closeButton>
-                  <Modal.Title>Add CompanyCode</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  <form onSubmit={submitFormData}>
-                
-                    <div className={`form-group  ${style.formGroup}`}>
-
-                      <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Company Code: </label>
-                      <input type="text" required maxLength={8} name='companyCodeID' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="numberHelp" placeholder="Enter CompanyCodeID" />
-                    </div>
-
-                    <div className={`form-group  ${style.formGroup}`}>
-
-                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >Company Description: </label>
-                      <input type="text" required  name='companyCodeDescription' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter CompanyCodeDescription" />
-                    </div>
-                   
-
-                    <button type="submit" className={`w-100 ${style.imageButton}`}>Add CompanyCode</button>
-                  </form>
-
-                  {addMsg ? <div className="alert alert-danger m-3 p-2">{addMsg}</div> : ''}
-                </Modal.Body>
-
-                <Modal.Footer>
-                  <Button variant="secondary" onClick={handleAddClose}>
-                    Close
-                  </Button>
-
-                </Modal.Footer>
-              </Modal>
-            </div>
 
           </div>
         </div>

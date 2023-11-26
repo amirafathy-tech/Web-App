@@ -2,18 +2,18 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Modal, Button } from 'react-bootstrap';
-import style from './Orientation.module.css';
+import style from './PriceType.module.css';
 import { RiDeleteBinLine, RiEditLine } from 'react-icons/ri';
 
-export default function Orientation() {
-   // new URL
-   const BasicURL = 'https://dev.c-1e53052.kyma.ondemand.com'
-  const [Orientation, setOrientation] = useState([]);
+export default function PriceType() {
+  // new URL
+  const BasicURL = 'https://dev.c-1e53052.kyma.ondemand.com'
+  const [PriceType, setPriceType] = useState([]);
   const [addMsg, setAddMsg] = useState('');
   const [updateMsg, setUpdateMsg] = useState('');
   const [deleteMsg, setDeleteMsg] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedOrientation, setSelectedOrientation] = useState(null);
+  const [selectedPriceType, setSelectedPriceType] = useState(null);
 
   const token = localStorage.getItem('token');
 
@@ -21,37 +21,38 @@ export default function Orientation() {
   const [addShow, setaddShow] = useState(false);
   const handleAddClose = () => {
     setAddMsg('')
-    setaddShow(false);}
+    setaddShow(false);
+  }
   const handleAddShow = () => setaddShow(true);
 
   // handle modal for edit
   const [show, setShow] = useState(false);
   const handleClose = () => {
     setUpdateMsg('')
-    setSelectedOrientation(null);
+    setSelectedPriceType(null);
     setShow(false);
   };
   const handleShow = () => setShow(true);
-  const handleEdit = (Orientation) => {
-    console.log(Orientation);
-    setSelectedOrientation(Orientation);
+  const handleEdit = (PriceType) => {
+    console.log(PriceType);
+    setSelectedPriceType(PriceType);
     console.log("selected");
-    console.log(selectedOrientation);
+    console.log(selectedPriceType);
     handleShow();
   };
 
-  let [newOrientation, setNewOrientation] = useState({
-    orientationID: '',
-    orientationDescription: '',
+  let [newPriceType, setNewPriceType] = useState({
+    priceTypeID: '',
+    priceTypeDescription: '',
 
   });
 
 
   function getFormValue(e) {
-    let myOrientation = { ...newOrientation }
-    myOrientation[e.target.name] = e.target.value
-    setNewOrientation(myOrientation);// update Orientation data
-    console.log(myOrientation)
+    let myPriceType = { ...newPriceType }
+    myPriceType[e.target.name] = e.target.value
+    setNewPriceType(myPriceType);// update PriceType data
+    console.log(myPriceType)
   }
   // call add API 
   async function submitFormData(e) {
@@ -59,13 +60,13 @@ export default function Orientation() {
 
     const options = {
       method: 'POST',
-      url: `${BasicURL}/orientation`,
+      url: `${BasicURL}/priceType`,
       headers: {
         "Authorization": `Bearer ${token}`
       },
       data: {
-        orientationID: newOrientation.orientationID,
-        orientationDescription: newOrientation.orientationDescription,
+        priceTypeID: newPriceType.priceTypeID,
+        priceTypeDescription: newPriceType.priceTypeDescription,
       }
     };
 
@@ -73,27 +74,27 @@ export default function Orientation() {
     console.log(response);
     if (response.status == 200) {
       console.log("200")
-      setAddMsg("Your Orientation have been added successfully")
-      getOrientation()
+      setAddMsg("Your PriceType have been added successfully")
+      getPriceType()
     }
   }
 
 
   // call update API
-  const handleUpdate = async (updatedOrientation) => {
-    console.log(updatedOrientation);
+  const handleUpdate = async (updatedPriceType) => {
+    console.log(updatedPriceType);
     try {
       const options = {
         method: 'PUT',
-        url: `${BasicURL}/orientation/${updatedOrientation.orientation_code}`,
+        url: `${BasicURL}/priceType/${updatedPriceType.priceType_code}`,
         headers: {
           'Authorization': `Bearer ${token}`,
         },
         data: {
-          orientation_code:updatedOrientation.orientation_code,
-          orientationID: updatedOrientation.orientationID,
-          orientationDescription: updatedOrientation.orientationDescription,
-         
+          priceType_code: updatedPriceType.priceType_code,
+          priceTypeID: updatedPriceType.priceTypeID,
+          priceTypeDescription: updatedPriceType.priceTypeDescription,
+
         },
       };
 
@@ -102,8 +103,8 @@ export default function Orientation() {
 
       if (response.status === 200) {
         console.log('200');
-        setUpdateMsg('Your Orientation has been updated successfully');
-        getOrientation();
+        setUpdateMsg('Your PriceType has been updated successfully');
+        getPriceType();
       }
     } catch (error) {
       console.error(error);
@@ -111,11 +112,11 @@ export default function Orientation() {
   };
 
   // call delete API
-  const handleDelete = async (OrientationID) => {
+  const handleDelete = async (PriceTypeID) => {
     try {
       const options = {
         method: 'DELETE',
-        url: `${BasicURL}/orientation/${OrientationID}`,
+        url: `${BasicURL}/priceType/${PriceTypeID}`,
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -126,8 +127,8 @@ export default function Orientation() {
 
       if (response.status === 200) {
         console.log('200');
-        setDeleteMsg('Your Orientation has been Deleted successfully');
-        getOrientation();
+        setDeleteMsg('Your PriceType has been Deleted successfully');
+        getPriceType();
       }
     } catch (error) {
       console.error(error);
@@ -135,26 +136,26 @@ export default function Orientation() {
   };
 
   // call get API
-  async function getOrientation() {
+  async function getPriceType() {
     try {
-      let { data } = await axios.get(`${BasicURL}/orientation`, { headers: { "Authorization": `Bearer ${token}` } });
+      let { data } = await axios.get(`${BasicURL}/priceType`, { headers: { "Authorization": `Bearer ${token}` } });
       console.log(data);
-      console.log("Orientation");
-      setOrientation(data);
-      console.log(Orientation);
+      console.log("PriceType");
+      setPriceType(data);
+      console.log(PriceType);
     } catch (error) {
       console.error(error);
     }
   }
 
   // call search API
-  async function searchOrientations(keyword) {
+  async function searchPriceTypes(keyword) {
     try {
-      const response = await axios.get(`${BasicURL}/orientation/search?keyword=${keyword}`, {
+      const response = await axios.get(`${BasicURL}/priceType/search?keyword=${keyword}`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       console.log(response)
-      setOrientation(response.data);
+      setPriceType(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -162,23 +163,23 @@ export default function Orientation() {
 
   useEffect(() => {
     if (searchTerm) {
-      searchOrientations(searchTerm);
+      searchPriceTypes(searchTerm);
     } else {
-      getOrientation();
+      getPriceType();
     }
   }, [searchTerm]);
 
-  const renderOrientations = Orientation.length > 0 ? (
-    Orientation.map((Orientation) => (
-      <tr key={Orientation.orientation_code}>
-        <td>{Orientation.orientationID}</td>
-        <td>{Orientation.orientationDescription}</td>
-      
+  const renderPriceTypes = PriceType.length > 0 ? (
+    PriceType.map((PriceType) => (
+      <tr key={PriceType.priceType_code}>
+        <td>{PriceType.priceTypeID}</td>
+        <td>{PriceType.priceTypeDescription}</td>
+
         <td>
-          <button className={style.iconButton} onClick={() => handleDelete(Orientation.orientation_code)} title="Delete">
+          <button className={style.iconButton} onClick={() => handleDelete(PriceType.priceType_code)} title="Delete">
             <RiDeleteBinLine style={{ color: 'red' }} />
           </button>
-          <button className={style.iconButton} onClick={() => handleEdit(Orientation)} title="Edit">
+          <button className={style.iconButton} onClick={() => handleEdit(PriceType)} title="Edit">
             <RiEditLine style={{ color: '#10ab80' }} />
           </button>
         </td>
@@ -193,40 +194,41 @@ export default function Orientation() {
   return (
     <>
       <div className="container">
-      <div className="row text-white m-3">
+
+        <div className="row text-white m-3">
           <div className="col-sm">
             <input
               className={`${style.searchInput}`}
               type="search"
-              placeholder="Search for an orientation"
+              placeholder="Search for a price "
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <div className={`col-sm ${style.maincolor}`}><h2>Orientation Details</h2></div>
+          <div className={`col-sm ${style.maincolor}`}><h2>Price Details</h2></div>
           <div className="col-sm">  <button className={`w-100 ${style.imageButton}`} onClick={handleAddShow}>
-            Add New Orientation
+            Add New Price
           </button></div>
         </div>
-
         {/* <div className="row align-items-center justify-content-center">
+          
           <div className="col-sm-12 col-md-4 mt-5 mb-4 text-gred">
             <input
               className={`${style.searchInput}`}
               type="search"
-              placeholder="Search for an Orientation"
+              placeholder="Search for a PriceType "
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
 
           <div className={`col-sm-12 col-md-4 mt-5 mb-4 text-gred ${style.maincolor}`}>
-            <h2>Orientation Details</h2>
+            <h2>PriceType Details</h2>
           </div>
 
           <div className="col-sm-12 col-md-4 mt-5 mb-4 text-gred">
             <button className={`w-100 ${style.imageButton}`} onClick={handleAddShow}>
-              Add New Orientation
+              Add New PriceType
             </button>
           </div>
         </div> */}
@@ -238,64 +240,64 @@ export default function Orientation() {
             <table className="table table-striped table-hover table-head text-center">
               <thead>
                 <tr>
-                
-                  <th>Orientation ID</th>
-                  <th>Orientation Description</th>
-                  
+
+                  <th>PriceType ID</th>
+                  <th>PriceType Description</th>
+
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-                {renderOrientations}
+                {renderPriceTypes}
               </tbody>
             </table>
 
             {/* Render the edit modal */}
-            {selectedOrientation && (
+            {selectedPriceType && (
               <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                  <Modal.Title>Edit Orientation</Modal.Title>
+                  <Modal.Title>Edit PriceType</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                   <form>
-                  
-                  <div className={`form-group `}>
 
-<label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Orientation Code: </label>
-                    <input
-                      type="text"
-                      required
-                      maxLength={8}
-                      name="orientationID"
-                      className="form-control m-3"
-                      value={selectedOrientation.orientationID}
-                      onChange={(e) =>
-                        setSelectedOrientation({
-                          ...selectedOrientation,
-                          orientationID: e.target.value,
-                        })
-                      }
-                      placeholder="Enter orientationID"
-                    />
+                    <div className={`form-group  `}>
+
+                      <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >PriceType ID: </label>
+                      <input
+                        type="text"
+                        required
+                        maxLength={8}
+                        name="priceTypeID"
+                        className="form-control m-3"
+                        value={selectedPriceType.priceTypeID}
+                        onChange={(e) =>
+                          setSelectedPriceType({
+                            ...selectedPriceType,
+                            priceTypeID: e.target.value,
+                          })
+                        }
+                        placeholder="Enter priceTypeID"
+                      />
                     </div>
 
                     <div className={`form-group `}>
 
-                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >Orientation Description: </label>
-                    <input
-                      type="text"
-                      required
-                      name="orientationDescription"
-                      className="form-control m-3"
-                      value={selectedOrientation.orientationDescription}
-                      onChange={(e) =>
-                        setSelectedOrientation({
-                          ...selectedOrientation,
-                          orientationDescription: e.target.value,
-                        })
-                      }
-                      placeholder="Enter orientationDescription"
-                    />
+                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >PriceType Description: </label>
+                      <input
+                        type="text"
+                        required
+                        name="priceTypeDescription"
+                        className="form-control m-3"
+                        value={selectedPriceType.priceTypeDescription}
+                        onChange={(e) =>
+                          setSelectedPriceType({
+                            ...selectedPriceType,
+                            priceTypeDescription: e.target.value,
+                          })
+                        }
+                        placeholder="Enter priceTypeDescription"
+                      />
                     </div>
                   </form>
 
@@ -305,7 +307,7 @@ export default function Orientation() {
                   <Button variant="secondary" onClick={handleClose}>
                     Close
                   </Button>
-                  <Button variant="primary" onClick={() => handleUpdate(selectedOrientation)}>
+                  <Button variant="primary" onClick={() => handleUpdate(selectedPriceType)}>
                     Update
                   </Button>
                 </Modal.Footer>
@@ -321,25 +323,25 @@ export default function Orientation() {
                 keyboard={false}
               >
                 <Modal.Header closeButton>
-                  <Modal.Title>Add Orientation</Modal.Title>
+                  <Modal.Title>Add PriceType</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                   <form onSubmit={submitFormData}>
-                
+
                     <div className={`form-group  ${style.formGroup}`}>
 
-                      <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Orientation Code: </label>
-                      <input type="text" required maxLength={8} name='orientationID' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="numberHelp" placeholder="Enter orientationID" />
+                      <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >PriceType ID: </label>
+                      <input type="text" required maxLength={8} name='priceTypeID' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="numberHelp" placeholder="Enter priceTypeID" />
                     </div>
 
                     <div className={`form-group  ${style.formGroup}`}>
 
-                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >Orientation Description: </label>
-                      <input type="text" required  name='orientationDescription' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter orientationDescription" />
+                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >PriceType Description: </label>
+                      <input type="text" required name='priceTypeDescription' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter priceTypeDescription" />
                     </div>
-                   
 
-                    <button type="submit" className={`w-100 ${style.imageButton}`}>Add Orientation</button>
+
+                    <button type="submit" className={`w-100 ${style.imageButton}`}>Add PriceType</button>
                   </form>
 
                   {addMsg ? <div className="alert alert-danger m-3 p-2">{addMsg}</div> : ''}
@@ -357,6 +359,10 @@ export default function Orientation() {
           </div>
         </div>
       </div>
+
+
+
+
 
     </>
   );

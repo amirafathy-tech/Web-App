@@ -108,6 +108,9 @@ import UnitMeasurement from '../UnitOfMeasurement/UnitOfMeasurement'
 import UnitFixture from '../Fixture/Fixture'
 import UnitOrientation from '../Orientation/Orientation'
 import Profit from '../ProfitCenter/ProfitCenter'
+import PriceType from '../PriceType/PriceType'
+import MethodOfCalc from '../MethodOfCalc/MethodOfCalc'
+import Currency from '../Currency/Currency'
 import BuildingType from '../BuildingType/BuildingType';
 import Building from '../Building/Building';
 import Details from '../Details/Details';
@@ -141,11 +144,11 @@ function App() {
       <Sidebar loginData={loginData} logOut={logOut} />
       <div className={style.Content}>
         <Routes>
-          <Route path="/" element={<About />} />
+          <Route path="/" element={<LoginForm setUserData={setUserData} />} />
           <Route path="register" element={<RegisterForm />} />
           <Route path="login" element={<LoginForm setUserData={setUserData} />} />
           <Route path="about" element={<About />} />
-          {/* <Route element={<ProtectedRoute loginData={loginData} />}> */}
+          <Route element={<ProtectedRoute loginData={loginData} />}>
             <Route path="project" element={<Form />} />
             <Route path="home" element={<Home setListener={setListener} listener={listener} />} />
             <Route path="unit" element={<AvailableUnits />} />
@@ -159,11 +162,15 @@ function App() {
             <Route path="unitfixture" element={<UnitFixture />} />
             <Route path="unitorientation" element={<UnitOrientation />} />
             <Route path="profit" element={<Profit />} />
+            <Route path="pricetype" element={<PriceType />} />
+            <Route path="methodOfCalc" element={<MethodOfCalc />} />
+            <Route path="currency" element={<Currency />} />
             <Route path="buildingtype" element={<BuildingType />} />
             <Route path="building" element={<Building />} />
             <Route path="/building/:buildingCode/units" element={<AvailableUnits />} />
+            <Route path="/unit/area" element={<Details />} />
             <Route path="/unit/:unitNumber/details" element={<Details />} />
-          {/* </Route> */}
+          </Route>
         </Routes>
       </div>
     </div>

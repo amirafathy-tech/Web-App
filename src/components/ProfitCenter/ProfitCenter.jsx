@@ -7,8 +7,7 @@ import { RiDeleteBinLine, RiEditLine } from 'react-icons/ri';
 
 export default function ProfitCenter() {
   // new URL
-  const BasicURL=' https://newtrial.c-78984ef.kyma.ondemand.com'
- // const BasicURL = 'https://demooo.c-78984ef.kyma.ondemand.com'
+  const BasicURL = 'https://dev.c-1e53052.kyma.ondemand.com'
   const [ProfitCenter, setProfitCenter] = useState([]);
   const [addMsg, setAddMsg] = useState('');
   const [updateMsg, setUpdateMsg] = useState('');
@@ -20,12 +19,16 @@ export default function ProfitCenter() {
 
   // to handle modal for add
   const [addShow, setaddShow] = useState(false);
-  const handleAddClose = () => setaddShow(false);
+  const handleAddClose = () => {
+    setAddMsg('')
+    setaddShow(false);
+  }
   const handleAddShow = () => setaddShow(true);
 
   // handle modal for edit
   const [show, setShow] = useState(false);
   const handleClose = () => {
+    setUpdateMsg('')
     setSelectedProfitCenter(null);
     setShow(false);
   };
@@ -57,7 +60,7 @@ export default function ProfitCenter() {
 
     const options = {
       method: 'POST',
-      url: `${BasicURL}/companymd`,
+      url: `${BasicURL}/profit`,
       headers: {
         "Authorization": `Bearer ${token}`
       },
@@ -71,7 +74,7 @@ export default function ProfitCenter() {
     console.log(response);
     if (response.status == 200) {
       console.log("200")
-      setAddMsg("Your Company have been added successfully")
+      setAddMsg("Your Profit have been added successfully")
       getProfitCenter()
     }
   }
@@ -83,15 +86,15 @@ export default function ProfitCenter() {
     try {
       const options = {
         method: 'PUT',
-        url: `${BasicURL}/companymd/${updatedProfitCenter.profit_code}`,
+        url: `${BasicURL}/profit/${updatedProfitCenter.profit_code}`,
         headers: {
           'Authorization': `Bearer ${token}`,
         },
         data: {
-          profit_code:updatedProfitCenter.profit_code,
+          profit_code: updatedProfitCenter.profit_code,
           profitID: updatedProfitCenter.profitID,
           profitDescription: updatedProfitCenter.profitDescription,
-         
+
         },
       };
 
@@ -100,7 +103,7 @@ export default function ProfitCenter() {
 
       if (response.status === 200) {
         console.log('200');
-        setUpdateMsg('Your Company has been updated successfully');
+        setUpdateMsg('Your Profit has been updated successfully');
         getProfitCenter();
       }
     } catch (error) {
@@ -113,7 +116,7 @@ export default function ProfitCenter() {
     try {
       const options = {
         method: 'DELETE',
-        url: `${BasicURL}/companymd/${ProfitCenterID}`,
+        url: `${BasicURL}/profit/${ProfitCenterID}`,
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -124,7 +127,7 @@ export default function ProfitCenter() {
 
       if (response.status === 200) {
         console.log('200');
-        setDeleteMsg('Your Company has been Deleted successfully');
+        setDeleteMsg('Your Profit has been Deleted successfully');
         getProfitCenter();
       }
     } catch (error) {
@@ -135,7 +138,7 @@ export default function ProfitCenter() {
   // call get API
   async function getProfitCenter() {
     try {
-      let { data } = await axios.get(`${BasicURL}/companymd`, { headers: { "Authorization": `Bearer ${token}` } });
+      let { data } = await axios.get(`${BasicURL}/profit`, { headers: { "Authorization": `Bearer ${token}` } });
       console.log(data);
       console.log("ProfitCenter");
       setProfitCenter(data);
@@ -148,7 +151,7 @@ export default function ProfitCenter() {
   // call search API
   async function searchProfitCenters(keyword) {
     try {
-      const response = await axios.get(`${BasicURL}/companymd/search?keyword=${keyword}`, {
+      const response = await axios.get(`${BasicURL}/profit/search?keyword=${keyword}`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       console.log(response)
@@ -171,7 +174,7 @@ export default function ProfitCenter() {
       <tr key={ProfitCenter.profit_code}>
         <td>{ProfitCenter.profitID}</td>
         <td>{ProfitCenter.profitDescription}</td>
-      
+
         <td>
           <button className={style.iconButton} onClick={() => handleDelete(ProfitCenter.profit_code)} title="Delete">
             <RiDeleteBinLine style={{ color: 'red' }} />
@@ -192,9 +195,23 @@ export default function ProfitCenter() {
     <>
       <div className="container">
 
-
-        <div className="row align-items-center justify-content-center">
-          {/* Search Bar */}
+      <div className="row text-white m-3">
+                    <div className="col-sm">
+                        <input
+                            className={`${style.searchInput}`}
+                            type="search"
+                            placeholder="Search for a profit "
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                    </div>
+                    <div className={`col-sm ${style.maincolor}`}><h2>Profit Details</h2></div>
+                    <div className="col-sm">  <button className={`w-100 ${style.imageButton}`} onClick={handleAddShow}>
+                        Add New Profit
+                    </button></div>
+                </div>
+        {/* <div className="row align-items-center justify-content-center">
+         
           <div className="col-sm-12 col-md-4 mt-5 mb-4 text-gred">
             <input
               className={`${style.searchInput}`}
@@ -214,21 +231,18 @@ export default function ProfitCenter() {
               Add New Profit
             </button>
           </div>
-        </div>
-
-
-
-        {deleteMsg ? <div className="alert alert-danger m-3 p-2">{deleteMsg}</div> : ''}
+        </div> */}
+        {/* {deleteMsg ? <div className="alert alert-danger m-3 p-2">{deleteMsg}</div> : ''} */}
 
         <div className="row">
           <div className="table-responsive m-auto">
             <table className="table table-striped table-hover table-head text-center">
               <thead>
                 <tr>
-                
+
                   <th>Profit ID</th>
                   <th>Profit Description</th>
-                  
+
                   <th>Action</th>
                 </tr>
               </thead>
@@ -245,36 +259,45 @@ export default function ProfitCenter() {
                 </Modal.Header>
                 <Modal.Body>
                   <form>
-                  
-                    <input
-                      type="text"
-                      required
-                      maxLength={8}
-                      name="profitID"
-                      className="form-control m-3"
-                      value={selectedProfitCenter.profitID}
-                      onChange={(e) =>
-                        setSelectedProfitCenter({
-                          ...selectedProfitCenter,
-                          profitID: e.target.value,
-                        })
-                      }
-                      placeholder="Enter profitID"
-                    />
-                    <input
-                      type="text"
-                      required
-                      name="profitDescription"
-                      className="form-control m-3"
-                      value={selectedProfitCenter.profitDescription}
-                      onChange={(e) =>
-                        setSelectedProfitCenter({
-                          ...selectedProfitCenter,
-                          profitDescription: e.target.value,
-                        })
-                      }
-                      placeholder="Enter profitDescription"
-                    />
+
+                    <div className={`form-group `}>
+
+                      <label htmlFor="exampleInputNumber1" className={`${style.label}`} >Profit Code: </label>
+                      <input
+                        type="text"
+                        required
+                        maxLength={8}
+                        name="profitID"
+                        className="form-control m-3"
+                        value={selectedProfitCenter.profitID}
+                        onChange={(e) =>
+                          setSelectedProfitCenter({
+                            ...selectedProfitCenter,
+                            profitID: e.target.value,
+                          })
+                        }
+                        placeholder="Enter profitID"
+                      />
+                    </div>
+
+                    <div className={`form-group `}>
+
+                      <label htmlFor="exampleInputText1" className={`${style.label}`} >Profit Description: </label>
+                      <input
+                        type="text"
+                        required
+                        name="profitDescription"
+                        className="form-control m-3"
+                        value={selectedProfitCenter.profitDescription}
+                        onChange={(e) =>
+                          setSelectedProfitCenter({
+                            ...selectedProfitCenter,
+                            profitDescription: e.target.value,
+                          })
+                        }
+                        placeholder="Enter profitDescription"
+                      />
+                    </div>
                   </form>
 
                   {updateMsg ? <div className="alert alert-danger m-3 p-2">{updateMsg}</div> : ''}
@@ -303,7 +326,7 @@ export default function ProfitCenter() {
                 </Modal.Header>
                 <Modal.Body>
                   <form onSubmit={submitFormData}>
-                
+
                     <div className={`form-group  ${style.formGroup}`}>
 
                       <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Profit Code: </label>
@@ -313,9 +336,9 @@ export default function ProfitCenter() {
                     <div className={`form-group  ${style.formGroup}`}>
 
                       <label htmlFor="exampleInputText1" className={`${style.lable}`} >Profit Description: </label>
-                      <input type="text" required  name='profitDescription' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter profitDescription" />
+                      <input type="text" required name='profitDescription' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter profitDescription" />
                     </div>
-                   
+
 
                     <button type="submit" className={`w-100 ${style.imageButton}`}>Add Profit</button>
                   </form>

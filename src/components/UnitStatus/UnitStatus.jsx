@@ -7,9 +7,7 @@ import { RiDeleteBinLine, RiEditLine } from 'react-icons/ri';
 
 export default function UnitStatus() {
   // new URL
-  const BasicURL=' https://newtrial.c-78984ef.kyma.ondemand.com'
-
- // const BasicURL = 'https://demooo.c-78984ef.kyma.ondemand.com'
+  const BasicURL = 'https://dev.c-1e53052.kyma.ondemand.com'
   const token = localStorage.getItem('token');
   const [UnitStatus, setUnitStatus] = useState([]);
   const [addMsg, setAddMsg] = useState('');
@@ -24,7 +22,7 @@ export default function UnitStatus() {
   const handleAddClose = () => {
     setAddMsg('');
     setaddShow(false);
-}
+  }
 
   // handle modal for edit
   const [show, setShow] = useState(false);
@@ -84,7 +82,7 @@ export default function UnitStatus() {
           'Authorization': `Bearer ${token}`,
         },
         data: {
-          unitStatus_code:updatedUnitStatus.unitStatus_code,
+          unitStatus_code: updatedUnitStatus.unitStatus_code,
           unitStatusID: updatedUnitStatus.unitStatusID,
           unitStatus: updatedUnitStatus.unitStatus,
         },
@@ -186,9 +184,22 @@ export default function UnitStatus() {
     <>
       <div className="container">
 
-
-        <div className="row align-items-center justify-content-center">
-          {/* Search Bar */}
+        <div className="row text-white m-3">
+          <div className="col-sm">
+            <input
+              className={`${style.searchInput}`}
+              type="search"
+              placeholder="Search for a status"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <div className={`col-sm ${style.maincolor}`}><h2>Status Details</h2></div>
+          <div className="col-sm">  <button className={`w-100 ${style.imageButton}`} onClick={handleAddShow}>
+            Add New Status
+          </button></div>
+        </div>
+        {/* <div className="row align-items-center justify-content-center">
           <div className="col-sm-12 col-md-4 mt-5 mb-4 text-gred">
             <input
               className={`${style.searchInput}`}
@@ -208,8 +219,8 @@ export default function UnitStatus() {
               Add New UnitStatus
             </button>
           </div>
-        </div>
-{/* 
+        </div> */}
+        {/* 
         {deleteMsg ? <div className="alert alert-danger m-3 p-2">{deleteMsg}</div> : ''} */}
 
         <div className="row">
@@ -235,35 +246,44 @@ export default function UnitStatus() {
                 </Modal.Header>
                 <Modal.Body>
                   <form>
-                    <input
-                      type="text"
-                      required
-                      maxLength={8}
-                      name="unitStatusID"
-                      className="form-control"
-                      value={selectedUnitStatus.unitStatusID}
-                      onChange={(e) =>
-                        setSelectedUnitStatus({
-                          ...selectedUnitStatus,
-                          unitStatusID: e.target.value,
-                        })
-                      }
-                      placeholder="Enter UnitStatusID"
-                    />
-                    <input
-                      type="text"
-                      required
-                      name="unitStatus"
-                      className="form-control"
-                      value={selectedUnitStatus.unitStatus}
-                      onChange={(e) =>
-                        setSelectedUnitStatus({
-                          ...selectedUnitStatus,
-                          unitStatus: e.target.value,
-                        })
-                      }
-                      placeholder="Enter Unit Status"
-                    />
+
+                    <div className={`form-group  `}>
+
+                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >UnitStatus Code: </label>
+                      <input
+                        type="text"
+                        required
+                        maxLength={8}
+                        name="unitStatusID"
+                        className="form-control"
+                        value={selectedUnitStatus.unitStatusID}
+                        onChange={(e) =>
+                          setSelectedUnitStatus({
+                            ...selectedUnitStatus,
+                            unitStatusID: e.target.value,
+                          })
+                        }
+                        placeholder="Enter UnitStatusID"
+                      />
+                    </div>
+
+                    <div className={`form-group  `}>
+                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >Unit Status: </label>
+                      <input
+                        type="text"
+                        required
+                        name="unitStatus"
+                        className="form-control"
+                        value={selectedUnitStatus.unitStatus}
+                        onChange={(e) =>
+                          setSelectedUnitStatus({
+                            ...selectedUnitStatus,
+                            unitStatus: e.target.value,
+                          })
+                        }
+                        placeholder="Enter Unit Status"
+                      />
+                    </div>
 
                   </form>
 
@@ -295,7 +315,7 @@ export default function UnitStatus() {
                   <form onSubmit={submitFormData}>
                     <div className={`form-group  ${style.formGroup}`}>
 
-                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >UnitStatus ID: </label>
+                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >UnitStatus Code: </label>
                       <input type="text" required maxLength={8} name='unitStatusID' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter UnitStatusID" />
                     </div>
                     <div className={`form-group  ${style.formGroup}`}>

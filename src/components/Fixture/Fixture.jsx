@@ -7,8 +7,7 @@ import { RiDeleteBinLine, RiEditLine } from 'react-icons/ri';
 
 export default function Fixture() {
   // new URL
-  const BasicURL=' https://newtrial.c-78984ef.kyma.ondemand.com'
- // const BasicURL = 'https://demooo.c-78984ef.kyma.ondemand.com'
+  const BasicURL = 'https://dev.c-1e53052.kyma.ondemand.com'
   const [Fixture, setFixture] = useState([]);
   const [addMsg, setAddMsg] = useState('');
   const [updateMsg, setUpdateMsg] = useState('');
@@ -20,12 +19,16 @@ export default function Fixture() {
 
   // to handle modal for add
   const [addShow, setaddShow] = useState(false);
-  const handleAddClose = () => setaddShow(false);
+  const handleAddClose = () => {
+    setAddMsg('')
+    setaddShow(false);
+  }
   const handleAddShow = () => setaddShow(true);
 
   // handle modal for edit
   const [show, setShow] = useState(false);
   const handleClose = () => {
+    setUpdateMsg('')
     setSelectedFixture(null);
     setShow(false);
   };
@@ -57,7 +60,7 @@ export default function Fixture() {
 
     const options = {
       method: 'POST',
-      url: `${BasicURL}/companymd`,
+      url: `${BasicURL}/fixture`,
       headers: {
         "Authorization": `Bearer ${token}`
       },
@@ -71,7 +74,7 @@ export default function Fixture() {
     console.log(response);
     if (response.status == 200) {
       console.log("200")
-      setAddMsg("Your Company have been added successfully")
+      setAddMsg("Your Fixture have been added successfully")
       getFixture()
     }
   }
@@ -83,15 +86,15 @@ export default function Fixture() {
     try {
       const options = {
         method: 'PUT',
-        url: `${BasicURL}/companymd/${updatedFixture.fixture_code}`,
+        url: `${BasicURL}/fixture/${updatedFixture.fixture_code}`,
         headers: {
           'Authorization': `Bearer ${token}`,
         },
         data: {
-          fixture_code:updatedFixture.fixture_code,
+          fixture_code: updatedFixture.fixture_code,
           fixtureID: updatedFixture.fixtureID,
           fixtureDescription: updatedFixture.fixtureDescription,
-         
+
         },
       };
 
@@ -100,7 +103,7 @@ export default function Fixture() {
 
       if (response.status === 200) {
         console.log('200');
-        setUpdateMsg('Your Company has been updated successfully');
+        setUpdateMsg('Your Fixture has been updated successfully');
         getFixture();
       }
     } catch (error) {
@@ -113,7 +116,7 @@ export default function Fixture() {
     try {
       const options = {
         method: 'DELETE',
-        url: `${BasicURL}/companymd/${FixtureID}`,
+        url: `${BasicURL}/fixture/${FixtureID}`,
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -124,7 +127,7 @@ export default function Fixture() {
 
       if (response.status === 200) {
         console.log('200');
-        setDeleteMsg('Your Company has been Deleted successfully');
+        setDeleteMsg('Your Fixture has been Deleted successfully');
         getFixture();
       }
     } catch (error) {
@@ -135,7 +138,7 @@ export default function Fixture() {
   // call get API
   async function getFixture() {
     try {
-      let { data } = await axios.get(`${BasicURL}/companymd`, { headers: { "Authorization": `Bearer ${token}` } });
+      let { data } = await axios.get(`${BasicURL}/fixture`, { headers: { "Authorization": `Bearer ${token}` } });
       console.log(data);
       console.log("Fixture");
       setFixture(data);
@@ -148,7 +151,7 @@ export default function Fixture() {
   // call search API
   async function searchFixtures(keyword) {
     try {
-      const response = await axios.get(`${BasicURL}/companymd/search?keyword=${keyword}`, {
+      const response = await axios.get(`${BasicURL}/fixture/search?keyword=${keyword}`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       console.log(response)
@@ -171,7 +174,7 @@ export default function Fixture() {
       <tr key={Fixture.fixture_code}>
         <td>{Fixture.fixtureID}</td>
         <td>{Fixture.fixtureDescription}</td>
-      
+
         <td>
           <button className={style.iconButton} onClick={() => handleDelete(Fixture.fixture_code)} title="Delete">
             <RiDeleteBinLine style={{ color: 'red' }} />
@@ -192,9 +195,23 @@ export default function Fixture() {
     <>
       <div className="container">
 
-
-        <div className="row align-items-center justify-content-center">
-          {/* Search Bar */}
+        <div className="row text-white m-3">
+          <div className="col-sm">
+            <input
+              className={`${style.searchInput}`}
+              type="search"
+              placeholder="Search for a fixture "
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <div className={`col-sm ${style.maincolor}`}><h2>Fixture Details</h2></div>
+          <div className="col-sm">  <button className={`w-100 ${style.imageButton}`} onClick={handleAddShow}>
+            Add New Fixture
+          </button></div>
+        </div>
+        {/* <div className="row align-items-center justify-content-center">
+          
           <div className="col-sm-12 col-md-4 mt-5 mb-4 text-gred">
             <input
               className={`${style.searchInput}`}
@@ -214,21 +231,19 @@ export default function Fixture() {
               Add New Fixture
             </button>
           </div>
-        </div>
+        </div> */}
 
-
-
-        {deleteMsg ? <div className="alert alert-danger m-3 p-2">{deleteMsg}</div> : ''}
+        {/* {deleteMsg ? <div className="alert alert-danger m-3 p-2">{deleteMsg}</div> : ''} */}
 
         <div className="row">
           <div className="table-responsive m-auto">
             <table className="table table-striped table-hover table-head text-center">
               <thead>
                 <tr>
-                
+
                   <th>Fixture ID</th>
                   <th>Fixture Description</th>
-                  
+
                   <th>Action</th>
                 </tr>
               </thead>
@@ -245,36 +260,44 @@ export default function Fixture() {
                 </Modal.Header>
                 <Modal.Body>
                   <form>
-                  
-                    <input
-                      type="text"
-                      required
-                      maxLength={8}
-                      name="fixtureID"
-                      className="form-control m-3"
-                      value={selectedFixture.fixtureID}
-                      onChange={(e) =>
-                        setSelectedFixture({
-                          ...selectedFixture,
-                          fixtureID: e.target.value,
-                        })
-                      }
-                      placeholder="Enter fixtureID"
-                    />
-                    <input
-                      type="text"
-                      required
-                      name="fixtureDescription"
-                      className="form-control m-3"
-                      value={selectedFixture.fixtureDescription}
-                      onChange={(e) =>
-                        setSelectedFixture({
-                          ...selectedFixture,
-                          fixtureDescription: e.target.value,
-                        })
-                      }
-                      placeholder="Enter fixtureDescription"
-                    />
+
+                    <div className={`form-group  `}>
+                      <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Fixture Code: </label>
+                      <input
+                        type="text"
+                        required
+                        maxLength={8}
+                        name="fixtureID"
+                        className="form-control m-3"
+                        value={selectedFixture.fixtureID}
+                        onChange={(e) =>
+                          setSelectedFixture({
+                            ...selectedFixture,
+                            fixtureID: e.target.value,
+                          })
+                        }
+                        placeholder="Enter fixtureID"
+                      />
+                    </div>
+
+                    <div className={`form-group  `}>
+
+                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >Fixture Description: </label>
+                      <input
+                        type="text"
+                        required
+                        name="fixtureDescription"
+                        className="form-control m-3"
+                        value={selectedFixture.fixtureDescription}
+                        onChange={(e) =>
+                          setSelectedFixture({
+                            ...selectedFixture,
+                            fixtureDescription: e.target.value,
+                          })
+                        }
+                        placeholder="Enter fixtureDescription"
+                      />
+                    </div>
                   </form>
 
                   {updateMsg ? <div className="alert alert-danger m-3 p-2">{updateMsg}</div> : ''}
@@ -303,7 +326,7 @@ export default function Fixture() {
                 </Modal.Header>
                 <Modal.Body>
                   <form onSubmit={submitFormData}>
-                
+
                     <div className={`form-group  ${style.formGroup}`}>
 
                       <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Fixture Code: </label>
@@ -313,9 +336,9 @@ export default function Fixture() {
                     <div className={`form-group  ${style.formGroup}`}>
 
                       <label htmlFor="exampleInputText1" className={`${style.lable}`} >Fixture Description: </label>
-                      <input type="text" required  name='fixtureDescription' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter fixtureDescription" />
+                      <input type="text" required name='fixtureDescription' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter fixtureDescription" />
                     </div>
-                   
+
 
                     <button type="submit" className={`w-100 ${style.imageButton}`}>Add Fixture</button>
                   </form>

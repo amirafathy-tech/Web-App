@@ -7,8 +7,7 @@ import { RiDeleteBinLine, RiEditLine } from 'react-icons/ri';
 
 export default function UnitOfMeasurement() {
   // new URL
-  const BasicURL=' https://newtrial.c-78984ef.kyma.ondemand.com'
- // const BasicURL = 'https://demooo.c-78984ef.kyma.ondemand.com'
+  const BasicURL = 'https://dev.c-1e53052.kyma.ondemand.com'
   const [UnitOfMeasurement, setUnitOfMeasurement] = useState([]);
   const [addMsg, setAddMsg] = useState('');
   const [updateMsg, setUpdateMsg] = useState('');
@@ -20,12 +19,16 @@ export default function UnitOfMeasurement() {
 
   // to handle modal for add
   const [addShow, setaddShow] = useState(false);
-  const handleAddClose = () => setaddShow(false);
+  const handleAddClose = () => {
+    setAddMsg('')
+    setaddShow(false);
+  }
   const handleAddShow = () => setaddShow(true);
 
   // handle modal for edit
   const [show, setShow] = useState(false);
   const handleClose = () => {
+    setUpdateMsg('')
     setSelectedUnitOfMeasurement(null);
     setShow(false);
   };
@@ -57,7 +60,7 @@ export default function UnitOfMeasurement() {
 
     const options = {
       method: 'POST',
-      url: `${BasicURL}/companymd`,
+      url: `${BasicURL}/uom`,
       headers: {
         "Authorization": `Bearer ${token}`
       },
@@ -71,7 +74,7 @@ export default function UnitOfMeasurement() {
     console.log(response);
     if (response.status == 200) {
       console.log("200")
-      setAddMsg("Your Company have been added successfully")
+      setAddMsg("Your UnitOfMeasurement have been added successfully")
       getUnitOfMeasurement()
     }
   }
@@ -83,15 +86,15 @@ export default function UnitOfMeasurement() {
     try {
       const options = {
         method: 'PUT',
-        url: `${BasicURL}/companymd/${updatedUnitOfMeasurement.unitOfMeasurement_code}`,
+        url: `${BasicURL}/uom/${updatedUnitOfMeasurement.unitOfMeasurement_code}`,
         headers: {
           'Authorization': `Bearer ${token}`,
         },
         data: {
-          unitOfMeasurement_code:updatedUnitOfMeasurement.unitOfMeasurement_code,
+          unitOfMeasurement_code: updatedUnitOfMeasurement.unitOfMeasurement_code,
           unitOfMeasurementID: updatedUnitOfMeasurement.unitOfMeasurementID,
           unitOfMeasurementDesc: updatedUnitOfMeasurement.unitOfMeasurementDesc,
-         
+
         },
       };
 
@@ -100,7 +103,7 @@ export default function UnitOfMeasurement() {
 
       if (response.status === 200) {
         console.log('200');
-        setUpdateMsg('Your Company has been updated successfully');
+        setUpdateMsg('Your UnitOfMeasurement has been updated successfully');
         getUnitOfMeasurement();
       }
     } catch (error) {
@@ -113,7 +116,7 @@ export default function UnitOfMeasurement() {
     try {
       const options = {
         method: 'DELETE',
-        url: `${BasicURL}/companymd/${UnitOfMeasurementID}`,
+        url: `${BasicURL}/uom/${UnitOfMeasurementID}`,
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -124,7 +127,7 @@ export default function UnitOfMeasurement() {
 
       if (response.status === 200) {
         console.log('200');
-        setDeleteMsg('Your Company has been Deleted successfully');
+        setDeleteMsg('Your UnitOfMeasurement has been Deleted successfully');
         getUnitOfMeasurement();
       }
     } catch (error) {
@@ -135,7 +138,7 @@ export default function UnitOfMeasurement() {
   // call get API
   async function getUnitOfMeasurement() {
     try {
-      let { data } = await axios.get(`${BasicURL}/companymd`, { headers: { "Authorization": `Bearer ${token}` } });
+      let { data } = await axios.get(`${BasicURL}/uom`, { headers: { "Authorization": `Bearer ${token}` } });
       console.log(data);
       console.log("UnitOfMeasurement");
       setUnitOfMeasurement(data);
@@ -148,7 +151,7 @@ export default function UnitOfMeasurement() {
   // call search API
   async function searchUnitOfMeasurements(keyword) {
     try {
-      const response = await axios.get(`${BasicURL}/companymd/search?keyword=${keyword}`, {
+      const response = await axios.get(`${BasicURL}/uom/search?keyword=${keyword}`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       console.log(response)
@@ -171,7 +174,7 @@ export default function UnitOfMeasurement() {
       <tr key={UnitOfMeasurement.unitOfMeasurement_code}>
         <td>{UnitOfMeasurement.unitOfMeasurementID}</td>
         <td>{UnitOfMeasurement.unitOfMeasurementDesc}</td>
-      
+
         <td>
           <button className={style.iconButton} onClick={() => handleDelete(UnitOfMeasurement.unitOfMeasurement_code)} title="Delete">
             <RiDeleteBinLine style={{ color: 'red' }} />
@@ -192,14 +195,27 @@ export default function UnitOfMeasurement() {
     <>
       <div className="container">
 
-
-        <div className="row align-items-center justify-content-center">
-          {/* Search Bar */}
+        <div className="row text-white m-3">
+          <div className="col-sm">
+            <input
+              className={`${style.searchInput}`}
+              type="search"
+              placeholder="Search for a measurementUnit "
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <div className={`col-sm ${style.maincolor}`}><h2>UnitOfMeasurement Details</h2></div>
+          <div className="col-sm">  <button className={`w-100 ${style.imageButton}`} onClick={handleAddShow}>
+            Add New UnitOfMeasurement
+          </button></div>
+        </div>
+        {/* <div className="row align-items-center justify-content-center">
           <div className="col-sm-12 col-md-4 mt-5 mb-4 text-gred">
             <input
               className={`${style.searchInput}`}
               type="search"
-              placeholder="Search for a CompanyCode "
+              placeholder="Search for a Measurement "
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -214,21 +230,21 @@ export default function UnitOfMeasurement() {
               Add New Measurement
             </button>
           </div>
-        </div>
+        </div> */}
 
 
 
-        {deleteMsg ? <div className="alert alert-danger m-3 p-2">{deleteMsg}</div> : ''}
+        {/* {deleteMsg ? <div className="alert alert-danger m-3 p-2">{deleteMsg}</div> : ''} */}
 
         <div className="row">
           <div className="table-responsive m-auto">
             <table className="table table-striped table-hover table-head text-center">
               <thead>
                 <tr>
-                
+
                   <th>Measurement ID</th>
                   <th>Measurement Description</th>
-                  
+
                   <th>Action</th>
                 </tr>
               </thead>
@@ -245,36 +261,45 @@ export default function UnitOfMeasurement() {
                 </Modal.Header>
                 <Modal.Body>
                   <form>
-                  
-                    <input
-                      type="text"
-                      required
-                      maxLength={8}
-                      name="unitOfMeasurementID"
-                      className="form-control m-3"
-                      value={selectedUnitOfMeasurement.unitOfMeasurementID}
-                      onChange={(e) =>
-                        setSelectedUnitOfMeasurement({
-                          ...selectedUnitOfMeasurement,
-                          unitOfMeasurementID: e.target.value,
-                        })
-                      }
-                      placeholder="Enter unitOfMeasurementID"
-                    />
-                    <input
-                      type="text"
-                      required
-                      name="unitOfMeasurementDesc"
-                      className="form-control m-3"
-                      value={selectedUnitOfMeasurement.unitOfMeasurementDesc}
-                      onChange={(e) =>
-                        setSelectedUnitOfMeasurement({
-                          ...selectedUnitOfMeasurement,
-                          unitOfMeasurementDesc: e.target.value,
-                        })
-                      }
-                      placeholder="Enter unitOfMeasurementDesc"
-                    />
+
+                    <div className={`form-group `}>
+
+                      <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Measurement Code: </label>
+                      <input
+                        type="text"
+                        required
+                        maxLength={8}
+                        name="unitOfMeasurementID"
+                        className="form-control m-3"
+                        value={selectedUnitOfMeasurement.unitOfMeasurementID}
+                        onChange={(e) =>
+                          setSelectedUnitOfMeasurement({
+                            ...selectedUnitOfMeasurement,
+                            unitOfMeasurementID: e.target.value,
+                          })
+                        }
+                        placeholder="Enter unitOfMeasurementID"
+                      />
+                    </div>
+
+                    <div className={`form-group `}>
+
+                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >Measurement Description: </label>
+                      <input
+                        type="text"
+                        required
+                        name="unitOfMeasurementDesc"
+                        className="form-control m-3"
+                        value={selectedUnitOfMeasurement.unitOfMeasurementDesc}
+                        onChange={(e) =>
+                          setSelectedUnitOfMeasurement({
+                            ...selectedUnitOfMeasurement,
+                            unitOfMeasurementDesc: e.target.value,
+                          })
+                        }
+                        placeholder="Enter unitOfMeasurementDesc"
+                      />
+                    </div>
                   </form>
 
                   {updateMsg ? <div className="alert alert-danger m-3 p-2">{updateMsg}</div> : ''}
@@ -303,7 +328,7 @@ export default function UnitOfMeasurement() {
                 </Modal.Header>
                 <Modal.Body>
                   <form onSubmit={submitFormData}>
-                
+
                     <div className={`form-group  ${style.formGroup}`}>
 
                       <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Measurement Code: </label>
@@ -313,9 +338,9 @@ export default function UnitOfMeasurement() {
                     <div className={`form-group  ${style.formGroup}`}>
 
                       <label htmlFor="exampleInputText1" className={`${style.lable}`} >Measurement Description: </label>
-                      <input type="text" required  name='unitOfMeasurementDesc' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter unitOfMeasurementDesc" />
+                      <input type="text" required name='unitOfMeasurementDesc' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter unitOfMeasurementDesc" />
                     </div>
-                   
+
 
                     <button type="submit" className={`w-100 ${style.imageButton}`}>Add Measurement</button>
                   </form>

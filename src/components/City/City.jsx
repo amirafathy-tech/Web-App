@@ -7,8 +7,7 @@ import { RiDeleteBinLine, RiEditLine } from 'react-icons/ri';
 
 export default function City() {
   // new URL
-  const BasicURL='https://newtrial.c-78984ef.kyma.ondemand.com'
-  //const BasicURL = 'https://demooo.c-78984ef.kyma.ondemand.com'
+  const BasicURL = 'https://dev.c-1e53052.kyma.ondemand.com'
   const [City, setCity] = useState([]);
   const [addMsg, setAddMsg] = useState('');
   const [updateMsg, setUpdateMsg] = useState('');
@@ -21,12 +20,16 @@ export default function City() {
 
   // to handle modal for add
   const [addShow, setaddShow] = useState(false);
-  const handleAddClose = () => setaddShow(false);
+  const handleAddClose = () => {
+    setAddMsg('');
+    setaddShow(false);
+  }
   const handleAddShow = () => setaddShow(true);
 
   // handle modal for edit
   const [show, setShow] = useState(false);
   const handleClose = () => {
+    setUpdateMsg('');
     setSelectedCity(null);
     setShow(false);
   };
@@ -85,7 +88,7 @@ export default function City() {
           'Authorization': `Bearer ${token}`,
         },
         data: {
-          cities_code:updatedCity.cities_code,
+          cities_code: updatedCity.cities_code,
           citiesID: updatedCity.citiesID,
           regionalLocation: updatedCity.regionalLocation,
         },
@@ -186,10 +189,24 @@ export default function City() {
   return (
     <>
       <div className="container">
+        <div className="row text-white m-3">
+          <div className="col-sm">
+            <input
+              className={`${style.searchInput}`}
+              type="search"
+              placeholder="Search for a city"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <div className={`col-sm ${style.maincolor}`}><h2>City Details</h2></div>
+          <div className="col-sm">  <button className={`w-100 ${style.imageButton}`} onClick={handleAddShow}>
+            Add New City
+          </button></div>
+        </div>
 
-
-        <div className="row align-items-center justify-content-center">
-          {/* Search Bar */}
+        {/* <div className="row align-items-center justify-content-center">
+        
           <div className="col-sm-12 col-md-4 mt-5 mb-4 text-gred">
             <input
               className={`${style.searchInput}`}
@@ -209,11 +226,9 @@ export default function City() {
               Add New City
             </button>
           </div>
-        </div>
+        </div> */}
 
-
-
-        {deleteMsg ? <div className="alert alert-danger m-3 p-2">{deleteMsg}</div> : ''}
+        {/* {deleteMsg ? <div className="alert alert-danger m-3 p-2">{deleteMsg}</div> : ''} */}
 
         <div className="row">
           <div className="table-responsive m-auto">
@@ -238,35 +253,44 @@ export default function City() {
                 </Modal.Header>
                 <Modal.Body>
                   <form>
-                    <input
-                      type="text"
-                      required
-                      maxLength={8}
-                      name="citiesID"
-                      className="form-control m-3"
-                      value={selectedCity.citiesID}
-                      onChange={(e) =>
-                        setSelectedCity({
-                          ...selectedCity,
-                          CityID: e.target.value,
-                        })
-                      }
-                      placeholder="Enter CityID"
-                    />
-                    <input
-                      type="text"
-                      required
-                      name="regionalLocation"
-                      className="form-control m-3"
-                      value={selectedCity.regionalLocation}
-                      onChange={(e) =>
-                        setSelectedCity({
-                          ...selectedCity,
-                          regionalLocation: e.target.value,
-                        })
-                      }
-                      placeholder="Enter RegionalLocation"
-                    />
+
+                    <div className={`form-group `}>
+
+                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >City Code: </label>
+                      <input
+                        type="text"
+                        required
+                        maxLength={8}
+                        name="citiesID"
+                        className="form-control m-3"
+                        value={selectedCity.citiesID}
+                        onChange={(e) =>
+                          setSelectedCity({
+                            ...selectedCity,
+                            CityID: e.target.value,
+                          })
+                        }
+                        placeholder="Enter CityID"
+                      />
+                    </div>
+
+                    <div className={`form-group `}>
+                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >Regional Location: </label>
+                      <input
+                        type="text"
+                        required
+                        name="regionalLocation"
+                        className="form-control m-3"
+                        value={selectedCity.regionalLocation}
+                        onChange={(e) =>
+                          setSelectedCity({
+                            ...selectedCity,
+                            regionalLocation: e.target.value,
+                          })
+                        }
+                        placeholder="Enter RegionalLocation"
+                      />
+                    </div>
 
                   </form>
 
@@ -298,7 +322,7 @@ export default function City() {
                   <form onSubmit={submitFormData}>
                     <div className={`form-group  ${style.formGroup}`}>
 
-                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >City ID: </label>
+                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >City Code: </label>
                       <input type="text" required maxLength={8} name='citiesID' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="numberHelp" placeholder="Enter CityID" />
                     </div>
                     <div className={`form-group  ${style.formGroup}`}>
@@ -307,7 +331,7 @@ export default function City() {
                     </div>
 
 
-                 
+
 
                     <button type="submit" className={`w-100 ${style.imageButton}`}>Add City</button>
                   </form>

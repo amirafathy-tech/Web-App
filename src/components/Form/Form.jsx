@@ -6,8 +6,7 @@ import style from './Form.module.css';
 import { RiDeleteBinLine, RiEditLine } from 'react-icons/ri';
 export default function Project() {
     // new URL
-    const BasicURL = ' https://newtrial.c-78984ef.kyma.ondemand.com'
-    // const BasicURL = 'https://demooo.c-78984ef.kyma.ondemand.com'
+    const BasicURL = 'https://dev.c-1e53052.kyma.ondemand.com'
     const token = localStorage.getItem('token');
     const [project, setProject] = useState([]);
     const [addMsg, setAddMsg] = useState('');
@@ -35,6 +34,7 @@ export default function Project() {
         // regionalLocationCode technical
         // profitCenterCode technical   
     });
+
     // new added::
     const [addError, setAddError] = useState('');
     const [formValid, setFormValid] = useState(false);
@@ -48,10 +48,7 @@ export default function Project() {
         setShow(false);
     };
     const handleShow = () => {
-        // call get company codes
-        getCompanyCodes();
-        // call get location codes
-        getCity()
+
         setShow(true);
     }
     const handleEdit = (project) => {
@@ -88,13 +85,16 @@ export default function Project() {
         }
     }
     const handleAddShow = () => {
+
+        setaddShow(true);
+
+    }
+    useEffect(() => {
         // call get company codes
         getCompanyCodes();
         // call get location codes
         getCity()
-        setaddShow(true);
-
-    }
+    }, []);
 
     function validateForm(project) {
         // Check if all required fields are filled
@@ -302,8 +302,25 @@ export default function Project() {
     return (
         <>
             <div className="container">
-                <div className="row align-items-center justify-content-center">
-                    {/* Search Bar */}
+
+                <div className="row text-white m-3">
+                    <div className="col-sm">
+                        <input
+                            className={`${style.searchInput}`}
+                            type="search"
+                            placeholder="Search for a project "
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                    </div>
+                    <div className={`col-sm ${style.maincolor}`}><h2>Project Details</h2></div>
+                    <div className="col-sm">  <button className={`w-100 ${style.imageButton}`} onClick={handleAddShow}>
+                        Add New Project
+                    </button></div>
+                </div>
+              
+                {/* <div className="row align-items-center justify-content-center">
+                   
                     <div className="col-sm-12 col-md-4 mt-5 mb-4 text-gred">
                         <input
                             className={`${style.searchInput}`}
@@ -321,7 +338,7 @@ export default function Project() {
                             Add New Project
                         </button>
                     </div>
-                </div>
+                </div> */}
                 <div className="row">
                     <div className="table-responsive m-auto">
                         <table className="table table-striped table-hover table-head text-center">
@@ -508,7 +525,7 @@ export default function Project() {
                                                     </option>
                                                 ))}
                                             </select>
-                                           
+
                                         </div>
                                     </form>
                                     {updateMsg ? <div className="alert alert-danger m-3 p-2">{updateMsg}</div> : ''}

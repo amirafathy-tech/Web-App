@@ -7,9 +7,7 @@ import { RiDeleteBinLine, RiEditLine } from 'react-icons/ri';
 
 export default function UnitUsage() {
   // new URL
-  const BasicURL=' https://newtrial.c-78984ef.kyma.ondemand.com'
-
-  //const BasicURL = 'https://demooo.c-78984ef.kyma.ondemand.com'
+  const BasicURL = 'https://dev.c-1e53052.kyma.ondemand.com'
   const token = localStorage.getItem('token');
   const [UnitUsage, setUnitUsage] = useState([]);
   const [addMsg, setAddMsg] = useState('');
@@ -24,7 +22,7 @@ export default function UnitUsage() {
   const handleAddClose = () => {
     setAddMsg('');
     setaddShow(false);
-}
+  }
 
   // handle modal for edit
   const [show, setShow] = useState(false);
@@ -85,7 +83,7 @@ export default function UnitUsage() {
           'Authorization': `Bearer ${token}`,
         },
         data: {
-          unitUsage_code:updatedUnitUsage.unitUsage_code,
+          unitUsage_code: updatedUnitUsage.unitUsage_code,
           unitUsageID: updatedUnitUsage.unitUsageID,
           usageTypeDescription: updatedUnitUsage.usageTypeDescription,
         },
@@ -187,9 +185,22 @@ export default function UnitUsage() {
     <>
       <div className="container">
 
-
-        <div className="row align-items-center justify-content-center">
-          {/* Search Bar */}
+        <div className="row text-white m-3">
+          <div className="col-sm">
+            <input
+              className={`${style.searchInput}`}
+              type="search"
+              placeholder="Search for a usage "
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <div className={`col-sm ${style.maincolor}`}><h2>Usage Details</h2></div>
+          <div className="col-sm">  <button className={`w-100 ${style.imageButton}`} onClick={handleAddShow}>
+            Add New Usage
+          </button></div>
+        </div>
+        {/* <div className="row align-items-center justify-content-center">
           <div className="col-sm-12 col-md-4 mt-5 mb-4 text-gred">
             <input
               className={`${style.searchInput}`}
@@ -209,7 +220,7 @@ export default function UnitUsage() {
               Add New UnitUsage
             </button>
           </div>
-        </div>
+        </div> */}
         {/* {deleteMsg ? <div className="alert alert-danger m-3 p-2">{deleteMsg}</div> : ''} */}
         <div className="row">
           <div className="table-responsive m-auto">
@@ -234,35 +245,44 @@ export default function UnitUsage() {
                 </Modal.Header>
                 <Modal.Body>
                   <form>
-                    <input
-                      type="text"
-                      required
-                      maxLength={8}
-                      name="unitUsageID"
-                      className="form-control"
-                      value={selectedUnitUsage.unitUsageID}
-                      onChange={(e) =>
-                        setSelectedUnitUsage({
-                          ...selectedUnitUsage,
-                          unitUsageID: e.target.value,
-                        })
-                      }
-                      placeholder="Enter UnitUsageID"
-                    />
-                    <input
-                      type="text"
-                      required
-                      name="usageTypeDescription"
-                      className="form-control"
-                      value={selectedUnitUsage.usageTypeDescription}
-                      onChange={(e) =>
-                        setSelectedUnitUsage({
-                          ...selectedUnitUsage,
-                          usageTypeDescription: e.target.value,
-                        })
-                      }
-                      placeholder="Enter UsageTypeDescription"
-                    />
+
+                    <div className={`form-group `}>
+
+                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >UnitUsage Code: </label>
+                      <input
+                        type="text"
+                        required
+                        maxLength={8}
+                        name="unitUsageID"
+                        className="form-control"
+                        value={selectedUnitUsage.unitUsageID}
+                        onChange={(e) =>
+                          setSelectedUnitUsage({
+                            ...selectedUnitUsage,
+                            unitUsageID: e.target.value,
+                          })
+                        }
+                        placeholder="Enter UnitUsageID"
+                      />
+                    </div>
+
+                    <div className={`form-group  `}>
+                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >Usage Type Description: </label>
+                      <input
+                        type="text"
+                        required
+                        name="usageTypeDescription"
+                        className="form-control"
+                        value={selectedUnitUsage.usageTypeDescription}
+                        onChange={(e) =>
+                          setSelectedUnitUsage({
+                            ...selectedUnitUsage,
+                            usageTypeDescription: e.target.value,
+                          })
+                        }
+                        placeholder="Enter UsageTypeDescription"
+                      />
+                    </div>
 
                   </form>
 
@@ -294,7 +314,7 @@ export default function UnitUsage() {
                   <form onSubmit={submitFormData}>
                     <div className={`form-group  ${style.formGroup}`}>
 
-                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >UnitUsage ID: </label>
+                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >UnitUsage Code: </label>
                       <input type="text" required maxLength={8} name='unitUsageID' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter UnitUsageID" />
                     </div>
                     <div className={`form-group  ${style.formGroup}`}>

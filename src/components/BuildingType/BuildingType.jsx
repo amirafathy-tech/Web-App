@@ -7,8 +7,7 @@ import { RiDeleteBinLine, RiEditLine } from 'react-icons/ri';
 
 export default function BuildingType() {
   // new URL
-  const BasicURL = ' https://newtrial.c-78984ef.kyma.ondemand.com'
-  // const BasicURL = 'https://demooo.c-78984ef.kyma.ondemand.com'
+  const BasicURL = 'https://dev.c-1e53052.kyma.ondemand.com'
   const token = localStorage.getItem('token');
   const [BuildingType, setBuildingType] = useState([]);
   const [addMsg, setAddMsg] = useState('');
@@ -182,8 +181,22 @@ export default function BuildingType() {
   return (
     <>
       <div className="container">
-        <div className="row align-items-center justify-content-center">
-          {/* Search Bar */}
+        <div className="row text-white m-3">
+          <div className="col-sm">
+            <input
+              className={`${style.searchInput}`}
+              type="search"
+              placeholder="Search for a BuildingType "
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <div className={`col-sm ${style.maincolor}`}><h2>BuildingType Details</h2></div>
+          <div className="col-sm">  <button className={`w-100 ${style.imageButton}`} onClick={handleAddShow}>
+            Add New BuildingType
+          </button></div>
+        </div>
+        {/* <div className="row align-items-center justify-content-center">
           <div className="col-sm-12 col-md-4 mt-5 mb-4 text-gred">
             <input
               className={`${style.searchInput}`}
@@ -203,7 +216,8 @@ export default function BuildingType() {
               Add New BuildingType
             </button>
           </div>
-        </div>
+        </div> */}
+        
         {/* {deleteMsg ? <div className="alert alert-danger m-3 p-2">{deleteMsg}</div> : ''} */}
         <div className="row">
           <div className="table-responsive m-auto">
@@ -228,40 +242,43 @@ export default function BuildingType() {
                 </Modal.Header>
                 <Modal.Body>
                   <form>
+                    <div className={`form-group  `}>
+                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >BuildingType ID: </label>
+                      <input
+                        type="text"
+                        required
+                        maxLength={8}
+                        name="buildingTypeID"
+                        className="form-control"
+                        value={selectedBuildingType.buildingTypeID}
+                        onChange={(e) =>
+                          setSelectedBuildingType({
+                            ...selectedBuildingType,
+                            buildingTypeID: e.target.value,
+                          })
+                        }
+                        placeholder="Enter BuildingTypeID"
+                      />
+                    </div>
 
-                    <label htmlFor="exampleInputText1" className={`${style.lable}`} >BuildingType ID: </label>
-                    <input
-                      type="text"
-                      required
-                      maxLength={8}
-                      name="buildingTypeID"
-                      className="form-control"
-                      value={selectedBuildingType.buildingTypeID}
-                      onChange={(e) =>
-                        setSelectedBuildingType({
-                          ...selectedBuildingType,
-                          buildingTypeID: e.target.value,
-                        })
-                      }
-                      placeholder="Enter BuildingTypeID"
-                    />
+                    <div className={`form-group `}>
 
-                    <label htmlFor="exampleInputText1" className={`${style.lable}`} >BuildingType Description: </label>
-                    <input
-                      type="text"
-                      required
-                      name="buildTypeDesc"
-                      className="form-control"
-                      value={selectedBuildingType.buildTypeDesc}
-                      onChange={(e) =>
-                        setSelectedBuildingType({
-                          ...selectedBuildingType,
-                          buildTypeDesc: e.target.value,
-                        })
-                      }
-                      placeholder="Enter BuildingTypeDesc"
-                    />
-
+                      <label htmlFor="exampleInputText1" className={`${style.lable}`} >BuildingType Description: </label>
+                      <input
+                        type="text"
+                        required
+                        name="buildTypeDesc"
+                        className="form-control"
+                        value={selectedBuildingType.buildTypeDesc}
+                        onChange={(e) =>
+                          setSelectedBuildingType({
+                            ...selectedBuildingType,
+                            buildTypeDesc: e.target.value,
+                          })
+                        }
+                        placeholder="Enter BuildingTypeDesc"
+                      />
+                    </div>
                   </form>
 
                   {updateMsg ? <div className="alert alert-danger m-3 p-2">{updateMsg}</div> : ''}

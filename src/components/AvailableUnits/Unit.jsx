@@ -8,8 +8,7 @@ import { RiDeleteBinLine, RiEditLine } from 'react-icons/ri';
 
 export default function AvailableUnits() {
     // new URL
-    const BasicURL = ' https://newtrial.c-78984ef.kyma.ondemand.com'
-    // const BasicURL = 'https://demooo.c-78984ef.kyma.ondemand.com'
+    const BasicURL = 'https://dev.c-1e53052.kyma.ondemand.com'
     let [unit, setUnit] = useState([]);
     const token = localStorage.getItem('token')
     let [errorMsg, setErrorMsg] = useState('');
@@ -94,6 +93,15 @@ export default function AvailableUnits() {
         }
     }
 
+
+    useEffect(() => {
+        getCompanyCodes();
+        getProject();
+        getUnitUsage()
+        getUnitView()
+        getUnitStatus()
+        getUnitFloor()
+    }, []);
     // to handle modal for add
     const [addShow, setaddShow] = useState(false);
     const handleAddClose = () => {
@@ -101,12 +109,6 @@ export default function AvailableUnits() {
         setaddShow(false);
     }
     const handleAddShow = () => {
-        getCompanyCodes();
-        getProject();
-        getUnitUsage()
-        getUnitView()
-        getUnitStatus()
-        getUnitFloor()
         setaddShow(true);
     }
     // handle modal for edit
@@ -117,12 +119,6 @@ export default function AvailableUnits() {
         seteditShow(false);
     };
     const handleEditShow = () => {
-        getCompanyCodes();
-        getProject();
-        getUnitUsage()
-        getUnitView()
-        getUnitStatus()
-        getUnitFloor()
         seteditShow(true);
     }
     const handleEdit = (unit) => {
@@ -154,17 +150,16 @@ export default function AvailableUnits() {
 
     let [newUnit, setNewUnit] = useState({
         unitKey: '',
-        projectCodeID: Number,
-        companyCodeID: Number,
-        buildingCodeID: Number,
-        // sapUnitID: Number,// will remove it after i get new API Link
+        // projectCodeID: Number,
+        // companyCodeID: Number,
+        building_code: Number,
         oldNumber: Number,
         description: '',
         unitType: '',  // dropdown list
         usageTypeDescription: '', // dropdown list
         unitStatus: '', // dropdown list
         view: '', // dropdown list
-        floor: Number, // dropdown list
+        // floor: Number, // dropdown list
         toFloor: Number,
         blockingReason: '',
         constructionDate: Date,
@@ -390,16 +385,31 @@ export default function AvailableUnits() {
 
     const navigate = useNavigate();
     // Define a function to handle the click event on the image
-    const handleImageClick = (unitNumber) => {
+    const handleAreaClick = () => {
         // Navigate to the Details component with the unitNumber as a URL parameter
-        navigate(`/unit/${unitNumber}/details`);
+        navigate(`/unit/area`);
     };
 
     return (
         <>
             <div className={` container m-5`}>
-                <div className={`row`}>
-                    {/* Search Bar */}
+                <div className="row text-white m-3">
+                    <div className="col-sm">
+                        <input
+                            className={`${style.searchInput}`}
+                            type="search"
+                            placeholder="Search for a Unit "
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                    </div>
+                    <div className={`col-sm ${style.maincolor}`}><h2>Unit Details</h2></div>
+                    <div className="col-sm">  <button className={`w-100 ${style.imageButton}`} onClick={handleAddShow}>
+                        Add New Unit
+                    </button></div>
+                </div>
+                {/* <div className={`row`}>
+                   
                     <div className="col-sm-12 col-md-4 mt-5 mb-4 text-gred">
                         <input
                             className={`${style.searchInput}`}
@@ -412,12 +422,11 @@ export default function AvailableUnits() {
                     <div className={`col-sm-12 col-md-4 mt-5 mb-4 text-gred ${style.maincolor}`}><h2><b>Unit Details</b></h2></div>
                     <div className="col-sm-12 col-md-4 mt-5 mb-4 text-gred">
                         <button className={`w-100 ${style.imageButton}`} variant="primary" onClick={handleAddShow}>
-                            {/* // data-mdb-toggle="modal" data-mdb-target="#exampleModal"> */}
-                            {/* onClick={handleAddShow}> */}
                             Add New Unit
                         </button>
                     </div>
-                </div>
+                </div> */}
+
                 {/* {deleteMsg ? <div className="alert alert-danger m-3 p-2">{deleteMsg}</div> : ''} */}
                 <div className={`row`}>
                     <div className='table-responsive m-auto'>
@@ -619,7 +628,7 @@ export default function AvailableUnits() {
 
 
                                 <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Old Number: </label>
-                                <input type="number" name='oldNumber' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter OldNumber" />
+                                <input type="number" min="0" name='oldNumber' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter OldNumber" />
 
 
                                 <label htmlFor="exampleInputText1" className={`${style.lable}`} >Description: </label>
@@ -686,40 +695,40 @@ export default function AvailableUnits() {
 
                                 {/* will change to make it floor , toFloor ( From--- to) */}
                                 <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >To Floor: </label>
-                                <input type="number" name='toFloor' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter ToFloor" />
+                                <input type="number" min="0" name='toFloor' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter ToFloor" />
 
                                 <label htmlFor="exampleInputText1" className={`${style.lable}`} >Sales Phase: </label>
                                 <input type="text" name='salesPhase' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter SalesPhase" />
 
                                 {/* dropdown list unit fixture code/desc */}
                                 <label htmlFor="exampleInputNumber1" className={`${style.label}`}>Fixture:</label>
-                                            <select
-                                                name="companyCodeID"
-                                                className="form-control"
-                                                onChange={getFormValue}
-                                            >
-                                                <option value="">Select Fixture</option>
-                                                {companyCodes.map((code) => (
-                                                    <option key={code.id} value={code.id}>
-                                                        {code.description}
-                                                    </option>
-                                                ))}
-                                            </select>
+                                <select
+                                    name="companyCodeID"
+                                    className="form-control"
+                                    onChange={getFormValue}
+                                >
+                                    <option value="">Select Fixture</option>
+                                    {companyCodes.map((code) => (
+                                        <option key={code.id} value={code.id}>
+                                            {code.description}
+                                        </option>
+                                    ))}
+                                </select>
 
                                 {/* dropdown list unit orientation code/desc */}
                                 <label htmlFor="exampleInputNumber1" className={`${style.label}`}>Orientation:</label>
-                                            <select
-                                                name="companyCodeID"
-                                                className="form-control"
-                                                onChange={getFormValue}
-                                            >
-                                                <option value="">Select Orientation</option>
-                                                {companyCodes.map((code) => (
-                                                    <option key={code.id} value={code.id}>
-                                                        {code.description}
-                                                    </option>
-                                                ))}
-                                            </select>
+                                <select
+                                    name="companyCodeID"
+                                    className="form-control"
+                                    onChange={getFormValue}
+                                >
+                                    <option value="">Select Orientation</option>
+                                    {companyCodes.map((code) => (
+                                        <option key={code.id} value={code.id}>
+                                            {code.description}
+                                        </option>
+                                    ))}
+                                </select>
 
                                 <label htmlFor="exampleInputText1" className={`${style.lable}`} >Blocking Reason: </label>
                                 <input type="text" name='blockingReason' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter  BlockingReason" />
@@ -746,6 +755,10 @@ export default function AvailableUnits() {
                             {/* <div style={{ width: '100%' }}> */}
                             <div className={`form-group ${style.formGroup}`}>
                                 <h2>Unit Areas:</h2>
+                                <div className="col-sm">  <button className={`w-100 ${style.imageButton}`} onClick={handleAreaClick}>
+                                   Press To Add Unit Area
+                                </button></div>
+                                {/* <form onSubmit={submitFormData}> */}
                                 <div className='table-responsive m-auto'>
                                     <table className={`table`} style={{ width: '100%' }}>
                                         <thead>
@@ -771,6 +784,7 @@ export default function AvailableUnits() {
                                             <td className={` ${style.formInput}`}>
                                                 <input
                                                     type="number"
+                                                    min="0"
                                                     className={`form-control `} onChange={getFormValue}
                                                     id="exampleInputNumber1" aria-describedby="numberHelp"
                                                 />
@@ -801,10 +815,11 @@ export default function AvailableUnits() {
 
                                     </table>
                                 </div>
+                                {/* </form> */}
                             </div>
                             {/* </div> */}
 
-                            <div className={`form-group ${style.formGroup}`}>
+                            {/* <div className={`form-group ${style.formGroup}`}>
                                 <h2>Unit Prices:</h2>
                                 <div className='table-responsive m-auto'>
                                     <table className={`table`} style={{ width: '100%' }}>
@@ -815,7 +830,7 @@ export default function AvailableUnits() {
                                                 <th>Price:</th>
                                                 <th>Currency:</th>
                                                 <th>Valid From:</th>
-                                                {/* <th>Actions</th> */}
+                                               
                                             </tr>
                                         </thead>
                                         <tbody style={{ width: '100%' }}>
@@ -837,8 +852,6 @@ export default function AvailableUnits() {
                                                 <select
                                                     className={`form-control `}
                                                     onChange={getFormValue}
-                                                // value={area.unitOfMeasurement}
-                                                //onChange={(e) => handleAreaChange(index, 'unitOfMeasurement', e.target.value)}
                                                 >
                                                     <option value="">Select MOC</option>
                                                     {unitOfMeasurements.map((unit, unitIndex) => (
@@ -861,8 +874,6 @@ export default function AvailableUnits() {
                                                 <select
                                                     className={`form-control `}
                                                     onChange={getFormValue}
-                                                // value={area.unitOfMeasurement}
-                                                //onChange={(e) => handleAreaChange(index, 'unitOfMeasurement', e.target.value)}
                                                 >
                                                     <option value="">Select Currency</option>
                                                     {unitOfMeasurements.map((unit, unitIndex) => (
@@ -882,10 +893,10 @@ export default function AvailableUnits() {
 
                                     </table>
                                 </div>
-                            </div>
+                            </div> */}
 
                             {/* Old Fields Of Unit Area and Price */}
-                            <div className={`form-group  ${style.formGroup}`}>
+                            {/* <div className={`form-group  ${style.formGroup}`}>
                                 <label htmlFor="exampleInputText1" className={`${style.label}`} >Built UP Area: </label>
                                 <input type="text" name='builtUpArea' className="form-control" onChange={getFormValue} id="exampleInputText1" aria-describedby="textHelp" placeholder="Enter BuiltUpArea" />
                             </div>
@@ -955,7 +966,7 @@ export default function AvailableUnits() {
 
                                 <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Amount: </label>
                                 <input type="number" name='amount' className="form-control" onChange={getFormValue} id="exampleInputNumber1" aria-describedby="numberHelp" placeholder="Enter Amount" />
-                            </div>
+                            </div> */}
 
                             <button type="submit" className={` w-100 ${style.imageButton}`} >Add Unit</button>
                             {/* disabled={!formValid} will be added after ensuring final fields */}
@@ -1092,7 +1103,7 @@ export default function AvailableUnits() {
                                 <div className={`form-group ${style.formGroup}`}>
                                     <h2>Unit Details:</h2>
 
-                                    <label htmlFor="exampleInputText1" className={`${style.lable}`} >Unit Key: </label>
+                                    <label htmlFor="exampleInputText1" className={`${style.label}`} >Unit Key: </label>
                                     <input
                                         type="text"
                                         required
@@ -1109,9 +1120,10 @@ export default function AvailableUnits() {
                                         placeholder="Enter UnitKey"
                                     />
 
-                                    <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >Old Number: </label>
+                                    <label htmlFor="exampleInputNumber1" className={`${style.label}`} >Old Number: </label>
                                     <input
                                         type="number"
+                                        min="0"
                                         name="oldNumber"
                                         className="form-control m-3"
                                         value={selectedUnit.oldNumber}
@@ -1124,7 +1136,7 @@ export default function AvailableUnits() {
                                         placeholder="Enter oldNumber"
                                     />
 
-                                    <label htmlFor="exampleInputText1" className={`${style.lable}`} >Description: </label>
+                                    <label htmlFor="exampleInputText1" className={`${style.label}`} >Description: </label>
                                     <input
                                         type="text"
                                         required
@@ -1225,9 +1237,10 @@ export default function AvailableUnits() {
                                     </select>
 
                                     {/* will change to make it floor , toFloor ( From--- to) */}
-                                    <label htmlFor="exampleInputNumber1" className={`${style.lable}`} >To Floor: </label>
+                                    <label htmlFor="exampleInputNumber1" className={`${style.label}`} >To Floor: </label>
                                     <input
                                         type="number"
+                                        min="0"
                                         name="toFloor"
                                         className="form-control m-3"
                                         value={selectedUnit.toFloor}
@@ -1240,7 +1253,7 @@ export default function AvailableUnits() {
                                         placeholder="Enter toFloor"
                                     />
 
-                                    <label htmlFor="exampleInputText1" className={`${style.lable}`} >Sales Phase: </label>
+                                    <label htmlFor="exampleInputText1" className={`${style.label}`} >Sales Phase: </label>
                                     <input
                                         type="text"
                                         name="salesPhase"
@@ -1256,46 +1269,46 @@ export default function AvailableUnits() {
                                     />
                                     {/* dropdown list unit fixture code/desc */}
                                     <label htmlFor="exampleInputNumber1" className={`${style.label}`}>Fixture:</label>
-                                            <select
-                                                name="companyCodeID"
-                                                className="form-control"
-                                                 value={selectedUnit.fixture}
-                                onChange={(e) =>
-                                    setSelectedUnit({
-                                        ...selectedUnit,
-                                        fixture: e.target.value,
-                                    })
-                                }
-                                            >
-                                                <option value="">Select Company Code</option>
-                                                {companyCodes.map((code) => (
-                                                    <option key={code.id} value={code.id}>
-                                                        {code.description}
-                                                    </option>
-                                                ))}
-                                            </select>
+                                    <select
+                                        name="companyCodeID"
+                                        className="form-control"
+                                        value={selectedUnit.fixture}
+                                        onChange={(e) =>
+                                            setSelectedUnit({
+                                                ...selectedUnit,
+                                                fixture: e.target.value,
+                                            })
+                                        }
+                                    >
+                                        <option value="">Select Company Code</option>
+                                        {companyCodes.map((code) => (
+                                            <option key={code.id} value={code.id}>
+                                                {code.description}
+                                            </option>
+                                        ))}
+                                    </select>
 
                                     {/* dropdown list unit orientation code/desc */}
                                     <label htmlFor="exampleInputNumber1" className={`${style.label}`}>Orientation:</label>
-                                            <select
-                                                name="companyCodeID"
-                                                className="form-control"
-                                                value={selectedUnit.orientation}
-                                onChange={(e) =>
-                                    setSelectedUnit({
-                                        ...selectedUnit,
-                                        orientation: e.target.value,
-                                    })
-                                }
-                                            >
-                                                <option value="">Select Company Code</option>
-                                                {companyCodes.map((code) => (
-                                                    <option key={code.id} value={code.id}>
-                                                        {code.description}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                    <label htmlFor="exampleInputText1" className={`${style.lable}`} >Blocking Reason: </label>
+                                    <select
+                                        name="companyCodeID"
+                                        className="form-control"
+                                        value={selectedUnit.orientation}
+                                        onChange={(e) =>
+                                            setSelectedUnit({
+                                                ...selectedUnit,
+                                                orientation: e.target.value,
+                                            })
+                                        }
+                                    >
+                                        <option value="">Select Company Code</option>
+                                        {companyCodes.map((code) => (
+                                            <option key={code.id} value={code.id}>
+                                                {code.description}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <label htmlFor="exampleInputText1" className={`${style.label}`} >Blocking Reason: </label>
                                     <input
                                         type="text"
                                         name="blockingReason"
@@ -1360,200 +1373,198 @@ export default function AvailableUnits() {
                                 <div className={`form-group ${style.formGroup}`}>
                                     <h2>Unit Areas:</h2>
                                     <div className='table-responsive m-auto'>
-                                    <table className={`table`} style={{ width: '100%' }}>
-                                        <thead>
-                                            <tr>
-                                                <th>Type of Area</th>
-                                                <th>Area Value</th>
-                                                <th>Unit of Measurement</th>
-                                                {/* <th>Actions</th> */}
-                                            </tr>
-                                            {/* <tr>
+                                        <table className={`table`} style={{ width: '100%' }}>
+                                            <thead>
+                                                <tr>
+                                                    <th>Type of Area</th>
+                                                    <th>Area Value</th>
+                                                    <th>Unit of Measurement</th>
+                                                    {/* <th>Actions</th> */}
+                                                </tr>
+                                                {/* <tr>
                                                 <th>Number Of Rooms</th>
                                                 </tr> */}
-                                        </thead>
-                                        <tbody style={{ width: '100%' }}>
+                                            </thead>
+                                            <tbody style={{ width: '100%' }}>
 
-                                            <td className={` ${style.formInput}`}>
-                                                <input
-                                                    type="text"
-                                                    className="form-control m-3"
-                                                    value={selectedUnit.blockingReason}
-                                                    onChange={(e) =>
-                                                        setSelectedUnit({
-                                                            ...selectedUnit,
-                                                            blockingReason: e.target.value,
-                                                        })
-                                                    }
-                                                />
-                                            </td>
-                                            <td className={` ${style.formInput}`}>
-                                                <input
-                                                    type="number"
-                                                    className="form-control m-3"
-                                                    value={selectedUnit.blockingReason}
-                                                    onChange={(e) =>
-                                                        setSelectedUnit({
-                                                            ...selectedUnit,
-                                                            blockingReason: e.target.value,
-                                                        })
-                                                    }
-                                                    id="exampleInputNumber1" aria-describedby="numberHelp"
-                                                />
-                                            </td>
-                                            <td className={` ${style.formInput}`}>
-                                                <select
-                                                    className={`form-control `}
-                                                    value={selectedUnit.orientation}
-                                                    onChange={(e) =>
-                                                        setSelectedUnit({
-                                                            ...selectedUnit,
-                                                            orientation: e.target.value,
-                                                        })
-                                                    }
-                                                >
-                                                    <option value="">Select UnitOFMeasurement</option>
-                                                    {unitOfMeasurements.map((unit, unitIndex) => (
-                                                        <option key={unitIndex} value={unit}>
-                                                            {unit}
-                                                        </option>
-                                                    ))}
-                                                </select>
-                                            </td>
-                                            <tr>
+                                                <td className={` ${style.formInput}`}>
+                                                    <input
+                                                        type="text"
+                                                        className="form-control m-3"
+                                                        value={selectedUnit.blockingReason}
+                                                        onChange={(e) =>
+                                                            setSelectedUnit({
+                                                                ...selectedUnit,
+                                                                blockingReason: e.target.value,
+                                                            })
+                                                        }
+                                                    />
+                                                </td>
+                                                <td className={` ${style.formInput}`}>
+                                                    <input
+                                                        type="number"
+                                                        min="0"
+                                                        className="form-control m-3"
+                                                        value={selectedUnit.blockingReason}
+                                                        onChange={(e) =>
+                                                            setSelectedUnit({
+                                                                ...selectedUnit,
+                                                                blockingReason: e.target.value,
+                                                            })
+                                                        }
+                                                        id="exampleInputNumber1" aria-describedby="numberHelp"
+                                                    />
+                                                </td>
+                                                <td className={` ${style.formInput}`}>
+                                                    <select
+                                                        className={`form-control `}
+                                                        value={selectedUnit.orientation}
+                                                        onChange={(e) =>
+                                                            setSelectedUnit({
+                                                                ...selectedUnit,
+                                                                orientation: e.target.value,
+                                                            })
+                                                        }
+                                                    >
+                                                        <option value="">Select UnitOFMeasurement</option>
+                                                        {unitOfMeasurements.map((unit, unitIndex) => (
+                                                            <option key={unitIndex} value={unit}>
+                                                                {unit}
+                                                            </option>
+                                                        ))}
+                                                    </select>
+                                                </td>
+                                                <tr>
 
-                                                <label htmlFor="exampleInputNumber1"  >Number of Rooms: </label>
-                                                <input type="number" name='numberOfRooms'
-                                                      className="form-control m-3"
-                                                      value={selectedUnit.numberOfRooms}
-                                                      onChange={(e) =>
-                                                          setSelectedUnit({
-                                                              ...selectedUnit,
-                                                              numberOfRooms: e.target.value,
-                                                          })
-                                                      }
-                                                    id="exampleInputNumber1" aria-describedby="numberHelp" />
+                                                    <label htmlFor="exampleInputNumber1"  >Number of Rooms: </label>
+                                                    <input type="number" min="0" name='numberOfRooms'
+                                                        className="form-control m-3"
+                                                        value={selectedUnit.numberOfRooms}
+                                                        onChange={(e) =>
+                                                            setSelectedUnit({
+                                                                ...selectedUnit,
+                                                                numberOfRooms: e.target.value,
+                                                            })
+                                                        }
+                                                        id="exampleInputNumber1" aria-describedby="numberHelp" />
 
-                                            </tr>
-                                        </tbody>
+                                                </tr>
+                                            </tbody>
 
 
-                                    </table>
+                                        </table>
+                                    </div>
                                 </div>
-                                </div>
 
-                                <div className={`form-group ${style.formGroup}`}>
+                                {/* <div className={`form-group ${style.formGroup}`}>
                                     <h2>Unit Prices:</h2>
                                     <div className='table-responsive m-auto'>
-                                    <table className={`table`} style={{ width: '100%' }}>
-                                        <thead>
-                                            <tr>
-                                                <th>Price Type:</th>
-                                                <th>MethodOfCalculation:</th>
-                                                <th>Price:</th>
-                                                <th>Currency:</th>
-                                                <th>Valid From:</th>
-                                                {/* <th>Actions</th> */}
-                                            </tr>
-                                        </thead>
-                                        <tbody style={{ width: '100%' }}>
+                                        <table className={`table`} style={{ width: '100%' }}>
+                                            <thead>
+                                                <tr>
+                                                    <th>Price Type:</th>
+                                                    <th>MethodOfCalculation:</th>
+                                                    <th>Price:</th>
+                                                    <th>Currency:</th>
+                                                    <th>Valid From:</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody style={{ width: '100%' }}>
 
-                                            <td className={` ${style.formInput}`} >
-                                                <select
-                                                    className={`form-control `}
-                                                    value={selectedUnit.orientation}
-                                                    onChange={(e) =>
-                                                        setSelectedUnit({
-                                                            ...selectedUnit,
-                                                            orientation: e.target.value,
-                                                        })
-                                                    }
-                                                >
-                                                    <option value="">Select PriceType </option>
-                                                    {unitOfMeasurements.map((unit, unitIndex) => (
-                                                        <option key={unitIndex} value={unit}>
-                                                            {unit}
-                                                        </option>
-                                                    ))}
-                                                </select>
-                                            </td>
-                                            <td className={` ${style.formInput}`}>
-                                                <select
-                                                    className={`form-control `}
-                                                    value={selectedUnit.orientation}
-                                                    onChange={(e) =>
-                                                        setSelectedUnit({
-                                                            ...selectedUnit,
-                                                            orientation: e.target.value,
-                                                        })
-                                                    }
-                                                >
-                                                    <option value="">Select MOC</option>
-                                                    {unitOfMeasurements.map((unit, unitIndex) => (
-                                                        <option key={unitIndex} value={unit}>
-                                                            {unit}
-                                                        </option>
-                                                    ))}
-                                                </select>
-                                            </td>
-                                            <td className={` ${style.formInput}`}>
+                                                <td className={` ${style.formInput}`} >
+                                                    <select
+                                                        className={`form-control `}
+                                                        value={selectedUnit.orientation}
+                                                        onChange={(e) =>
+                                                            setSelectedUnit({
+                                                                ...selectedUnit,
+                                                                orientation: e.target.value,
+                                                            })
+                                                        }
+                                                    >
+                                                        <option value="">Select PriceType </option>
+                                                        {unitOfMeasurements.map((unit, unitIndex) => (
+                                                            <option key={unitIndex} value={unit}>
+                                                                {unit}
+                                                            </option>
+                                                        ))}
+                                                    </select>
+                                                </td>
+                                                <td className={` ${style.formInput}`}>
+                                                    <select
+                                                        className={`form-control `}
+                                                        value={selectedUnit.orientation}
+                                                        onChange={(e) =>
+                                                            setSelectedUnit({
+                                                                ...selectedUnit,
+                                                                orientation: e.target.value,
+                                                            })
+                                                        }
+                                                    >
+                                                        <option value="">Select MOC</option>
+                                                        {unitOfMeasurements.map((unit, unitIndex) => (
+                                                            <option key={unitIndex} value={unit}>
+                                                                {unit}
+                                                            </option>
+                                                        ))}
+                                                    </select>
+                                                </td>
+                                                <td className={` ${style.formInput}`}>
 
-                                                <input type="number" name='price' min="0"
-                                                    className="form-control m-3"
-                                                    value={selectedUnit.numberOfRooms}
-                                                    onChange={(e) =>
-                                                        setSelectedUnit({
-                                                            ...selectedUnit,
-                                                            numberOfRooms: e.target.value,
-                                                        })
-                                                    }
-                                                    id="exampleInputNumber1" aria-describedby="numberHelp"
-                                                />
+                                                    <input type="number" name='price' min="0"
+                                                        className="form-control m-3"
+                                                        value={selectedUnit.numberOfRooms}
+                                                        onChange={(e) =>
+                                                            setSelectedUnit({
+                                                                ...selectedUnit,
+                                                                numberOfRooms: e.target.value,
+                                                            })
+                                                        }
+                                                        id="exampleInputNumber1" aria-describedby="numberHelp"
+                                                    />
 
-                                            </td>
+                                                </td>
 
-                                            <td className={` ${style.formInput}`}>
-                                                <select
-                                                    className={`form-control `}
-                                                    value={selectedUnit.orientation}
-                                                    onChange={(e) =>
-                                                        setSelectedUnit({
-                                                            ...selectedUnit,
-                                                            orientation: e.target.value,
-                                                        })
-                                                    }
-                                                // value={area.unitOfMeasurement}
-                                                //onChange={(e) => handleAreaChange(index, 'unitOfMeasurement', e.target.value)}
-                                                >
-                                                    <option value="">Select Currency</option>
-                                                    {unitOfMeasurements.map((unit, unitIndex) => (
-                                                        <option key={unitIndex} value={unit}>
-                                                            {unit}
-                                                        </option>
-                                                    ))}
-                                                </select>
-                                            </td>
-                                            <td className={` ${style.formInput}`}>
+                                                <td className={` ${style.formInput}`}>
+                                                    <select
+                                                        className={`form-control `}
+                                                        value={selectedUnit.orientation}
+                                                        onChange={(e) =>
+                                                            setSelectedUnit({
+                                                                ...selectedUnit,
+                                                                orientation: e.target.value,
+                                                            })
+                                                        }
+                                                    >
+                                                        <option value="">Select Currency</option>
+                                                        {unitOfMeasurements.map((unit, unitIndex) => (
+                                                            <option key={unitIndex} value={unit}>
+                                                                {unit}
+                                                            </option>
+                                                        ))}
+                                                    </select>
+                                                </td>
+                                                <td className={` ${style.formInput}`}>
 
-                                                <input type="date" name='validFrom'
-                                                      className="form-control m-3"
-                                                      value={selectedUnit.numberOfRooms}
-                                                      onChange={(e) =>
-                                                          setSelectedUnit({
-                                                              ...selectedUnit,
-                                                              numberOfRooms: e.target.value,
-                                                          })
-                                                      }
-                                                    id="exampleInputDate1" aria-describedby="dateHelp" />
-                                            </td>
-                                        </tbody>
+                                                    <input type="date" name='validFrom'
+                                                        className="form-control m-3"
+                                                        value={selectedUnit.numberOfRooms}
+                                                        onChange={(e) =>
+                                                            setSelectedUnit({
+                                                                ...selectedUnit,
+                                                                numberOfRooms: e.target.value,
+                                                            })
+                                                        }
+                                                        id="exampleInputDate1" aria-describedby="dateHelp" />
+                                                </td>
+                                            </tbody>
 
-                                    </table>
-                                </div>
-                                </div>
+                                        </table>
+                                    </div>
+                                </div> */}
 
                                 {/* Old Fields Of Unit Area and Price */}
-                                <input
+                                {/* <input
                                     type="text"
                                     name="builtUpArea"
                                     className="form-control m-3"
@@ -1749,7 +1760,7 @@ export default function AvailableUnits() {
                                         })
                                     }
                                     placeholder="Enter Amount"
-                                />
+                                /> */}
                             </form>
 
                             {updateMsg ? <div className="alert alert-danger m-3 p-2">{updateMsg}</div> : ''}

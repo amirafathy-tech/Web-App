@@ -8,16 +8,10 @@ import { Link, useNavigate } from 'react-router-dom'
 import { encode } from 'base-64';
 
 export default function Login({ setUserData }) {
-    // const clientID = "1eb8c477-8309-4d77-b174-bb67b3e8b5d1"
-    // const clientSecret = "nZFdZBQsZy5cp_lzmfDIojf4S7PTafZiQ"
-
-    // trial
-    //const clientID = "15ef32d9-2046-426d-ac8d-be541f2db7e7"
-    //const clientSecret = "rKbRqvHSPPFjCgHF?2v=ne=GAF1:CzH"
 
     // new trial
-    const clientID = "5bd52faa-51e7-4a72-aa28-cac126e86e85"
-    const clientSecret = "OlJsOwM-MSlmE5cV3:Bz3]-:RJ/WS/R1U"
+    const clientID = "659276ef-435a-49d6-8a3e-7026b53f6113"
+    const clientSecret = "4-FhZt774p5[pI9kC/qboTUfnX_nuGI_SOr"
     // const url = "https://aey0y39na.trial-accounts.ondemand.com"
     let [user, setUser] = useState({
         email: '',
